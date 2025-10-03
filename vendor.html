@@ -907,14 +907,17 @@
                         <i class="fas fa-search"></i>
                         <input type="text" id="searchInput" placeholder="Search my tasks, sessions...">
                     </div>
+                    <button class="btn btn-outline" id="refreshVendorBtn" style="margin-right: 10px;">
+                        <i class="fas fa-sync-alt"></i> Refresh Tasks
+                    </button>
                     <div class="notifications">
                         <i class="fas fa-bell"></i>
                         <div class="notification-badge">3</div>
                     </div>
                     <div class="user-info">
-                        <div class="user-avatar">JV</div>
+                        <div class="user-avatar">V1</div>
                         <div>
-                            <div>John Vendor</div>
+                            <div>Vendor 1</div>
                             <div class="user-role">Vendor</div>
                         </div>
                     </div>
@@ -931,10 +934,10 @@
                             <i class="fas fa-clock"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat">7</div>
+                            <div class="stat">0</div>
                             <p>Need your attention</p>
                             <div class="progress-bar">
-                                <div class="progress" style="width: 30%;"></div>
+                                <div class="progress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -944,10 +947,10 @@
                             <i class="fas fa-check-circle"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat">14</div>
+                            <div class="stat">0</div>
                             <p>Well done!</p>
                             <div class="progress-bar">
-                                <div class="progress" style="width: 70%;"></div>
+                                <div class="progress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -957,10 +960,10 @@
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat">3</div>
+                            <div class="stat">0</div>
                             <p>Next 7 days</p>
                             <div class="progress-bar">
-                                <div class="progress" style="width: 60%;"></div>
+                                <div class="progress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -970,10 +973,10 @@
                             <i class="fas fa-comments"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat">5</div>
+                            <div class="stat">0</div>
                             <p>From organizers</p>
                             <div class="progress-bar">
-                                <div class="progress" style="width: 50%;"></div>
+                                <div class="progress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -997,43 +1000,8 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Set up audio equipment</td>
-                                    <td>Sunset Music Festival</td>
-                                    <td>Oct 14, 2025</td>
-                                    <td><span class="task-status status-pending">Pending</span></td>
-                                    <td>High</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Prepare workshop materials</td>
-                                    <td>Creative Workshop</td>
-                                    <td>Oct 18, 2025</td>
-                                    <td><span class="task-status status-pending">Pending</span></td>
-                                    <td>Medium</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Stage setup for product launch</td>
-                                    <td>Product Launch</td>
-                                    <td>Oct 4, 2025</td>
-                                    <td><span class="task-status status-completed">Completed</span></td>
-                                    <td>High</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-eye"></i> View
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="vendorTasksTableBody">
+                                <!-- Tasks will be populated by JavaScript -->
                             </tbody>
                         </table>
                     </div>
@@ -1050,15 +1018,15 @@
                     
                     <div class="tasks-overview">
                         <div class="task-stat pending">
-                            <div class="number">7</div>
+                            <div class="number">0</div>
                             <div class="label">Pending Tasks</div>
                         </div>
                         <div class="task-stat completed">
-                            <div class="number">14</div>
+                            <div class="number">0</div>
                             <div class="label">Completed Tasks</div>
                         </div>
                         <div class="task-stat overdue">
-                            <div class="number">2</div>
+                            <div class="number">0</div>
                             <div class="label">Overdue Tasks</div>
                         </div>
                     </div>
@@ -1075,55 +1043,8 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Set up audio equipment</td>
-                                    <td>Sunset Music Festival</td>
-                                    <td>Oct 14, 2025</td>
-                                    <td><span class="task-status status-pending">Pending</span></td>
-                                    <td>High</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Prepare workshop materials</td>
-                                    <td>Creative Workshop</td>
-                                    <td>Oct 18, 2025</td>
-                                    <td><span class="task-status status-pending">Pending</span></td>
-                                    <td>Medium</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Catering arrangement</td>
-                                    <td>Sunset Music Festival</td>
-                                    <td>Oct 13, 2025</td>
-                                    <td><span class="task-status status-in-progress">In Progress</span></td>
-                                    <td>Medium</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Lighting setup</td>
-                                    <td>Creative Workshop</td>
-                                    <td>Oct 19, 2025</td>
-                                    <td><span class="task-status status-pending">Pending</span></td>
-                                    <td>Low</td>
-                                    <td>
-                                        <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                            <i class="fas fa-edit"></i> Update
-                                        </button>
-                                    </td>
-                                </tr>
+                            <tbody id="tasksPageTableBody">
+                                <!-- Tasks will be populated by JavaScript -->
                             </tbody>
                         </table>
                     </div>
@@ -1139,40 +1060,8 @@
                     </div>
                     <p>Overview of all sessions you're assigned to with their details and preparation status.</p>
                     
-                    <div class="vendor-list">
-                        <div class="vendor-card">
-                            <h4>Sunset Music Festival</h4>
-                            <p>Main Stage Setup</p>
-                            <div class="vendor-progress">
-                                <div class="vendor-progress-bar" style="width: 65%"></div>
-                            </div>
-                            <div class="vendor-stats">
-                                <span>Date: Oct 15, 2025</span>
-                                <span>Tasks: 3/5</span>
-                            </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Creative Workshop</h4>
-                            <p>Workshop Room A</p>
-                            <div class="vendor-progress">
-                                <div class="vendor-progress-bar" style="width: 40%"></div>
-                            </div>
-                            <div class="vendor-stats">
-                                <span>Date: Oct 20, 2025</span>
-                                <span>Tasks: 2/5</span>
-                            </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Product Launch</h4>
-                            <p>Demo Area Setup</p>
-                            <div class="vendor-progress">
-                                <div class="vendor-progress-bar" style="width: 90%"></div>
-                            </div>
-                            <div class="vendor-stats">
-                                <span>Date: Oct 5, 2025</span>
-                                <span>Tasks: 4/4</span>
-                            </div>
-                        </div>
+                    <div class="vendor-list" id="sessionsVendorList">
+                        <!-- Sessions will be populated by JavaScript -->
                     </div>
                 </div>
             </div>
@@ -1188,36 +1077,9 @@
                     
                     <div class="resource-list">
                         <div class="resource-card">
-                            <h4>Sunset Music Festival - Floor Plans</h4>
-                            <p>Detailed floor plans and equipment placement diagrams for the main stage area.</p>
+                            <h4>No Resources Available</h4>
+                            <p>Resources will appear here when assigned by organizers.</p>
                             <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-download"></i> Download
-                                </button>
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </div>
-                        </div>
-                        <div class="resource-card">
-                            <h4>Creative Workshop - Materials List</h4>
-                            <p>Complete list of materials needed for the creative workshop sessions.</p>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-download"></i> Download
-                                </button>
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </div>
-                        </div>
-                        <div class="resource-card">
-                            <h4>Product Launch - Setup Instructions</h4>
-                            <p>Step-by-step instructions for product launch demo area setup.</p>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-download"></i> Download
-                                </button>
                                 <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
                                     <i class="fas fa-eye"></i> View
                                 </button>
@@ -1238,51 +1100,11 @@
                     
                     <div class="meeting-list">
                         <div class="meeting-card">
-                            <h4>Pre-Event Planning - Sunset Music Festival</h4>
-                            <p>Discussion about stage setup, audio requirements, and timeline coordination.</p>
+                            <h4>No Meetings Scheduled</h4>
+                            <p>Meetings will appear here when scheduled by organizers.</p>
                             <div class="meeting-time">
                                 <i class="fas fa-clock"></i>
-                                <span>Oct 10, 2025 - 2:00 PM</span>
-                            </div>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-video"></i> Join
-                                </button>
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-calendar"></i> Add to Calendar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="meeting-card">
-                            <h4>Creative Workshop Coordination</h4>
-                            <p>Finalizing materials and setup requirements for the workshop sessions.</p>
-                            <div class="meeting-time">
-                                <i class="fas fa-clock"></i>
-                                <span>Oct 17, 2025 - 11:00 AM</span>
-                            </div>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-video"></i> Join
-                                </button>
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-calendar"></i> Add to Calendar
-                                </button>
-                            </div>
-                        </div>
-                        <div class="meeting-card">
-                            <h4>Post-Event Review - Product Launch</h4>
-                            <p>Review of completed tasks and feedback session for future improvements.</p>
-                            <div class="meeting-time">
-                                <i class="fas fa-clock"></i>
-                                <span>Oct 8, 2025 - 3:30 PM</span>
-                            </div>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-video"></i> Join
-                                </button>
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-calendar"></i> Add to Calendar
-                                </button>
+                                <span>No upcoming meetings</span>
                             </div>
                         </div>
                     </div>
@@ -1300,28 +1122,8 @@
                     
                     <div class="vendor-list">
                         <div class="vendor-card">
-                            <h4>Event Organizer - Sarah Johnson</h4>
-                            <p>Can you provide an update on the audio equipment setup?</p>
-                            <div class="vendor-stats">
-                                <span>Today, 2:30 PM</span>
-                                <span>Unread</span>
-                            </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Event Organizer - Mike Chen</h4>
-                            <p>New materials have been added to the Creative Workshop resources.</p>
-                            <div class="vendor-stats">
-                                <span>Yesterday, 4:15 PM</span>
-                                <span>Read</span>
-                            </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>SoundMasters Team</h4>
-                            <p>Coordinating audio setup for the Sunset Music Festival.</p>
-                            <div class="vendor-stats">
-                                <span>Oct 5, 2025</span>
-                                <span>Read</span>
-                            </div>
+                            <h4>No Messages</h4>
+                            <p>Your messages will appear here.</p>
                         </div>
                     </div>
                 </div>
@@ -1338,21 +1140,12 @@
                     
                     <div class="vendor-list">
                         <div class="vendor-card">
-                            <h4>John Vendor</h4>
-                            <p>Audio & Equipment Specialist</p>
+                            <h4>Vendor 1</h4>
+                            <p>Event Services Provider</p>
                             <div class="vendor-stats">
-                                <span>Vendor ID: V-2847</span>
-                                <span>Member since 2023</span>
+                                <span>Vendor ID: V-001</span>
+                                <span>Active</span>
                             </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Contact Information</h4>
-                            <p>Email: john.vendor@example.com</p>
-                            <p>Phone: (555) 123-4567</p>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Services</h4>
-                            <p>Audio Equipment Setup, Stage Lighting, Technical Support</p>
                         </div>
                     </div>
                 </div>
@@ -1376,24 +1169,6 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="vendor-card">
-                            <h4>Security Settings</h4>
-                            <p>Update your password and security preferences.</p>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-shield-alt"></i> Manage
-                                </button>
-                            </div>
-                        </div>
-                        <div class="vendor-card">
-                            <h4>Integration Settings</h4>
-                            <p>Connect with other tools and calendars.</p>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-plug"></i> Configure
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -1405,6 +1180,99 @@
     </div>
 
     <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        // API Service for Vendor - UPDATED FOR EVENTS
+        const vendorApiService = {
+            // Get vendor tasks - ONLY FOR VENDOR 1
+            async getVendorTasks() {
+                try {
+                    console.log('🔄 Fetching tasks for Vendor 1...');
+                    
+                    // Get all tasks and filter for Vendor 1
+                    const response = await fetch(`${API_BASE_URL}/tasks`);
+                    if (!response.ok) throw new Error('Failed to fetch tasks');
+                    
+                    const data = await response.json();
+                    console.log('✅ All tasks from API:', data);
+                    
+                    // Handle different response formats
+                    const allTasks = Array.isArray(data) ? data : (data.tasks || data.data || []);
+                    
+                    // Filter tasks for Vendor 1
+                    const vendorTasks = allTasks.filter(task => {
+                        const matchesVendor = 
+                            task.vendor === 'Vendor 1' || 
+                            task.vendorId === 'vendor-1';
+                        
+                        console.log(`Task "${task.title}" - vendor: "${task.vendor}", vendorId: "${task.vendorId}" - Match: ${matchesVendor}`);
+                        return matchesVendor;
+                    });
+                    
+                    console.log('✅ Vendor 1 tasks:', vendorTasks);
+                    return vendorTasks;
+                    
+                } catch (error) {
+                    console.error('❌ Error fetching vendor tasks:', error);
+                    return [];
+                }
+            },
+
+            // DELETE task when completed
+            async deleteTask(taskId) {
+                try {
+                    console.log('🗑️ Deleting completed task:', taskId);
+                    
+                    const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) throw new Error('Failed to delete task');
+                    
+                    const result = await response.json();
+                    console.log('✅ Task deleted successfully:', result);
+                    return result;
+                    
+                } catch (error) {
+                    console.error('❌ Error deleting task:', error);
+                    throw error;
+                }
+            },
+
+            // Get events - UPDATED TO FILTER FOR VENDOR 1
+            async getEvents() {
+                try {
+                    console.log('🔄 Fetching events for Vendor 1...');
+                    const response = await fetch(`${API_BASE_URL}/events`);
+                    if (!response.ok) throw new Error('Failed to fetch events');
+                    const data = await response.json();
+                    
+                    // Handle different response formats
+                    const allEvents = Array.isArray(data) ? data : (data.events || []);
+                    
+                    // Filter events for Vendor 1 (all events go to vendor sessions)
+                    const vendorEvents = allEvents.filter(event => {
+                        // All events are assigned to Vendor 1 for sessions
+                        const isAssigned = true; // All events go to vendor sessions
+                        
+                        console.log(`Event "${event.name}" - Assigned to sessions: ${isAssigned}`);
+                        return isAssigned;
+                    });
+                    
+                    console.log('✅ Vendor 1 events:', vendorEvents);
+                    return vendorEvents;
+                } catch (error) {
+                    console.error('❌ Error fetching events:', error);
+                    return [];
+                }
+            }
+        };
+
+        // Global variables
+        let vendorTasks = [];
+        let vendorEvents = [];
+
         // Function to show specific content page
         function showPage(pageId) {
             // Hide all content pages
@@ -1428,11 +1296,226 @@
             };
             
             document.getElementById('pageTitle').textContent = pageTitles[pageId];
+            
+            // Load data for specific pages
+            if (pageId === 'tasks') {
+                loadTasksPage();
+            } else if (pageId === 'sessions') {
+                loadSessionsPage();
+            }
+        }
+
+        // Load and render tasks - UPDATED TO INCLUDE SESSIONS
+        async function loadVendorTasks() {
+            try {
+                console.log('🔄 Loading data for Vendor 1...');
+                
+                // Load both tasks and events
+                vendorTasks = await vendorApiService.getVendorTasks();
+                vendorEvents = await vendorApiService.getEvents();
+                
+                console.log('✅ Vendor 1 tasks loaded:', vendorTasks);
+                console.log('✅ Vendor 1 events loaded:', vendorEvents);
+                
+                updateDashboardStats();
+                renderTasksTable();
+                
+                // Refresh sessions page if it's active
+                if (document.getElementById('sessions').classList.contains('active')) {
+                    loadSessionsPage();
+                }
+                
+                if (vendorTasks.length === 0 && vendorEvents.length === 0) {
+                    console.log('ℹ️ No tasks or events found for Vendor 1');
+                }
+            } catch (error) {
+                console.error('❌ Error loading vendor data:', error);
+                vendorTasks = [];
+                vendorEvents = [];
+                updateDashboardStats();
+                renderTasksTable();
+            }
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            // Calculate task statistics - ONLY PENDING AND COMPLETED
+            const completedTasks = vendorTasks.filter(task => task.status === 'completed').length;
+            const pendingTasks = vendorTasks.filter(task => task.status !== 'completed').length; // Everything else is pending
+            
+            const overdueTasks = vendorTasks.filter(task => {
+                if (task.status === 'completed') return false;
+                if (!task.dueDate) return false;
+                const dueDate = new Date(task.dueDate);
+                return dueDate < new Date();
+            }).length;
+            
+            const upcomingEvents = vendorEvents.filter(event => {
+                const eventDate = new Date(event.date);
+                return eventDate >= new Date();
+            }).length;
+
+            // Update cards
+            document.querySelector('.card.pending .stat').textContent = pendingTasks;
+            document.querySelector('.card.completed .stat').textContent = completedTasks;
+            document.querySelector('.card.upcoming .stat').textContent = upcomingEvents;
+            
+            // Update task stats
+            document.querySelector('.task-stat.pending .number').textContent = pendingTasks;
+            document.querySelector('.task-stat.completed .number').textContent = completedTasks;
+            document.querySelector('.task-stat.overdue .number').textContent = overdueTasks;
+            
+            // Update progress bars
+            const totalTasks = vendorTasks.length;
+            const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.querySelector('.card.pending .progress').style.width = totalTasks > 0 ? `${(pendingTasks / totalTasks) * 100}%` : '0%';
+            document.querySelector('.card.completed .progress').style.width = `${completionRate}%`;
+            document.querySelector('.card.upcoming .progress').style.width = vendorEvents.length > 0 ? `${(upcomingEvents / vendorEvents.length) * 100}%` : '0%';
+        }
+
+        // Render tasks table
+        function renderTasksTable() {
+            const tables = [
+                document.getElementById('vendorTasksTableBody'),
+                document.getElementById('tasksPageTableBody')
+            ];
+            
+            tables.forEach(table => {
+                if (!table) return;
+                
+                table.innerHTML = '';
+                
+                if (vendorTasks.length === 0) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-tasks" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                                <h3>No Tasks Assigned Yet</h3>
+                                <p>Tasks assigned to you from the organiser will appear here.</p>
+                                <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                vendorTasks.forEach(task => {
+                    const row = document.createElement('tr');
+                    
+                    // Format due date
+                    const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                    
+                    // Get status class and text
+                    let statusClass = 'status-pending';
+                    let statusText = 'Pending';
+                    
+                    if (task.status === 'completed') {
+                        statusClass = 'status-completed';
+                        statusText = 'Completed';
+                    }
+                    
+                    // Get priority display
+                    const priority = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'Medium';
+                    
+                    // Use title or taskName field
+                    const taskTitle = task.title || task.taskName || 'Unnamed Task';
+                    const eventName = task.eventName || 'General Event';
+                    
+                    row.innerHTML = `
+                        <td>${taskTitle}</td>
+                        <td>${eventName}</td>
+                        <td>${dueDate}</td>
+                        <td><span class="task-status ${statusClass}">${statusText}</span></td>
+                        <td>${priority}</td>
+                        <td>
+                            <button class="action-btn update-task-btn" data-task-id="${task._id || task.id}" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            });
+        }
+
+        // Load tasks page
+        function loadTasksPage() {
+            renderTasksTable();
+        }
+
+        // Load sessions page - UPDATED TO SHOW EVENT DETAILS
+        function loadSessionsPage() {
+            const vendorList = document.getElementById('sessionsVendorList');
+            if (!vendorList) return;
+            
+            vendorList.innerHTML = '';
+            
+            if (vendorEvents.length === 0) {
+                vendorList.innerHTML = `
+                    <div class="vendor-card" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-calendar-alt" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                        <h3>No Sessions Assigned</h3>
+                        <p>Events assigned to you will appear here as sessions.</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create session cards from events
+            vendorEvents.forEach(event => {
+                // Count tasks for this event
+                const eventTasks = vendorTasks.filter(task => task.eventName === event.name);
+                const completedTasks = eventTasks.filter(task => task.status === 'completed').length;
+                const totalTasks = eventTasks.length;
+                const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                
+                // Format event date
+                const eventDate = new Date(event.date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const card = document.createElement('div');
+                card.className = 'vendor-card';
+                card.innerHTML = `
+                    <h4>${event.name}</h4>
+                    <p>${event.description || 'No description available'}</p>
+                    <div class="meeting-time">
+                        <i class="fas fa-clock"></i>
+                        <span>${eventDate}</span>
+                    </div>
+                    <div class="vendor-progress">
+                        <div class="vendor-progress-bar" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="vendor-stats">
+                        <span>Type: ${event.type || 'General'}</span>
+                        <span>Tasks: ${completedTasks}/${totalTasks}</span>
+                    </div>
+                `;
+                vendorList.appendChild(card);
+            });
         }
 
         // Initialize vendor dashboard
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Vendor Dashboard loaded");
+            console.log("Vendor Dashboard loaded - VENDOR 1 ONLY");
+            
+            // Load initial data
+            loadVendorTasks();
             
             // Navigation
             document.querySelectorAll('.nav-links a').forEach(link => {
@@ -1451,17 +1534,48 @@
             
             // Update status button
             document.getElementById('updateStatusBtn').addEventListener('click', function() {
-                alert("Opening task status update form");
+                showPage('tasks');
             });
             
-            // Task update buttons
-            document.querySelectorAll('.action-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const taskRow = this.closest('tr');
-                    const taskName = taskRow ? taskRow.cells[0].textContent : 'item';
-                    alert(`Updating status for: ${taskName}`);
-                });
+            // Refresh button
+            document.getElementById('refreshVendorBtn').addEventListener('click', function() {
+                console.log('🔄 Manual refresh triggered');
+                loadVendorTasks();
+            });
+            
+            // Task update buttons (event delegation for dynamic content)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.update-task-btn')) {
+                    const button = e.target.closest('.update-task-btn');
+                    const taskId = button.getAttribute('data-task-id');
+                    const taskRow = button.closest('tr');
+                    const taskName = taskRow ? taskRow.cells[0].textContent : 'task';
+                    
+                    // Show status update modal - ONLY TWO OPTIONS NOW
+                    const newStatus = prompt(`Update status for "${taskName}":\nEnter "pending" or "completed"`);
+                    
+                    if (newStatus && ['pending', 'completed'].includes(newStatus.toLowerCase())) {
+                        if (newStatus.toLowerCase() === 'completed') {
+                            // DELETE task from database when completed
+                            if (confirm('Are you sure you want to mark this task as completed? This will remove it from the system.')) {
+                                vendorApiService.deleteTask(taskId)
+                                    .then(result => {
+                                        if (result.success || result._id) {
+                                            alert('Task completed and removed from system!');
+                                            loadVendorTasks(); // Reload tasks from database
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error deleting task:', error);
+                                        alert('Error completing task. Please try again.');
+                                    });
+                            }
+                        } else {
+                            // For pending status, just show message (no actual update needed)
+                            alert('Task status remains as pending.');
+                        }
+                    }
+                }
             });
             
             // Search functionality
@@ -1469,8 +1583,27 @@
                 const searchTerm = e.target.value.toLowerCase();
                 if (searchTerm) {
                     console.log(`Searching for: ${searchTerm}`);
+                    // Implement search filtering here if needed
                 }
             });
+            
+            // Quick action buttons
+            document.querySelectorAll('.quick-actions .btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    console.log(`Quick action: ${action}`);
+                });
+            });
+            
+            // Auto-refresh tasks every 30 seconds when on relevant pages
+            setInterval(() => {
+                if (document.getElementById('tasks').classList.contains('active') || 
+                    document.getElementById('dashboard').classList.contains('active') ||
+                    document.getElementById('sessions').classList.contains('active')) {
+                    console.log('🔄 Auto-refreshing vendor data...');
+                    loadVendorTasks();
+                }
+            }, 30000);
         });
     </script>
 </body>

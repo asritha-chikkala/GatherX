@@ -16,6 +16,7 @@ const events = require('./routes/events');
 const tasks = require('./routes/tasks');
 const activities = require('./routes/activities');
 const question = require('./routes/questions');
+const vendorTaskRoutes = require('./routes/vendorTasks');
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 
@@ -51,6 +52,7 @@ app.use('/api/events', events);
 app.use('/api/tasks', tasks);
 app.use('/api/activities', activities);
 app.use('/api/questions', question);
+app.use('/api/vendor-tasks', vendorTaskRoutes);
 
 // Health check route
 app.get('/api/health', (req, res) => {
