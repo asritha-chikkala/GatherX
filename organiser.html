@@ -14,7 +14,7 @@
         }
 
         :root {
-            --deep-brown: #83594c;
+            --deep-brown: #493129;
             --dusty-purple: #8b597b;
             --soft-pink: #efa3a0;
             --light-blue: #9ec8f9;
@@ -32,7 +32,7 @@
             min-height: 100vh;
         }
 
-        
+        /* Sidebar Styles */
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
@@ -135,7 +135,7 @@
             text-align: center;
         }
 
-        
+        /* Main Content Styles */
         .main-content {
             flex: 1;
             padding: 30px;
@@ -245,7 +245,7 @@
             font-weight: bold;
         }
 
-        
+        /* Dashboard Cards */
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -262,6 +262,7 @@
             position: relative;
             overflow: hidden;
             border-top: 5px solid;
+            cursor: pointer;
         }
 
         .card::after {
@@ -373,6 +374,7 @@
         .progress {
             height: 100%;
             border-radius: 5px;
+            transition: width 0.5s ease;
         }
 
         .card.events .progress {
@@ -451,7 +453,7 @@
             color: white;
         }
 
-        
+        /* Tables and Lists */
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
@@ -583,6 +585,132 @@
             opacity: 0.7;
         }
 
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(73, 49, 41, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 20px 40px rgba(73, 49, 41, 0.3);
+            animation: modalAppear 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 25px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--deep-brown);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(73, 49, 41, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+            background: rgba(249, 236, 171, 0.1);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--dusty-purple);
+            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
+            background: white;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid rgba(73, 49, 41, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
+            border-left: 4px solid var(--dusty-purple);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transform: translateX(120%);
+            transition: transform 0.3s ease;
+            z-index: 1100;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast i {
+            color: var(--dusty-purple);
+            font-size: 20px;
+        }
+
         /* Responsive Design */
         @media (max-width: 1100px) {
             .container {
@@ -623,7 +751,7 @@
 </head>
 <body>
     <div class="container">
-        
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
                 <div class="logo-icon">
@@ -632,30 +760,30 @@
                 <h1>Sunset <span>Events</span></h1>
             </div>
             <ul class="nav-links">
-                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
-                <li><a href="#"><i class="fas fa-list"></i> View Events</a></li>
-                <li><a href="#"><i class="fas fa-microphone"></i> Sessions & Speakers</a></li>
-                <li><a href="#"><i class="fas fa-tasks"></i> Vendor Tasks</a></li>
-                <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
-                <li><a href="#"><i class="fas fa-clock"></i> Schedule Meetings</a></li>
-                <li><a href="#"><i class="fas fa-question-circle"></i> Attendee Questions</a></li>
-                <li><a href="#"><i class="fas fa-star"></i> Sponsors</a></li>
-                <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" data-section="events"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="#" data-section="events"><i class="fas fa-list"></i> View Events</a></li>
+                <li><a href="#" data-section="sessions"><i class="fas fa-microphone"></i> Sessions & Speakers</a></li>
+                <li><a href="#" data-section="tasks"><i class="fas fa-tasks"></i> Vendor Tasks</a></li>
+                <li><a href="#" data-section="announcements"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="#" data-section="meetings"><i class="fas fa-clock"></i> Schedule Meetings</a></li>
+                <li><a href="#" data-section="questions"><i class="fas fa-question-circle"></i> Attendee Questions</a></li>
+                <li><a href="#" data-section="sponsors"><i class="fas fa-star"></i> Sponsors</a></li>
+                <li><a href="#" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
             </ul>
         </div>
 
-        
+        <!-- Main Content -->
         <div class="main-content">
             <div class="header">
-                <h2>Event Organizer Dashboard</h2>
+                <h2 id="pageTitle">Event Organizer Dashboard</h2>
                 <div class="header-actions">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search events, attendees...">
+                        <input type="text" id="searchInput" placeholder="Search events, attendees...">
                     </div>
-                    <div class="notifications">
+                    <div class="notifications" id="notificationsBtn">
                         <i class="fas fa-bell"></i>
                         <div class="notification-badge">3</div>
                     </div>
@@ -666,200 +794,114 @@
                 </div>
             </div>
 
-            
-            <div class="dashboard-cards">
-                <div class="card events">
-                    <div class="card-header">
-                        <h3>Total Events</h3>
-                        <i class="fas fa-calendar"></i>
+            <!-- Dashboard Content -->
+            <div id="dashboardContent">
+                <!-- Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card events" data-action="view-events">
+                        <div class="card-header">
+                            <h3>Total Events</h3>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat" id="totalEvents">12</div>
+                            <p>3 events live now</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="eventsProgress" style="width: 75%;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-content">
-                        <div class="stat">12</div>
-                        <p>3 events live now</p>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 75%;"></div>
+                    <div class="card attendees" data-action="view-attendees">
+                        <div class="card-header">
+                            <h3>Attendees</h3>
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat" id="totalAttendees">1,248</div>
+                            <p>Across all events</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="attendeesProgress" style="width: 82%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card tasks" data-action="view-tasks">
+                        <div class="card-header">
+                            <h3>Tasks Completed</h3>
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat" id="tasksCompleted">84%</div>
+                            <p id="tasksText">36 of 43 tasks done</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="tasksProgress" style="width: 84%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card engagement" data-action="view-analytics">
+                        <div class="card-header">
+                            <h3>Engagement Rate</h3>
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat" id="engagementRate">76%</div>
+                            <p>Across all sessions</p>
+                            <div class="progress-bar">
+                                <div class="progress" id="engagementProgress" style="width: 76%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="card attendees">
-                    <div class="card-header">
-                        <h3>Attendees</h3>
-                        <i class="fas fa-users"></i>
+
+                <!-- Upcoming Events Section -->
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Your Events</h3>
+                        <button class="btn" id="createEventBtn"><i class="fas fa-plus"></i> Create New Event</button>
                     </div>
-                    <div class="card-content">
-                        <div class="stat">1,248</div>
-                        <p>Across all events</p>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 82%;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card tasks">
-                    <div class="card-header">
-                        <h3>Tasks Completed</h3>
-                        <i class="fas fa-tasks"></i>
-                    </div>
-                    <div class="card-content">
-                        <div class="stat">84%</div>
-                        <p>36 of 43 tasks done</p>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 84%;"></div>
-                        </div>
+                    <div class="table-container">
+                        <table class="table" id="eventsTable">
+                            <thead>
+                                <tr>
+                                    <th>Event Name</th>
+                                    <th>Date</th>
+                                    <th>Attendees</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="eventsTableBody">
+                                <!-- Events will be populated by JavaScript -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="card engagement">
-                    <div class="card-header">
-                        <h3>Engagement Rate</h3>
-                        <i class="fas fa-chart-line"></i>
+
+                <!-- Tasks Section -->
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Vendor Tasks</h3>
+                        <button class="btn" id="createTaskBtn"><i class="fas fa-plus"></i> Assign New Task</button>
                     </div>
-                    <div class="card-content">
-                        <div class="stat">76%</div>
-                        <p>Across all sessions</p>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: 76%;"></div>
-                        </div>
+                    <ul class="task-list" id="tasksList">
+                        <!-- Tasks will be populated by JavaScript -->
+                    </ul>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Recent Activity</h3>
+                        <button class="btn btn-outline" id="filterActivityBtn"><i class="fas fa-filter"></i> Filter</button>
                     </div>
+                    <ul class="task-list" id="activityList">
+                        <!-- Activities will be populated by JavaScript -->
+                    </ul>
                 </div>
             </div>
 
-            
-            <div class="feature-section">
-                <div class="section-header">
-                    <h3>Your Events</h3>
-                    <button class="btn" id="createEventBtn"><i class="fas fa-plus"></i> Create New Event</button>
-                </div>
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Date</th>
-                                <th>Attendees</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Sunset Music Festival</td>
-                                <td>Oct 15, 2025</td>
-                                <td>520</td>
-                                <td><span class="status live">Live</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                        <button class="btn btn-secondary">Manage</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Creative Workshop</td>
-                                <td>Oct 20, 2025</td>
-                                <td>180</td>
-                                <td><span class="status upcoming">Upcoming</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                        <button class="btn btn-secondary">Manage</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Product Launch</td>
-                                <td>Oct 5, 2025</td>
-                                <td>320</td>
-                                <td><span class="status completed">Completed</span></td>
-                                <td>
-                                    <div class="action-buttons">
-                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
-                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                                        <button class="btn btn-secondary">View Report</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            
-            <div class="feature-section">
-                <div class="section-header">
-                    <h3>Vendor Tasks</h3>
-                    <button class="btn"><i class="fas fa-plus"></i> Assign New Task</button>
-                </div>
-                <ul class="task-list">
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-video"></i>
-                            <div class="task-details">
-                                <div>Set up streaming for Keynote</div>
-                                <div class="task-meta">Due: Today, 2:00 PM | Vendor: TechStream Inc.</div>
-                            </div>
-                        </div>
-                        <span class="status live">In Progress</span>
-                    </li>
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-utensils"></i>
-                            <div class="task-details">
-                                <div>Confirm virtual catering links</div>
-                                <div class="task-meta">Due: Oct 12, 2025 | Vendor: VirtualEats</div>
-                            </div>
-                        </div>
-                        <span class="status upcoming">Pending</span>
-                    </li>
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-microphone"></i>
-                            <div class="task-details">
-                                <div>Audio check with speaker</div>
-                                <div class="task-meta">Due: Oct 10, 2025 | Vendor: SoundMasters</div>
-                            </div>
-                        </div>
-                        <span class="status completed">Done</span>
-                    </li>
-                </ul>
-            </div>
-
-            
-            <div class="feature-section">
-                <div class="section-header">
-                    <h3>Recent Activity</h3>
-                    <button class="btn btn-outline"><i class="fas fa-filter"></i> Filter</button>
-                </div>
-                <ul class="task-list">
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-question-circle"></i>
-                            <div class="task-details">
-                                <div>New question in "Future of AI" session</div>
-                                <div class="task-meta">From: John Smith | 2 minutes ago</div>
-                            </div>
-                        </div>
-                        <button class="btn btn-secondary">Respond</button>
-                    </li>
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-bullhorn"></i>
-                            <div class="task-details">
-                                <div>Announcement sent to all attendees</div>
-                                <div class="task-meta">1 hour ago</div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-info">
-                            <i class="fas fa-star"></i>
-                            <div class="task-details">
-                                <div>Sponsor "TechCorp" added to Innovation Summit</div>
-                                <div class="task-meta">3 hours ago</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+            <!-- Other Section Contents (initially hidden) -->
+            <div id="otherSections" style="display: none;">
+                <!-- Content for other sections will be loaded here -->
             </div>
 
             <div class="footer">
@@ -868,65 +910,443 @@
         </div>
     </div>
 
+    <!-- Create Event Modal -->
+    <div class="modal" id="createEventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create New Event</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="eventName">Event Name</label>
+                    <input type="text" id="eventName" class="form-control" placeholder="Enter event name">
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Event Date & Time</label>
+                    <input type="datetime-local" id="eventDate" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <textarea id="eventDescription" class="form-control" rows="3" placeholder="Enter event description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventType">Event Type</label>
+                    <select id="eventType" class="form-control">
+                        <option value="">Select event type</option>
+                        <option value="conference">Conference</option>
+                        <option value="workshop">Workshop</option>
+                        <option value="seminar">Seminar</option>
+                        <option value="networking">Networking</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelEventBtn">Cancel</button>
+                <button class="btn" id="saveEventBtn">Create Event</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div class="modal" id="createTaskModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Assign New Task</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="taskTitle">Task Title</label>
+                    <input type="text" id="taskTitle" class="form-control" placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label for="taskDescription">Description</label>
+                    <textarea id="taskDescription" class="form-control" rows="3" placeholder="Enter task description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="taskVendor">Assign to Vendor</label>
+                    <select id="taskVendor" class="form-control">
+                        <option value="">Select vendor</option>
+                        <option value="TechStream Inc.">TechStream Inc.</option>
+                        <option value="VirtualEats">VirtualEats</option>
+                        <option value="SoundMasters">SoundMasters</option>
+                        <option value="EventPro">EventPro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskDueDate">Due Date</label>
+                    <input type="datetime-local" id="taskDueDate" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" id="cancelTaskBtn">Cancel</button>
+                <button class="btn" id="saveTaskBtn">Assign Task</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Action completed successfully!</span>
+    </div>
+
     <script>
-        
-        document.addEventListener('DOMContentLoaded', function() {
+        // Sample Data
+        const sampleEvents = [
+            { id: 1, name: "Sunset Music Festival", date: "Oct 15, 2025", attendees: 520, status: "live" },
+            { id: 2, name: "Creative Workshop", date: "Oct 20, 2025", attendees: 180, status: "upcoming" },
+            { id: 3, name: "Product Launch", date: "Oct 5, 2025", attendees: 320, status: "completed" }
+        ];
+
+        const sampleTasks = [
+            { id: 1, title: "Set up streaming for Keynote", vendor: "TechStream Inc.", dueDate: "Today, 2:00 PM", status: "live" },
+            { id: 2, title: "Confirm virtual catering links", vendor: "VirtualEats", dueDate: "Oct 12, 2025", status: "upcoming" },
+            { id: 3, title: "Audio check with speaker", vendor: "SoundMasters", dueDate: "Oct 10, 2025", status: "completed" }
+        ];
+
+        const sampleActivities = [
+            { id: 1, type: "question", title: "New question in 'Future of AI' session", details: "From: John Smith | 2 minutes ago" },
+            { id: 2, type: "announcement", title: "Announcement sent to all attendees", details: "1 hour ago" },
+            { id: 3, type: "sponsor", title: "Sponsor 'TechCorp' added to Innovation Summit", details: "3 hours ago" }
+        ];
+
+        // DOM Elements
+        const createEventBtn = document.getElementById('createEventBtn');
+        const createEventModal = document.getElementById('createEventModal');
+        const closeModals = document.querySelectorAll('.close-modal');
+        const cancelEventBtn = document.getElementById('cancelEventBtn');
+        const saveEventBtn = document.getElementById('saveEventBtn');
+        const eventsTableBody = document.getElementById('eventsTableBody');
+        const tasksList = document.getElementById('tasksList');
+        const activityList = document.getElementById('activityList');
+        const createTaskBtn = document.getElementById('createTaskBtn');
+        const createTaskModal = document.getElementById('createTaskModal');
+        const cancelTaskBtn = document.getElementById('cancelTaskBtn');
+        const saveTaskBtn = document.getElementById('saveTaskBtn');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        const searchInput = document.getElementById('searchInput');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        const dashboardContent = document.getElementById('dashboardContent');
+        const otherSections = document.getElementById('otherSections');
+        const pageTitle = document.getElementById('pageTitle');
+
+        // Initialize the dashboard
+        function initDashboard() {
+            renderEvents();
+            renderTasks();
+            renderActivities();
+            updateStats();
+            setupEventListeners();
+        }
+
+        // Render events table
+        function renderEvents(events = sampleEvents) {
+            eventsTableBody.innerHTML = '';
+            events.forEach(event => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${event.name}</td>
+                    <td>${event.date}</td>
+                    <td>${event.attendees}</td>
+                    <td><span class="status ${event.status}">${event.status.charAt(0).toUpperCase() + event.status.slice(1)}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn edit" data-id="${event.id}"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete" data-id="${event.id}"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-secondary manage-event" data-id="${event.id}">Manage</button>
+                        </div>
+                    </td>
+                `;
+                eventsTableBody.appendChild(row);
+            });
+        }
+
+        // Render tasks list
+        function renderTasks(tasks = sampleTasks) {
+            tasksList.innerHTML = '';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="task-info">
+                        <i class="fas fa-${getTaskIcon(task.title)}"></i>
+                        <div class="task-details">
+                            <div>${task.title}</div>
+                            <div class="task-meta">Due: ${task.dueDate} | Vendor: ${task.vendor}</div>
+                        </div>
+                    </div>
+                    <span class="status ${task.status}">${task.status === 'live' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
+                `;
+                tasksList.appendChild(li);
+            });
+        }
+
+        // Render activities list
+        function renderActivities(activities = sampleActivities) {
+            activityList.innerHTML = '';
+            activities.forEach(activity => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="task-info">
+                        <i class="fas fa-${getActivityIcon(activity.type)}"></i>
+                        <div class="task-details">
+                            <div>${activity.title}</div>
+                            <div class="task-meta">${activity.details}</div>
+                        </div>
+                    </div>
+                    ${activity.type === 'question' ? '<button class="btn btn-secondary respond-btn">Respond</button>' : ''}
+                `;
+                activityList.appendChild(li);
+            });
+        }
+
+        // Update dashboard statistics
+        function updateStats() {
+            // In a real app, these would be calculated from actual data
+            document.getElementById('totalEvents').textContent = sampleEvents.length;
+            document.getElementById('totalAttendees').textContent = sampleEvents.reduce((sum, event) => sum + event.attendees, 0);
             
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.style.transform = 'scale(1.02)';
-                    setTimeout(() => {
-                        this.style.transform = '';
-                    }, 200);
+            const completedTasks = sampleTasks.filter(task => task.status === 'completed').length;
+            const totalTasks = sampleTasks.length;
+            const completionRate = Math.round((completedTasks / totalTasks) * 100);
+            
+            document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
+            document.getElementById('tasksText').textContent = `${completedTasks} of ${totalTasks} tasks done`;
+            document.getElementById('tasksProgress').style.width = `${completionRate}%`;
+        }
+
+        // Get appropriate icon for task
+        function getTaskIcon(title) {
+            if (title.includes('streaming') || title.includes('video')) return 'video';
+            if (title.includes('catering') || title.includes('food')) return 'utensils';
+            if (title.includes('audio') || title.includes('speaker')) return 'microphone';
+            return 'tasks';
+        }
+
+        // Get appropriate icon for activity
+        function getActivityIcon(type) {
+            if (type === 'question') return 'question-circle';
+            if (type === 'announcement') return 'bullhorn';
+            if (type === 'sponsor') return 'star';
+            return 'info-circle';
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Modal controls
+            createEventBtn.addEventListener('click', () => {
+                createEventModal.style.display = 'flex';
+            });
+
+            createTaskBtn.addEventListener('click', () => {
+                createTaskModal.style.display = 'flex';
+            });
+
+            closeModals.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    createEventModal.style.display = 'none';
+                    createTaskModal.style.display = 'none';
                 });
             });
 
-            
-            const navLinks = document.querySelectorAll('.nav-links a');
+            cancelEventBtn.addEventListener('click', () => {
+                createEventModal.style.display = 'none';
+            });
+
+            cancelTaskBtn.addEventListener('click', () => {
+                createTaskModal.style.display = 'none';
+            });
+
+            // Save event
+            saveEventBtn.addEventListener('click', () => {
+                const name = document.getElementById('eventName').value;
+                const date = document.getElementById('eventDate').value;
+                const description = document.getElementById('eventDescription').value;
+                const type = document.getElementById('eventType').value;
+
+                if (!name || !date || !description || !type) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                // In a real app, this would send data to a server
+                const newEvent = {
+                    id: sampleEvents.length + 1,
+                    name: name,
+                    date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    attendees: 0,
+                    status: 'upcoming'
+                };
+
+                sampleEvents.push(newEvent);
+                renderEvents();
+                updateStats();
+                createEventModal.style.display = 'none';
+                
+                // Reset form
+                document.getElementById('eventName').value = '';
+                document.getElementById('eventDate').value = '';
+                document.getElementById('eventDescription').value = '';
+                document.getElementById('eventType').value = '';
+                
+                showToast('Event created successfully!');
+            });
+
+            // Save task
+            saveTaskBtn.addEventListener('click', () => {
+                const title = document.getElementById('taskTitle').value;
+                const description = document.getElementById('taskDescription').value;
+                const vendor = document.getElementById('taskVendor').value;
+                const dueDate = document.getElementById('taskDueDate').value;
+
+                if (!title || !description || !vendor || !dueDate) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+
+                // In a real app, this would send data to a server
+                const newTask = {
+                    id: sampleTasks.length + 1,
+                    title: title,
+                    vendor: vendor,
+                    dueDate: new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    status: 'upcoming'
+                };
+
+                sampleTasks.push(newTask);
+                renderTasks();
+                updateStats();
+                createTaskModal.style.display = 'none';
+                
+                // Reset form
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskDescription').value = '';
+                document.getElementById('taskVendor').value = '';
+                document.getElementById('taskDueDate').value = '';
+                
+                showToast('Task assigned successfully!');
+            });
+
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                if (searchTerm) {
+                    const filteredEvents = sampleEvents.filter(event => 
+                        event.name.toLowerCase().includes(searchTerm)
+                    );
+                    const filteredTasks = sampleTasks.filter(task => 
+                        task.title.toLowerCase().includes(searchTerm) || 
+                        task.vendor.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    renderEvents(filteredEvents);
+                    renderTasks(filteredTasks);
+                } else {
+                    renderEvents();
+                    renderTasks();
+                }
+            });
+
+            // Navigation
             navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
+                    const section = link.getAttribute('data-section');
+                    
+                    // Update active state
                     navLinks.forEach(l => l.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-
-            
-            const editButtons = document.querySelectorAll('.action-btn.edit');
-            const deleteButtons = document.querySelectorAll('.action-btn.delete');
-
-            editButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    alert('Edit functionality would open an edit form');
-                });
-            });
-
-            deleteButtons.forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (confirm('Are you sure you want to delete this event?')) {
-                        const row = this.closest('tr');
-                        row.style.opacity = '0.5';
-                        setTimeout(() => {
-                            row.style.display = 'none';
-                        }, 500);
+                    link.classList.add('active');
+                    
+                    // Update page title
+                    pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
+                    
+                    // Show appropriate content
+                    if (section === 'dashboard') {
+                        dashboardContent.style.display = 'block';
+                        otherSections.style.display = 'none';
+                    } else {
+                        dashboardContent.style.display = 'none';
+                        otherSections.style.display = 'block';
+                        otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
                     }
                 });
             });
 
-            
-            const buttons = document.querySelectorAll('.btn');
-            buttons.forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-3px)';
-                });
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
+            // Card click actions
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const action = card.getAttribute('data-action');
+                    switch(action) {
+                        case 'view-events':
+                            navLinks[2].click(); // Click the "View Events" nav link
+                            break;
+                        case 'view-attendees':
+                            showToast('Attendee management would open here');
+                            break;
+                        case 'view-tasks':
+                            document.querySelector('.feature-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
+                            break;
+                        case 'view-analytics':
+                            navLinks[9].click(); // Click the "Analytics" nav link
+                            break;
+                    }
                 });
             });
-        });
+
+            // Event delegation for dynamic elements
+            document.addEventListener('click', (e) => {
+                // Edit event
+                if (e.target.closest('.action-btn.edit')) {
+                    const eventId = e.target.closest('.action-btn.edit').getAttribute('data-id');
+                    showToast(`Edit event ${eventId} - This would open an edit form`);
+                }
+                
+                // Delete event
+                if (e.target.closest('.action-btn.delete')) {
+                    const eventId = e.target.closest('.action-btn.delete').getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this event?')) {
+                        const index = sampleEvents.findIndex(event => event.id == eventId);
+                        if (index !== -1) {
+                            sampleEvents.splice(index, 1);
+                            renderEvents();
+                            updateStats();
+                            showToast('Event deleted successfully!');
+                        }
+                    }
+                }
+                
+                // Manage event
+                if (e.target.closest('.manage-event')) {
+                    const eventId = e.target.closest('.manage-event').getAttribute('data-id');
+                    showToast(`Manage event ${eventId} - This would open event management`);
+                }
+                
+                // Respond to question
+                if (e.target.closest('.respond-btn')) {
+                    showToast('Response form would open here');
+                }
+            });
+
+            // Notifications
+            document.getElementById('notificationsBtn').addEventListener('click', () => {
+                showToast('Notifications panel would open here');
+            });
+        }
+
+        // Initialize the dashboard when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initDashboard);
     </script>
 </body>
 </html>
