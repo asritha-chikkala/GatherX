@@ -747,6 +747,53 @@
                 width: 200px;
             }
         }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(73, 49, 41, 0.1);
+            border-radius: 50%;
+            border-top: 3px solid var(--dusty-purple);
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status.critical {
+            background: rgba(239, 163, 160, 0.3);
+            color: var(--soft-pink);
+        }
+
+        .status.high {
+            background: rgba(139, 89, 123, 0.2);
+            color: var(--dusty-purple);
+        }
+
+        .status.medium {
+            background: rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+
+        .status.low {
+            background: rgba(158, 200, 249, 0.2);
+            color: var(--light-blue);
+        }
+        
+        .status.pending {
+            background: rgba(249, 236, 171, 0.3);
+            color: var(--deep-brown);
+        }
+        
+        .status.in-progress {
+            background: rgba(158, 200, 249, 0.3);
+            color: var(--light-blue);
+        }
     </style>
 </head>
 <body>
@@ -991,205 +1038,569 @@
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Action completed successfully!</span>
     </div>
-
+    
     <script>
-        // Sample Data
-        const sampleEvents = [
-            { id: 1, name: "Sunset Music Festival", date: "Oct 15, 2025", attendees: 520, status: "live" },
-            { id: 2, name: "Creative Workshop", date: "Oct 20, 2025", attendees: 180, status: "upcoming" },
-            { id: 3, name: "Product Launch", date: "Oct 5, 2025", attendees: 320, status: "completed" }
-        ];
+    // REAL API SERVICE - Updated for your backend
+    const API_BASE_URL = 'http://localhost:5000/api'; // Adjust port if different
 
-        const sampleTasks = [
-            { id: 1, title: "Set up streaming for Keynote", vendor: "TechStream Inc.", dueDate: "Today, 2:00 PM", status: "live" },
-            { id: 2, title: "Confirm virtual catering links", vendor: "VirtualEats", dueDate: "Oct 12, 2025", status: "upcoming" },
-            { id: 3, title: "Audio check with speaker", vendor: "SoundMasters", dueDate: "Oct 10, 2025", status: "completed" }
-        ];
+    const apiService = {
+        async getEvents() {
+            try {
+                console.log('🔄 Fetching events from backend...');
+                const response = await fetch(`${API_BASE_URL}/events`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                console.log('✅ Events loaded:', data);
+                return Array.isArray(data) ? data : (data.events || data.data || []);
+            } catch (error) {
+                console.error('❌ Error fetching events:', error);
+                showToast('Error loading events from server', true);
+                return [];
+            }
+        },
 
-        const sampleActivities = [
-            { id: 1, type: "question", title: "New question in 'Future of AI' session", details: "From: John Smith | 2 minutes ago" },
-            { id: 2, type: "announcement", title: "Announcement sent to all attendees", details: "1 hour ago" },
-            { id: 3, type: "sponsor", title: "Sponsor 'TechCorp' added to Innovation Summit", details: "3 hours ago" }
-        ];
-
-        // DOM Elements
-        const createEventBtn = document.getElementById('createEventBtn');
-        const createEventModal = document.getElementById('createEventModal');
-        const closeModals = document.querySelectorAll('.close-modal');
-        const cancelEventBtn = document.getElementById('cancelEventBtn');
-        const saveEventBtn = document.getElementById('saveEventBtn');
-        const eventsTableBody = document.getElementById('eventsTableBody');
-        const tasksList = document.getElementById('tasksList');
-        const activityList = document.getElementById('activityList');
-        const createTaskBtn = document.getElementById('createTaskBtn');
-        const createTaskModal = document.getElementById('createTaskModal');
-        const cancelTaskBtn = document.getElementById('cancelTaskBtn');
-        const saveTaskBtn = document.getElementById('saveTaskBtn');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        const searchInput = document.getElementById('searchInput');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        const dashboardContent = document.getElementById('dashboardContent');
-        const otherSections = document.getElementById('otherSections');
-        const pageTitle = document.getElementById('pageTitle');
-
-        // Initialize the dashboard
-        function initDashboard() {
-            renderEvents();
-            renderTasks();
-            renderActivities();
-            updateStats();
-            setupEventListeners();
-        }
-
-        // Render events table
-        function renderEvents(events = sampleEvents) {
-            eventsTableBody.innerHTML = '';
-            events.forEach(event => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${event.name}</td>
-                    <td>${event.date}</td>
-                    <td>${event.attendees}</td>
-                    <td><span class="status ${event.status}">${event.status.charAt(0).toUpperCase() + event.status.slice(1)}</span></td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn edit" data-id="${event.id}"><i class="fas fa-edit"></i></button>
-                            <button class="action-btn delete" data-id="${event.id}"><i class="fas fa-trash"></i></button>
-                            <button class="btn btn-secondary manage-event" data-id="${event.id}">Manage</button>
-                        </div>
-                    </td>
-                `;
-                eventsTableBody.appendChild(row);
-            });
-        }
-
-        // Render tasks list
-        function renderTasks(tasks = sampleTasks) {
-            tasksList.innerHTML = '';
-            tasks.forEach(task => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div class="task-info">
-                        <i class="fas fa-${getTaskIcon(task.title)}"></i>
-                        <div class="task-details">
-                            <div>${task.title}</div>
-                            <div class="task-meta">Due: ${task.dueDate} | Vendor: ${task.vendor}</div>
-                        </div>
-                    </div>
-                    <span class="status ${task.status}">${task.status === 'live' ? 'In Progress' : task.status.charAt(0).toUpperCase() + task.status.slice(1)}</span>
-                `;
-                tasksList.appendChild(li);
-            });
-        }
-
-        // Render activities list
-        function renderActivities(activities = sampleActivities) {
-            activityList.innerHTML = '';
-            activities.forEach(activity => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <div class="task-info">
-                        <i class="fas fa-${getActivityIcon(activity.type)}"></i>
-                        <div class="task-details">
-                            <div>${activity.title}</div>
-                            <div class="task-meta">${activity.details}</div>
-                        </div>
-                    </div>
-                    ${activity.type === 'question' ? '<button class="btn btn-secondary respond-btn">Respond</button>' : ''}
-                `;
-                activityList.appendChild(li);
-            });
-        }
-
-        // Update dashboard statistics
-        function updateStats() {
-            // In a real app, these would be calculated from actual data
-            document.getElementById('totalEvents').textContent = sampleEvents.length;
-            document.getElementById('totalAttendees').textContent = sampleEvents.reduce((sum, event) => sum + event.attendees, 0);
-            
-            const completedTasks = sampleTasks.filter(task => task.status === 'completed').length;
-            const totalTasks = sampleTasks.length;
-            const completionRate = Math.round((completedTasks / totalTasks) * 100);
-            
-            document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
-            document.getElementById('tasksText').textContent = `${completedTasks} of ${totalTasks} tasks done`;
-            document.getElementById('tasksProgress').style.width = `${completionRate}%`;
-        }
-
-        // Get appropriate icon for task
-        function getTaskIcon(title) {
-            if (title.includes('streaming') || title.includes('video')) return 'video';
-            if (title.includes('catering') || title.includes('food')) return 'utensils';
-            if (title.includes('audio') || title.includes('speaker')) return 'microphone';
-            return 'tasks';
-        }
-
-        // Get appropriate icon for activity
-        function getActivityIcon(type) {
-            if (type === 'question') return 'question-circle';
-            if (type === 'announcement') return 'bullhorn';
-            if (type === 'sponsor') return 'star';
-            return 'info-circle';
-        }
-
-        // Show toast notification
-        function showToast(message) {
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Modal controls
-            createEventBtn.addEventListener('click', () => {
-                createEventModal.style.display = 'flex';
-            });
-
-            createTaskBtn.addEventListener('click', () => {
-                createTaskModal.style.display = 'flex';
-            });
-
-            closeModals.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    createEventModal.style.display = 'none';
-                    createTaskModal.style.display = 'none';
+        async saveEvent(eventData) {
+            try {
+                console.log('💾 Saving event:', eventData);
+                const response = await fetch(`${API_BASE_URL}/events`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(eventData)
                 });
-            });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                }
+                
+                const savedEvent = await response.json();
+                console.log('✅ Event saved successfully:', savedEvent);
+                return savedEvent;
+            } catch (error) {
+                console.error('❌ Error saving event:', error);
+                showToast('Error saving event: ' + error.message, true);
+                throw error;
+            }
+        },
 
-            cancelEventBtn.addEventListener('click', () => {
+        async updateEvent(eventId, eventData) {
+            try {
+                console.log('📝 Updating event:', eventId);
+                const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(eventData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const updatedEvent = await response.json();
+                console.log('✅ Event updated successfully:', updatedEvent);
+                return updatedEvent;
+            } catch (error) {
+                console.error('❌ Error updating event:', error);
+                showToast('Error updating event: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async deleteEvent(eventId) {
+            try {
+                console.log('🗑️ Deleting event:', eventId);
+                const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Event deleted successfully:', result);
+                return result;
+            } catch (error) {
+                console.error('❌ Error deleting event:', error);
+                showToast('Error deleting event: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async getTasks() {
+            try {
+                console.log('🔄 Fetching tasks from backend...');
+                const response = await fetch(`${API_BASE_URL}/tasks`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                console.log('✅ Tasks loaded:', data);
+                return Array.isArray(data) ? data : (data.tasks || data.data || []);
+            } catch (error) {
+                console.error('❌ Error fetching tasks:', error);
+                showToast('Error loading tasks from server', true);
+                return [];
+            }
+        },
+
+        async saveTask(taskData) {
+            try {
+                console.log('💾 Saving task:', taskData);
+                const response = await fetch(`${API_BASE_URL}/tasks`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(taskData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                }
+                
+                const savedTask = await response.json();
+                console.log('✅ Task saved successfully:', savedTask);
+                return savedTask;
+            } catch (error) {
+                console.error('❌ Error saving task:', error);
+                showToast('Error saving task: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async updateTask(taskId, taskData) {
+            try {
+                console.log('📝 Updating task:', taskId);
+                const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(taskData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const updatedTask = await response.json();
+                console.log('✅ Task updated successfully:', updatedTask);
+                return updatedTask;
+            } catch (error) {
+                console.error('❌ Error updating task:', error);
+                showToast('Error updating task: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async deleteTask(taskId) {
+            try {
+                console.log('🗑️ Deleting task:', taskId);
+                const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Task deleted successfully:', result);
+                return result;
+            } catch (error) {
+                console.error('❌ Error deleting task:', error);
+                showToast('Error deleting task: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async getActivities() {
+            try {
+                console.log('🔄 Fetching activities from backend...');
+                const response = await fetch(`${API_BASE_URL}/activities`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                console.log('✅ Activities loaded:', data);
+                return Array.isArray(data) ? data : (data.activities || data.data || []);
+            } catch (error) {
+                console.error('❌ Error fetching activities:', error);
+                showToast('Error loading activities from server', true);
+                return [];
+            }
+        },
+
+        async createActivity(activityData) {
+            try {
+                console.log('💾 Creating activity:', activityData);
+                const response = await fetch(`${API_BASE_URL}/activities`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(activityData)
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                }
+                
+                const savedActivity = await response.json();
+                console.log('✅ Activity created successfully:', savedActivity);
+                return savedActivity;
+            } catch (error) {
+                console.error('❌ Error creating activity:', error);
+                showToast('Error creating activity: ' + error.message, true);
+                throw error;
+            }
+        },
+
+        async resolveActivity(activityId) {
+            try {
+                console.log('✅ Resolving activity:', activityId);
+                const response = await fetch(`${API_BASE_URL}/activities/${activityId}/resolve`, {
+                    method: 'PATCH'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('✅ Activity resolved successfully:', result);
+                return result;
+            } catch (error) {
+                console.error('❌ Error resolving activity:', error);
+                showToast('Error resolving activity: ' + error.message, true);
+                throw error;
+            }
+        }
+    };
+
+    // Global data storage
+    let events = [];
+    let tasks = [];
+    let activities = [];
+
+    // DOM Elements
+    const createEventBtn = document.getElementById('createEventBtn');
+    const createEventModal = document.getElementById('createEventModal');
+    const closeModals = document.querySelectorAll('.close-modal');
+    const cancelEventBtn = document.getElementById('cancelEventBtn');
+    const saveEventBtn = document.getElementById('saveEventBtn');
+    const eventsTableBody = document.getElementById('eventsTableBody');
+    const tasksList = document.getElementById('tasksList');
+    const activityList = document.getElementById('activityList');
+    const createTaskBtn = document.getElementById('createTaskBtn');
+    const createTaskModal = document.getElementById('createTaskModal');
+    const cancelTaskBtn = document.getElementById('cancelTaskBtn');
+    const saveTaskBtn = document.getElementById('saveTaskBtn');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    const searchInput = document.getElementById('searchInput');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const dashboardContent = document.getElementById('dashboardContent');
+    const otherSections = document.getElementById('otherSections');
+    const pageTitle = document.getElementById('pageTitle');
+
+    // Initialize the dashboard with REAL data
+    async function initDashboard() {
+        try {
+            // Show loading state
+            showLoadingStates();
+            
+            // Load REAL data from your backend in parallel
+            const [eventsData, tasksData, activitiesData] = await Promise.allSettled([
+                apiService.getEvents(),
+                apiService.getTasks(),
+                apiService.getActivities()
+            ]);
+            
+            // Process results
+            events = eventsData.status === 'fulfilled' ? eventsData.value : [];
+            tasks = tasksData.status === 'fulfilled' ? tasksData.value : [];
+            activities = activitiesData.status === 'fulfilled' ? activitiesData.value : [];
+            
+            // Update UI with real data
+            updateUI();
+            
+            showToast('✅ Dashboard connected to database successfully!');
+        } catch (error) {
+            console.error('Error initializing dashboard:', error);
+            showToast('Error loading dashboard data from server', true);
+        }
+    }
+
+    function showLoadingStates() {
+        eventsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;"><div class="spinner"></div> Loading events from database...</td></tr>';
+        tasksList.innerHTML = '<li style="text-align: center; padding: 20px;"><div class="spinner"></div> Loading tasks...</li>';
+        activityList.innerHTML = '<li style="text-align: center; padding: 20px;"><div class="spinner"></div> Loading activities...</li>';
+    }
+
+    function updateUI() {
+        renderEvents();
+        renderTasks();
+        renderActivities();
+        updateStats();
+        setupEventListeners();
+    }
+
+    // Render events table with REAL data
+    function renderEvents(eventsToRender = events) {
+        eventsTableBody.innerHTML = '';
+        
+        if (eventsToRender.length === 0) {
+            eventsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-calendar-plus" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                        <h3>No Events Yet</h3>
+                        <p>Create your first event to get started!</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="document.getElementById('createEventBtn').click()">
+                            <i class="fas fa-plus"></i> Create First Event
+                        </button>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        eventsToRender.forEach(event => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${event.name}</td>
+                <td>${new Date(event.date).toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}</td>
+                <td>${event.attendees || 0}</td>
+                <td><span class="status ${event.status}">${event.status?.charAt(0).toUpperCase() + event.status?.slice(1) || 'Upcoming'}</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit" data-id="${event._id}"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete" data-id="${event._id}"><i class="fas fa-trash"></i></button>
+                        <button class="btn btn-secondary manage-event" data-id="${event._id}">Manage</button>
+                    </div>
+                </td>
+            `;
+            eventsTableBody.appendChild(row);
+        });
+    }
+
+    // Render tasks list
+    function renderTasks(tasksToRender = tasks) {
+        tasksList.innerHTML = '';
+        
+        if (tasksToRender.length === 0) {
+            tasksList.innerHTML = `
+                <li style="text-align: center; padding: 40px;">
+                    <i class="fas fa-tasks" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                    <h3>No Tasks Yet</h3>
+                    <p>Assign your first task to get started!</p>
+                    <button class="btn" style="margin-top: 15px;" onclick="document.getElementById('createTaskBtn').click()">
+                        <i class="fas fa-plus"></i> Assign First Task
+                    </button>
+                </li>
+            `;
+            return;
+        }
+        
+        tasksToRender.forEach(task => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="task-info">
+                    <i class="fas fa-${getTaskIcon(task.title)}"></i>
+                    <div class="task-details">
+                        <div><strong>${task.title}</strong></div>
+                        <div style="margin-top: 5px; color: var(--deep-brown);">${task.description || ''}</div>
+                        <div class="task-meta">Due: ${new Date(task.dueDate).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric', 
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })} | Vendor: ${task.vendor} | Priority: <span class="status ${task.priority || 'medium'}">${task.priority || 'Medium'}</span></div>
+                    </div>
+                </div>
+                <span class="status ${task.status || 'pending'}">${(task.status === 'in-progress' ? 'In Progress' : task.status?.charAt(0).toUpperCase() + task.status?.slice(1)) || 'Pending'}</span>
+            `;
+            tasksList.appendChild(li);
+        });
+    }
+
+    // Render activities list
+    function renderActivities(activitiesToRender = activities) {
+        activityList.innerHTML = '';
+        
+        if (activitiesToRender.length === 0) {
+            activityList.innerHTML = `
+                <li style="text-align: center; padding: 40px;">
+                    <i class="fas fa-bell" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                    <h3>No Recent Activity</h3>
+                    <p>Activity will appear here as things happen!</p>
+                </li>
+            `;
+            return;
+        }
+        
+        activitiesToRender.forEach(activity => {
+            const li = document.createElement('li');
+            const isResolved = activity.isResolved || activity.resolved;
+            
+            li.innerHTML = `
+                <div class="task-info">
+                    <i class="fas fa-${getActivityIcon(activity.type)}" style="color: ${isResolved ? 'var(--light-blue)' : 'var(--dusty-purple)'};"></i>
+                    <div class="task-details">
+                        <div style="${isResolved ? 'opacity: 0.7; text-decoration: line-through;' : ''}">
+                            <strong>${activity.title}</strong>
+                            ${isResolved ? ' <span class="status completed">Resolved</span>' : ''}
+                        </div>
+                        <div class="task-meta">
+                            ${activity.details || ''}
+                            ${activity.metadata?.questionFrom ? ` | From: ${activity.metadata.questionFrom}` : ''}
+                            ${activity.metadata?.sponsorName ? ` | Sponsor: ${activity.metadata.sponsorName}` : ''}
+                            | ${new Date(activity.createdAt || activity.date || Date.now()).toLocaleDateString('en-US', { 
+                                month: 'short', 
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </div>
+                    </div>
+                </div>
+                <div class="action-buttons">
+                    ${activity.type === 'question' && !isResolved ? 
+                        `<button class="btn btn-secondary respond-btn" data-id="${activity._id}">Respond</button>` : ''}
+                    ${!isResolved ? 
+                        `<button class="btn btn-outline resolve-btn" data-id="${activity._id}">Mark Resolved</button>` : ''}
+                </div>
+            `;
+            activityList.appendChild(li);
+        });
+    }
+
+    // Update dashboard statistics with REAL data
+    function updateStats() {
+        document.getElementById('totalEvents').textContent = events.length;
+        
+        const totalAttendees = events.reduce((sum, event) => sum + (event.attendees || 0), 0);
+        document.getElementById('totalAttendees').textContent = totalAttendees.toLocaleString();
+        
+        // Calculate progress percentages
+        const liveEvents = events.filter(event => event.status === 'live').length;
+        const eventsProgress = events.length > 0 ? (liveEvents / events.length) * 100 : 0;
+        document.getElementById('eventsProgress').style.width = `${eventsProgress}%`;
+        
+        const attendeesProgress = Math.min((totalAttendees / 2000) * 100, 100);
+        document.getElementById('attendeesProgress').style.width = `${attendeesProgress}%`;
+        
+        const completedTasks = tasks.filter(task => task.status === 'completed').length;
+        const totalTasks = tasks.length;
+        const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        
+        document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
+        document.getElementById('tasksText').textContent = `${completedTasks} of ${totalTasks} tasks done`;
+        document.getElementById('tasksProgress').style.width = `${completionRate}%`;
+        
+        // Simple engagement calculation
+        const engagementRate = events.length > 0 ? Math.min(Math.round((totalAttendees / (events.length * 100)) * 100), 100) : 0;
+        document.getElementById('engagementRate').textContent = `${engagementRate}%`;
+        document.getElementById('engagementProgress').style.width = `${engagementRate}%`;
+    }
+
+    // Get appropriate icon for task
+    function getTaskIcon(title) {
+        if (!title) return 'tasks';
+        if (title.includes('streaming') || title.includes('video')) return 'video';
+        if (title.includes('catering') || title.includes('food')) return 'utensils';
+        if (title.includes('audio') || title.includes('speaker')) return 'microphone';
+        return 'tasks';
+    }
+
+    // Get appropriate icon for activity
+    function getActivityIcon(type) {
+        if (type === 'question') return 'question-circle';
+        if (type === 'announcement') return 'bullhorn';
+        if (type === 'sponsor') return 'star';
+        return 'info-circle';
+    }
+
+    // Show toast notification
+    function showToast(message, isError = false) {
+        toastMessage.textContent = message;
+        if (isError) {
+            toast.style.borderLeftColor = 'var(--soft-pink)';
+            toast.querySelector('i').className = 'fas fa-exclamation-circle';
+        } else {
+            toast.style.borderLeftColor = 'var(--dusty-purple)';
+            toast.querySelector('i').className = 'fas fa-check-circle';
+        }
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // Modal controls
+        createEventBtn.addEventListener('click', () => {
+            createEventModal.style.display = 'flex';
+        });
+
+        createTaskBtn.addEventListener('click', () => {
+            createTaskModal.style.display = 'flex';
+        });
+
+        closeModals.forEach(btn => {
+            btn.addEventListener('click', () => {
                 createEventModal.style.display = 'none';
-            });
-
-            cancelTaskBtn.addEventListener('click', () => {
                 createTaskModal.style.display = 'none';
             });
+        });
 
-            // Save event
-            saveEventBtn.addEventListener('click', () => {
-                const name = document.getElementById('eventName').value;
-                const date = document.getElementById('eventDate').value;
-                const description = document.getElementById('eventDescription').value;
-                const type = document.getElementById('eventType').value;
+        cancelEventBtn.addEventListener('click', () => {
+            createEventModal.style.display = 'none';
+        });
 
-                if (!name || !date || !description || !type) {
-                    alert('Please fill in all fields');
-                    return;
-                }
+        cancelTaskBtn.addEventListener('click', () => {
+            createTaskModal.style.display = 'none';
+        });
 
-                // In a real app, this would send data to a server
-                const newEvent = {
-                    id: sampleEvents.length + 1,
+        // Save event to REAL backend
+        saveEventBtn.addEventListener('click', async () => {
+            const name = document.getElementById('eventName').value;
+            const date = document.getElementById('eventDate').value;
+            const description = document.getElementById('eventDescription').value;
+            const type = document.getElementById('eventType').value;
+
+            if (!name || !date || !description || !type) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            try {
+                const eventData = {
                     name: name,
-                    date: new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                    date: date,
+                    description: description,
+                    type: type,
+                    location: "Virtual Event",
                     attendees: 0,
                     status: 'upcoming'
                 };
 
-                sampleEvents.push(newEvent);
+                const newEvent = await apiService.saveEvent(eventData);
+                
+                // Add to local events array and update UI
+                events.push(newEvent);
                 renderEvents();
                 updateStats();
                 createEventModal.style.display = 'none';
@@ -1200,31 +1611,38 @@
                 document.getElementById('eventDescription').value = '';
                 document.getElementById('eventType').value = '';
                 
-                showToast('Event created successfully!');
-            });
+                showToast('Event created and saved to database! 🎉');
+            } catch (error) {
+                console.error('Error saving event:', error);
+            }
+        });
 
-            // Save task
-            saveTaskBtn.addEventListener('click', () => {
-                const title = document.getElementById('taskTitle').value;
-                const description = document.getElementById('taskDescription').value;
-                const vendor = document.getElementById('taskVendor').value;
-                const dueDate = document.getElementById('taskDueDate').value;
+        // Save task to REAL backend
+        saveTaskBtn.addEventListener('click', async () => {
+            const title = document.getElementById('taskTitle').value;
+            const description = document.getElementById('taskDescription').value;
+            const vendor = document.getElementById('taskVendor').value;
+            const dueDate = document.getElementById('taskDueDate').value;
 
-                if (!title || !description || !vendor || !dueDate) {
-                    alert('Please fill in all fields');
-                    return;
-                }
+            if (!title || !description || !vendor || !dueDate) {
+                alert('Please fill in all fields');
+                return;
+            }
 
-                // In a real app, this would send data to a server
-                const newTask = {
-                    id: sampleTasks.length + 1,
+            try {
+                const taskData = {
                     title: title,
+                    description: description,
                     vendor: vendor,
-                    dueDate: new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-                    status: 'upcoming'
+                    dueDate: dueDate,
+                    status: 'pending',
+                    priority: 'medium'
                 };
 
-                sampleTasks.push(newTask);
+                const newTask = await apiService.saveTask(taskData);
+                
+                // Add to local tasks array and update UI
+                tasks.push(newTask);
                 renderTasks();
                 updateStats();
                 createTaskModal.style.display = 'none';
@@ -1235,118 +1653,194 @@
                 document.getElementById('taskVendor').value = '';
                 document.getElementById('taskDueDate').value = '';
                 
-                showToast('Task assigned successfully!');
-            });
+                showToast('Task assigned and saved to database! 🎉');
+            } catch (error) {
+                console.error('Error saving task:', error);
+            }
+        });
 
-            // Search functionality
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            
+            if (searchTerm) {
+                const filteredEvents = events.filter(event => 
+                    event.name.toLowerCase().includes(searchTerm) ||
+                    (event.description && event.description.toLowerCase().includes(searchTerm)) ||
+                    (event.type && event.type.toLowerCase().includes(searchTerm))
+                );
+                const filteredTasks = tasks.filter(task => 
+                    task.title.toLowerCase().includes(searchTerm) || 
+                    (task.vendor && task.vendor.toLowerCase().includes(searchTerm))
+                );
                 
-                if (searchTerm) {
-                    const filteredEvents = sampleEvents.filter(event => 
-                        event.name.toLowerCase().includes(searchTerm)
-                    );
-                    const filteredTasks = sampleTasks.filter(task => 
-                        task.title.toLowerCase().includes(searchTerm) || 
-                        task.vendor.toLowerCase().includes(searchTerm)
-                    );
-                    
-                    renderEvents(filteredEvents);
-                    renderTasks(filteredTasks);
+                renderEvents(filteredEvents);
+                renderTasks(filteredTasks);
+            } else {
+                renderEvents();
+                renderTasks();
+            }
+        });
+
+        // Navigation
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                
+                // Update active state
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Update page title
+                pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
+                
+                // Show appropriate content
+                if (section === 'dashboard') {
+                    dashboardContent.style.display = 'block';
+                    otherSections.style.display = 'none';
                 } else {
-                    renderEvents();
-                    renderTasks();
+                    dashboardContent.style.display = 'none';
+                    otherSections.style.display = 'block';
+                    otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
                 }
             });
+        });
 
-            // Navigation
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = link.getAttribute('data-section');
-                    
-                    // Update active state
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    
-                    // Update page title
-                    pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
-                    
-                    // Show appropriate content
-                    if (section === 'dashboard') {
-                        dashboardContent.style.display = 'block';
-                        otherSections.style.display = 'none';
-                    } else {
-                        dashboardContent.style.display = 'none';
-                        otherSections.style.display = 'block';
-                        otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
-                    }
-                });
-            });
-
-            // Card click actions
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const action = card.getAttribute('data-action');
-                    switch(action) {
-                        case 'view-events':
-                            navLinks[2].click(); // Click the "View Events" nav link
-                            break;
-                        case 'view-attendees':
-                            showToast('Attendee management would open here');
-                            break;
-                        case 'view-tasks':
-                            document.querySelector('.feature-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
-                            break;
-                        case 'view-analytics':
-                            navLinks[9].click(); // Click the "Analytics" nav link
-                            break;
-                    }
-                });
-            });
-
-            // Event delegation for dynamic elements
-            document.addEventListener('click', (e) => {
-                // Edit event
-                if (e.target.closest('.action-btn.edit')) {
-                    const eventId = e.target.closest('.action-btn.edit').getAttribute('data-id');
-                    showToast(`Edit event ${eventId} - This would open an edit form`);
+        // Card click actions
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', () => {
+                const action = card.getAttribute('data-action');
+                switch(action) {
+                    case 'view-events':
+                        navLinks[2].click();
+                        break;
+                    case 'view-attendees':
+                        showToast('Attendee management would open here');
+                        break;
+                    case 'view-tasks':
+                        document.querySelector('.feature-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
+                        break;
+                    case 'view-analytics':
+                        navLinks[9].click();
+                        break;
                 }
-                
-                // Delete event
-                if (e.target.closest('.action-btn.delete')) {
-                    const eventId = e.target.closest('.action-btn.delete').getAttribute('data-id');
-                    if (confirm('Are you sure you want to delete this event?')) {
-                        const index = sampleEvents.findIndex(event => event.id == eventId);
-                        if (index !== -1) {
-                            sampleEvents.splice(index, 1);
+            });
+        });
+
+        // Event delegation for dynamic elements
+        document.addEventListener('click', async (e) => {
+            // Edit event
+            if (e.target.closest('.action-btn.edit')) {
+                const eventId = e.target.closest('.action-btn.edit').getAttribute('data-id');
+                const event = events.find(ev => ev._id === eventId);
+                if (event) {
+                    // Populate modal with event data
+                    document.getElementById('eventName').value = event.name;
+                    document.getElementById('eventDate').value = new Date(event.date).toISOString().slice(0, 16);
+                    document.getElementById('eventDescription').value = event.description;
+                    document.getElementById('eventType').value = event.type;
+                    
+                    // Change save button to update
+                    const saveBtn = document.getElementById('saveEventBtn');
+                    saveBtn.textContent = 'Update Event';
+                    saveBtn.onclick = async () => {
+                        const updatedData = {
+                            name: document.getElementById('eventName').value,
+                            date: document.getElementById('eventDate').value,
+                            description: document.getElementById('eventDescription').value,
+                            type: document.getElementById('eventType').value
+                        };
+                        
+                        try {
+                            await apiService.updateEvent(eventId, updatedData);
+                            Object.assign(event, updatedData);
                             renderEvents();
-                            updateStats();
-                            showToast('Event deleted successfully!');
+                            createEventModal.style.display = 'none';
+                            showToast('Event updated successfully!');
+                        } catch (error) {
+                            console.error('Error updating event:', error);
+                        }
+                    };
+                    
+                    createEventModal.style.display = 'flex';
+                }
+            }
+            
+            // Delete event from REAL backend
+            if (e.target.closest('.action-btn.delete')) {
+                const eventId = e.target.closest('.action-btn.delete').getAttribute('data-id');
+                if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
+                    try {
+                        await apiService.deleteEvent(eventId);
+                        
+                        // Remove from local events array
+                        events = events.filter(event => event._id !== eventId);
+                        
+                        // Update UI
+                        renderEvents();
+                        updateStats();
+                        showToast('Event deleted successfully!');
+                    } catch (error) {
+                        console.error('Error deleting event:', error);
+                    }
+                }
+            }
+            
+            // Manage event
+            if (e.target.closest('.manage-event')) {
+                const eventId = e.target.closest('.manage-event').getAttribute('data-id');
+                showToast(`Manage event ${eventId} - This would open event management`);
+            }
+            
+            // Respond to question
+            if (e.target.closest('.respond-btn')) {
+                const activityId = e.target.closest('.respond-btn').getAttribute('data-id');
+                const activity = activities.find(a => a._id === activityId);
+                if (activity) {
+                    const response = prompt(`Enter your response to ${activity.metadata?.questionFrom || 'the question'}:`);
+                    if (response) {
+                        showToast('Response sent successfully!');
+                        // Mark as resolved after responding
+                        try {
+                            await apiService.resolveActivity(activityId);
+                            activity.isResolved = true;
+                            renderActivities();
+                        } catch (error) {
+                            console.error('Error resolving activity:', error);
                         }
                     }
                 }
-                
-                // Manage event
-                if (e.target.closest('.manage-event')) {
-                    const eventId = e.target.closest('.manage-event').getAttribute('data-id');
-                    showToast(`Manage event ${eventId} - This would open event management`);
+            }
+            
+            // Resolve activity
+            if (e.target.closest('.resolve-btn')) {
+                const activityId = e.target.closest('.resolve-btn').getAttribute('data-id');
+                try {
+                    await apiService.resolveActivity(activityId);
+                    
+                    // Update local activities array
+                    const activityIndex = activities.findIndex(a => a._id === activityId);
+                    if (activityIndex !== -1) {
+                        activities[activityIndex].isResolved = true;
+                    }
+                    
+                    renderActivities();
+                    showToast('Activity marked as resolved!');
+                } catch (error) {
+                    console.error('Error resolving activity:', error);
                 }
-                
-                // Respond to question
-                if (e.target.closest('.respond-btn')) {
-                    showToast('Response form would open here');
-                }
-            });
+            }
+        });
 
-            // Notifications
-            document.getElementById('notificationsBtn').addEventListener('click', () => {
-                showToast('Notifications panel would open here');
-            });
-        }
+        // Notifications
+        document.getElementById('notificationsBtn').addEventListener('click', () => {
+            showToast('Notifications panel would open here');
+        });
+    }
 
-        // Initialize the dashboard when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initDashboard);
-    </script>
+    // Initialize the dashboard when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initDashboard);
+</script>
 </body>
 </html>
