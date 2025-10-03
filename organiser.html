@@ -1014,11 +1014,7 @@
                 <div class="form-group">
                     <label for="taskVendor">Assign to Vendor</label>
                     <select id="taskVendor" class="form-control">
-                        <option value="">Select vendor</option>
-                        <option value="TechStream Inc.">TechStream Inc.</option>
-                        <option value="VirtualEats">VirtualEats</option>
-                        <option value="SoundMasters">SoundMasters</option>
-                        <option value="EventPro">EventPro</option>
+                        <option value="Vendor 1">Vendor 1</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1148,7 +1144,9 @@
 
         async saveTask(taskData) {
             try {
-                console.log('💾 Saving task:', taskData);
+                console.log('💾 SAVING TASK TO BACKEND:', taskData);
+                console.log('📤 Sending to URL:', `${API_BASE_URL}/tasks`);
+                
                 const response = await fetch(`${API_BASE_URL}/tasks`, {
                     method: 'POST',
                     headers: {
@@ -1157,16 +1155,20 @@
                     body: JSON.stringify(taskData)
                 });
                 
+                console.log('📥 Response status:', response.status);
+                console.log('📥 Response ok:', response.ok);
+                
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    const errorText = await response.text();
+                    console.error('❌ Server error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
                 }
                 
                 const savedTask = await response.json();
-                console.log('✅ Task saved successfully:', savedTask);
+                console.log('✅ TASK SAVED SUCCESSFULLY:', savedTask);
                 return savedTask;
             } catch (error) {
-                console.error('❌ Error saving task:', error);
+                console.error('❌ ERROR SAVING TASK:', error);
                 showToast('Error saving task: ' + error.message, true);
                 throw error;
             }
@@ -1548,6 +1550,12 @@
         }, 3000);
     }
 
+    // Helper function to get vendor ID
+    function getVendorId(vendorName) {
+        // Only one vendor now - Vendor 1
+        return 'vendor-1';
+    }
+
     // Setup event listeners
     function setupEventListeners() {
         // Modal controls
@@ -1617,7 +1625,7 @@
             }
         });
 
-        // Save task to REAL backend
+        // Save task to REAL backend - UPDATED FOR VENDOR 1
         saveTaskBtn.addEventListener('click', async () => {
             const title = document.getElementById('taskTitle').value;
             const description = document.getElementById('taskDescription').value;
@@ -1634,12 +1642,19 @@
                     title: title,
                     description: description,
                     vendor: vendor,
+                    vendorId: getVendorId(vendor),
                     dueDate: dueDate,
                     status: 'pending',
-                    priority: 'medium'
+                    priority: 'medium',
+                    assignedBy: 'Organizer',
+                    assignedDate: new Date().toISOString()
                 };
 
+                console.log('🚀 CREATING TASK WITH DATA:', taskData);
+
                 const newTask = await apiService.saveTask(taskData);
+                
+                console.log('🎯 TASK CREATED SUCCESSFULLY:', newTask);
                 
                 // Add to local tasks array and update UI
                 tasks.push(newTask);
@@ -1655,7 +1670,8 @@
                 
                 showToast('Task assigned and saved to database! 🎉');
             } catch (error) {
-                console.error('Error saving task:', error);
+                console.error('💥 ERROR CREATING TASK:', error);
+                showToast('Failed to create task: ' + error.message, true);
             }
         });
 
