@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunset Events - Organizer Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-brown: #83594c;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
+            color: var(--deep-brown);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: 5px 0 25px rgba(73, 49, 41, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(239, 163, 160, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .logo {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--soft-pink);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            box-shadow: 0 5px 15px rgba(139, 89, 123, 0.4);
+            transform: translateX(5px);
+        }
+
+        .nav-links i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .header h2 {
+            font-size: 28px;
+            color: var(--deep-brown);
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 12px 15px 12px 45px;
+            border: 1px solid rgba(73, 49, 41, 0.2);
+            border-radius: 30px;
+            width: 280px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: rgba(249, 236, 171, 0.2);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--dusty-purple);
+            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
+            background: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dusty-purple);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(73, 49, 41, 0.05);
+            padding: 8px 15px;
+            border-radius: 30px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(239, 163, 160, 0.3);
+        }
+
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notifications i {
+            font-size: 22px;
+            color: var(--dusty-purple);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--soft-pink);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple), var(--soft-pink), var(--light-blue), var(--light-cream));
+        }
+
+        .card.events {
+            border-top-color: var(--deep-brown);
+        }
+
+        .card.attendees {
+            border-top-color: var(--dusty-purple);
+        }
+
+        .card.tasks {
+            border-top-color: var(--soft-pink);
+        }
+
+        .card.engagement {
+            border-top-color: var(--light-blue);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(73, 49, 41, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: var(--deep-brown);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header i {
+            font-size: 28px;
+            opacity: 0.8;
+        }
+
+        .card.events .card-header i {
+            color: var(--deep-brown);
+        }
+
+        .card.attendees .card-header i {
+            color: var(--dusty-purple);
+        }
+
+        .card.tasks .card-header i {
+            color: var(--soft-pink);
+        }
+
+        .card.engagement .card-header i {
+            color: var(--light-blue);
+        }
+
+        .card-content {
+            color: var(--deep-brown);
+        }
+
+        .stat {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 10px 0;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.attendees .stat {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.tasks .stat {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.engagement .stat {
+            background: linear-gradient(135deg, var(--light-blue), var(--light-cream));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(73, 49, 41, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .card.events .progress {
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple));
+        }
+
+        .card.attendees .progress {
+            background: linear-gradient(90deg, var(--dusty-purple), var(--soft-pink));
+        }
+
+        .card.tasks .progress {
+            background: linear-gradient(90deg, var(--soft-pink), var(--light-blue));
+        }
+
+        .card.engagement .progress {
+            background: linear-gradient(90deg, var(--light-blue), var(--light-cream));
+        }
+
+        /* Feature Sections */
+        .feature-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+        }
+
+        .section-header h3 {
+            font-size: 22px;
+            color: var(--deep-brown);
+            font-weight: 700;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+        }
+
+        .btn-outline:hover {
+            background: var(--dusty-purple);
+            color: white;
+        }
+
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid rgba(73, 49, 41, 0.1);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+        }
+
+        .table th {
+            color: var(--deep-brown);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(249, 236, 171, 0.3);
+        }
+
+        .table tr:hover {
+            background-color: rgba(239, 163, 160, 0.1);
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status.live {
+            background: rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+
+        .status.upcoming {
+            background: rgba(139, 89, 123, 0.1);
+            color: var(--dusty-purple);
+        }
+
+        .status.completed {
+            background: rgba(239, 163, 160, 0.2);
+            color: var(--soft-pink);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-list li {
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+
+        .task-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .task-info i {
+            font-size: 18px;
+            color: var(--dusty-purple);
+            width: 20px;
+        }
+
+        .task-details {
+            flex: 1;
+        }
+
+        .task-meta {
+            font-size: 13px;
+            color: var(--dusty-purple);
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--deep-brown);
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn.edit:hover {
+            background: rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+
+        .action-btn.delete:hover {
+            background: rgba(239, 163, 160, 0.2);
+            color: var(--soft-pink);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--deep-brown);
+            margin-top: 30px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-sunset"></i>
+                </div>
+                <h1>Sunset <span>Events</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="#"><i class="fas fa-list"></i> View Events</a></li>
+                <li><a href="#"><i class="fas fa-microphone"></i> Sessions & Speakers</a></li>
+                <li><a href="#"><i class="fas fa-tasks"></i> Vendor Tasks</a></li>
+                <li><a href="#"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="#"><i class="fas fa-clock"></i> Schedule Meetings</a></li>
+                <li><a href="#"><i class="fas fa-question-circle"></i> Attendee Questions</a></li>
+                <li><a href="#"><i class="fas fa-star"></i> Sponsors</a></li>
+                <li><a href="#"><i class="fas fa-chart-bar"></i> Analytics</a></li>
+                <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+
+        
+        <div class="main-content">
+            <div class="header">
+                <h2>Event Organizer Dashboard</h2>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search events, attendees...">
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <div class="notification-badge">3</div>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">OE</div>
+                        <span>Organizer</span>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="dashboard-cards">
+                <div class="card events">
+                    <div class="card-header">
+                        <h3>Total Events</h3>
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat">12</div>
+                        <p>3 events live now</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card attendees">
+                    <div class="card-header">
+                        <h3>Attendees</h3>
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat">1,248</div>
+                        <p>Across all events</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 82%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card tasks">
+                    <div class="card-header">
+                        <h3>Tasks Completed</h3>
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat">84%</div>
+                        <p>36 of 43 tasks done</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 84%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card engagement">
+                    <div class="card-header">
+                        <h3>Engagement Rate</h3>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="stat">76%</div>
+                        <p>Across all sessions</p>
+                        <div class="progress-bar">
+                            <div class="progress" style="width: 76%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="feature-section">
+                <div class="section-header">
+                    <h3>Your Events</h3>
+                    <button class="btn" id="createEventBtn"><i class="fas fa-plus"></i> Create New Event</button>
+                </div>
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Event Name</th>
+                                <th>Date</th>
+                                <th>Attendees</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sunset Music Festival</td>
+                                <td>Oct 15, 2025</td>
+                                <td>520</td>
+                                <td><span class="status live">Live</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-secondary">Manage</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Creative Workshop</td>
+                                <td>Oct 20, 2025</td>
+                                <td>180</td>
+                                <td><span class="status upcoming">Upcoming</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-secondary">Manage</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Product Launch</td>
+                                <td>Oct 5, 2025</td>
+                                <td>320</td>
+                                <td><span class="status completed">Completed</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn edit"><i class="fas fa-edit"></i></button>
+                                        <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                                        <button class="btn btn-secondary">View Report</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            
+            <div class="feature-section">
+                <div class="section-header">
+                    <h3>Vendor Tasks</h3>
+                    <button class="btn"><i class="fas fa-plus"></i> Assign New Task</button>
+                </div>
+                <ul class="task-list">
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-video"></i>
+                            <div class="task-details">
+                                <div>Set up streaming for Keynote</div>
+                                <div class="task-meta">Due: Today, 2:00 PM | Vendor: TechStream Inc.</div>
+                            </div>
+                        </div>
+                        <span class="status live">In Progress</span>
+                    </li>
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-utensils"></i>
+                            <div class="task-details">
+                                <div>Confirm virtual catering links</div>
+                                <div class="task-meta">Due: Oct 12, 2025 | Vendor: VirtualEats</div>
+                            </div>
+                        </div>
+                        <span class="status upcoming">Pending</span>
+                    </li>
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-microphone"></i>
+                            <div class="task-details">
+                                <div>Audio check with speaker</div>
+                                <div class="task-meta">Due: Oct 10, 2025 | Vendor: SoundMasters</div>
+                            </div>
+                        </div>
+                        <span class="status completed">Done</span>
+                    </li>
+                </ul>
+            </div>
+
+            
+            <div class="feature-section">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                    <button class="btn btn-outline"><i class="fas fa-filter"></i> Filter</button>
+                </div>
+                <ul class="task-list">
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-question-circle"></i>
+                            <div class="task-details">
+                                <div>New question in "Future of AI" session</div>
+                                <div class="task-meta">From: John Smith | 2 minutes ago</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary">Respond</button>
+                    </li>
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-bullhorn"></i>
+                            <div class="task-details">
+                                <div>Announcement sent to all attendees</div>
+                                <div class="task-meta">1 hour ago</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-info">
+                            <i class="fas fa-star"></i>
+                            <div class="task-details">
+                                <div>Sponsor "TechCorp" added to Innovation Summit</div>
+                                <div class="task-meta">3 hours ago</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer">
+                <p>Sunset Events Virtual Management System | © 2025</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+
+            
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            
+            const editButtons = document.querySelectorAll('.action-btn.edit');
+            const deleteButtons = document.querySelectorAll('.action-btn.delete');
+
+            editButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    alert('Edit functionality would open an edit form');
+                });
+            });
+
+            deleteButtons.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (confirm('Are you sure you want to delete this event?')) {
+                        const row = this.closest('tr');
+                        row.style.opacity = '0.5';
+                        setTimeout(() => {
+                            row.style.display = 'none';
+                        }, 500);
+                    }
+                });
+            });
+
+            
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
