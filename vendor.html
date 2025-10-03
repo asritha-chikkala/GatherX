@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard - Sunset Events</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-brown: #493129;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
+            color: var(--deep-brown);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 25px 0;
+            box-shadow: 5px 0 25px rgba(73, 49, 41, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 0%, rgba(239, 163, 160, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        .logo {
+            padding: 0 25px 25px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--soft-pink);
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 15px;
+        }
+
+        .nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            padding: 14px 18px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            box-shadow: 0 5px 15px rgba(139, 89, 123, 0.4);
+            transform: translateX(5px);
+        }
+
+        .nav-links i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .header h2 {
+            font-size: 28px;
+            color: var(--deep-brown);
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 12px 15px 12px 45px;
+            border: 1px solid rgba(73, 49, 41, 0.2);
+            border-radius: 30px;
+            width: 280px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: rgba(249, 236, 171, 0.2);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--dusty-purple);
+            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
+            background: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dusty-purple);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(73, 49, 41, 0.05);
+            padding: 8px 15px;
+            border-radius: 30px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(239, 163, 160, 0.3);
+        }
+
+        .user-role {
+            background: var(--dusty-purple);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notifications i {
+            font-size: 22px;
+            color: var(--dusty-purple);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--soft-pink);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Dashboard Cards */
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid;
+            cursor: pointer;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple), var(--soft-pink), var(--light-blue), var(--light-cream));
+        }
+
+        .card.pending {
+            border-top-color: var(--deep-brown);
+        }
+
+        .card.completed {
+            border-top-color: var(--dusty-purple);
+        }
+
+        .card.upcoming {
+            border-top-color: var(--soft-pink);
+        }
+
+        .card.communication {
+            border-top-color: var(--light-blue);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(73, 49, 41, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-header h3 {
+            font-size: 16px;
+            color: var(--deep-brown);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-header i {
+            font-size: 28px;
+            opacity: 0.8;
+        }
+
+        .card.pending .card-header i {
+            color: var(--deep-brown);
+        }
+
+        .card.completed .card-header i {
+            color: var(--dusty-purple);
+        }
+
+        .card.upcoming .card-header i {
+            color: var(--soft-pink);
+        }
+
+        .card.communication .card-header i {
+            color: var(--light-blue);
+        }
+
+        .card-content {
+            color: var(--deep-brown);
+        }
+
+        .stat {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 10px 0;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.completed .stat {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.upcoming .stat {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card.communication .stat {
+            background: linear-gradient(135deg, var(--light-blue), var(--light-cream));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: rgba(73, 49, 41, 0.1);
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        .card.pending .progress {
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple));
+        }
+
+        .card.completed .progress {
+            background: linear-gradient(90deg, var(--dusty-purple), var(--soft-pink));
+        }
+
+        .card.upcoming .progress {
+            background: linear-gradient(90deg, var(--soft-pink), var(--light-blue));
+        }
+
+        .card.communication .progress {
+            background: linear-gradient(90deg, var(--light-blue), var(--light-cream));
+        }
+
+        /* Feature Sections */
+        .feature-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+        }
+
+        .section-header h3 {
+            font-size: 22px;
+            color: var(--deep-brown);
+            font-weight: 700;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+        }
+
+        .btn-outline:hover {
+            background: var(--dusty-purple);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+
+        /* Vendor Tasks Specific Styles */
+        .tasks-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .task-stat {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .task-stat::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple), var(--soft-pink), var(--light-blue), var(--light-cream));
+        }
+
+        .task-stat.total {
+            border-top-color: var(--deep-brown);
+        }
+
+        .task-stat.pending {
+            border-top-color: var(--dusty-purple);
+        }
+
+        .task-stat.completed {
+            border-top-color: var(--soft-pink);
+        }
+
+        .task-stat.overdue {
+            border-top-color: var(--light-blue);
+        }
+
+        .task-stat:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(73, 49, 41, 0.15);
+        }
+
+        .task-stat .number {
+            font-size: 36px;
+            font-weight: 800;
+            margin: 10px 0;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .task-stat.completed .number {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .task-stat.overdue .number {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .task-stat .label {
+            color: var(--deep-brown);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid var(--dusty-purple);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(73, 49, 41, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            color: var(--deep-brown);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--deep-brown);
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .vendor-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .vendor-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.08);
+            border-top: 4px solid var(--soft-pink);
+        }
+
+        .vendor-card h4 {
+            color: var(--deep-brown);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .vendor-card p {
+            color: var(--deep-brown);
+            opacity: 0.7;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .vendor-progress {
+            height: 8px;
+            background-color: rgba(73, 49, 41, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .vendor-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--soft-pink), var(--light-blue));
+            border-radius: 4px;
+        }
+
+        .vendor-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--deep-brown);
+            opacity: 0.7;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: white;
+            border: 2px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: var(--dusty-purple);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 89, 123, 0.3);
+        }
+
+        .vendor-tasks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.08);
+        }
+
+        .vendor-tasks-table th {
+            background: rgba(249, 236, 171, 0.3);
+            padding: 15px;
+            text-align: left;
+            color: var(--deep-brown);
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .vendor-tasks-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+
+        .vendor-tasks-table tr:hover {
+            background-color: rgba(239, 163, 160, 0.1);
+        }
+
+        .task-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+
+        .status-in-progress {
+            background: rgba(139, 89, 123, 0.1);
+            color: var(--dusty-purple);
+        }
+
+        .status-completed {
+            background: rgba(239, 163, 160, 0.2);
+            color: var(--soft-pink);
+        }
+
+        .access-level {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(158, 200, 249, 0.2);
+            color: var(--light-blue);
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 24px;
+            color: var(--deep-brown);
+            margin: 30px 0 20px;
+            font-weight: 700;
+            border-bottom: 2px solid var(--dusty-purple);
+            padding-bottom: 10px;
+        }
+
+        /* Content Pages */
+        .content-page {
+            display: none;
+        }
+        
+        .content-page.active {
+            display: block;
+        }
+
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.08);
+            border-left: 4px solid var(--light-blue);
+        }
+
+        .resource-card h4 {
+            color: var(--deep-brown);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .resource-card p {
+            color: var(--deep-brown);
+            opacity: 0.7;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .resource-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .meeting-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .meeting-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.08);
+            border-left: 4px solid var(--soft-pink);
+        }
+
+        .meeting-card h4 {
+            color: var(--deep-brown);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .meeting-card p {
+            color: var(--deep-brown);
+            opacity: 0.7;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .meeting-time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dusty-purple);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--deep-brown);
+            margin-top: 30px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .tasks-overview, .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tasks-overview, .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+            
+            .quick-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-sunset"></i>
+                </div>
+                <h1>Sunset <span>Events</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#" data-page="tasks"><i class="fas fa-tasks"></i> My Tasks</a></li>
+                <li><a href="#" data-page="sessions"><i class="fas fa-calendar-alt"></i> My Sessions</a></li>
+                <li><a href="#" data-page="resources"><i class="fas fa-link"></i> Session Resources</a></li>
+                <li><a href="#" data-page="meetings"><i class="fas fa-video"></i> Meetings</a></li>
+                <li><a href="#" data-page="messages"><i class="fas fa-comments"></i> Messages</a></li>
+                <li><a href="#" data-page="profile"><i class="fas fa-user"></i> My Profile</a></li>
+                <li><a href="#" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2 id="pageTitle">Vendor Dashboard</h2>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search my tasks, sessions...">
+                    </div>
+                    <button class="btn btn-outline" id="refreshVendorBtn" style="margin-right: 10px;">
+                        <i class="fas fa-sync-alt"></i> Refresh Tasks
+                    </button>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <div class="notification-badge">3</div>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar">V1</div>
+                        <div>
+                            <div>Vendor 1</div>
+                            <div class="user-role">Vendor</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="content-page active">
+                <!-- Vendor Dashboard Cards -->
+                <div class="dashboard-cards">
+                    <div class="card pending" data-action="view-pending-tasks">
+                        <div class="card-header">
+                            <h3>My Pending Tasks</h3>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat">0</div>
+                            <p>Need your attention</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card completed" data-action="view-completed-tasks">
+                        <div class="card-header">
+                            <h3>Completed Tasks</h3>
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat">0</div>
+                            <p>Well done!</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card upcoming" data-action="view-upcoming-sessions">
+                        <div class="card-header">
+                            <h3>Upcoming Sessions</h3>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat">0</div>
+                            <p>Next 7 days</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card communication" data-action="view-communication">
+                        <div class="card-header">
+                            <h3>Messages</h3>
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat">0</div>
+                            <p>From organizers</p>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Tasks Section -->
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>My Assigned Tasks</h3>
+                        <button class="btn" id="updateStatusBtn"><i class="fas fa-sync-alt"></i> Update Status</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="vendor-tasks-table">
+                            <thead>
+                                <tr>
+                                    <th>Task Name</th>
+                                    <th>Event</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="vendorTasksTableBody">
+                                <!-- Tasks will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <button class="btn" onclick="showPage('tasks')">
+                            <i class="fas fa-edit"></i> Update Task Status
+                        </button>
+                        <button class="btn btn-secondary" onclick="showPage('resources')">
+                            <i class="fas fa-link"></i> Access Session Resources
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('meetings')">
+                            <i class="fas fa-video"></i> View Meetings
+                        </button>
+                        <button class="btn btn-outline" onclick="showPage('messages')">
+                            <i class="fas fa-envelope"></i> Contact Organizer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Tasks Page -->
+            <div id="tasks" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>My Tasks</h3>
+                        <button class="btn"><i class="fas fa-filter"></i> Filter Tasks</button>
+                    </div>
+                    <p>Here you can view all tasks assigned to you, update their status, and track your progress.</p><br>
+                    
+                    <div class="tasks-overview">
+                        <div class="task-stat pending">
+                            <div class="number">0</div>
+                            <div class="label">Pending Tasks</div>
+                        </div>
+                        <div class="task-stat completed">
+                            <div class="number">0</div>
+                            <div class="label">Completed Tasks</div>
+                        </div>
+                        <div class="task-stat overdue">
+                            <div class="number">0</div>
+                            <div class="label">Overdue Tasks</div>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="vendor-tasks-table">
+                            <thead>
+                                <tr>
+                                    <th>Task Name</th>
+                                    <th>Event</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasksPageTableBody">
+                                <!-- Tasks will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Sessions Page -->
+            <div id="sessions" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>My Sessions</h3>
+                        <button class="btn"><i class="fas fa-calendar-plus"></i> View Calendar</button>
+                    </div>
+                    <p>Overview of all sessions you're assigned to with their details and preparation status.</p>
+                    
+                    <div class="vendor-list" id="sessionsVendorList">
+                        <!-- Sessions will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session Resources Page -->
+            <div id="resources" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Session Resources</h3>
+                        <button class="btn"><i class="fas fa-upload"></i> Upload Resources</button>
+                    </div>
+                    <p>Access all resources, documents, and materials for your assigned sessions.</p>
+                    
+                    <div class="resource-list">
+                        <div class="resource-card">
+                            <h4>No Resources Available</h4>
+                            <p>Resources will appear here when assigned by organizers.</p>
+                            <div class="resource-actions">
+                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meetings Page -->
+            <div id="meetings" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Meetings</h3>
+                        <button class="btn"><i class="fas fa-plus"></i> Schedule Meeting</button>
+                    </div>
+                    <p>View and join scheduled meetings with event organizers and other vendors.</p>
+                    
+                    <div class="meeting-list">
+                        <div class="meeting-card">
+                            <h4>No Meetings Scheduled</h4>
+                            <p>Meetings will appear here when scheduled by organizers.</p>
+                            <div class="meeting-time">
+                                <i class="fas fa-clock"></i>
+                                <span>No upcoming meetings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Page -->
+            <div id="messages" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Messages</h3>
+                        <button class="btn"><i class="fas fa-plus"></i> New Message</button>
+                    </div>
+                    <p>Communicate with event organizers and other team members.</p>
+                    
+                    <div class="vendor-list">
+                        <div class="vendor-card">
+                            <h4>No Messages</h4>
+                            <p>Your messages will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>My Profile</h3>
+                        <button class="btn"><i class="fas fa-edit"></i> Edit Profile</button>
+                    </div>
+                    <p>Manage your vendor profile information and preferences.</p>
+                    
+                    <div class="vendor-list">
+                        <div class="vendor-card">
+                            <h4>Vendor 1</h4>
+                            <p>Event Services Provider</p>
+                            <div class="vendor-stats">
+                                <span>Vendor ID: V-001</span>
+                                <span>Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settings" class="content-page">
+                <div class="feature-section">
+                    <div class="section-header">
+                        <h3>Settings</h3>
+                    </div>
+                    <p>Configure your account settings and notification preferences.</p>
+                    
+                    <div class="vendor-list">
+                        <div class="vendor-card">
+                            <h4>Notification Preferences</h4>
+                            <p>Manage how you receive updates about tasks and events.</p>
+                            <div class="resource-actions">
+                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
+                                    <i class="fas fa-bell"></i> Configure
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Sunset Events Vendor Portal | © 2025</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        // API Service for Vendor - UPDATED FOR EVENTS
+        const vendorApiService = {
+            // Get vendor tasks - ONLY FOR VENDOR 1
+            async getVendorTasks() {
+                try {
+                    console.log('🔄 Fetching tasks for Vendor 1...');
+                    
+                    // Get all tasks and filter for Vendor 1
+                    const response = await fetch(`${API_BASE_URL}/tasks`);
+                    if (!response.ok) throw new Error('Failed to fetch tasks');
+                    
+                    const data = await response.json();
+                    console.log('✅ All tasks from API:', data);
+                    
+                    // Handle different response formats
+                    const allTasks = Array.isArray(data) ? data : (data.tasks || data.data || []);
+                    
+                    // Filter tasks for Vendor 1
+                    const vendorTasks = allTasks.filter(task => {
+                        const matchesVendor = 
+                            task.vendor === 'Vendor 1' || 
+                            task.vendorId === 'vendor-1';
+                        
+                        console.log(`Task "${task.title}" - vendor: "${task.vendor}", vendorId: "${task.vendorId}" - Match: ${matchesVendor}`);
+                        return matchesVendor;
+                    });
+                    
+                    console.log('✅ Vendor 1 tasks:', vendorTasks);
+                    return vendorTasks;
+                    
+                } catch (error) {
+                    console.error('❌ Error fetching vendor tasks:', error);
+                    return [];
+                }
+            },
+
+            // DELETE task when completed
+            async deleteTask(taskId) {
+                try {
+                    console.log('🗑️ Deleting completed task:', taskId);
+                    
+                    const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (!response.ok) throw new Error('Failed to delete task');
+                    
+                    const result = await response.json();
+                    console.log('✅ Task deleted successfully:', result);
+                    return result;
+                    
+                } catch (error) {
+                    console.error('❌ Error deleting task:', error);
+                    throw error;
+                }
+            },
+
+            // Get events - UPDATED TO FILTER FOR VENDOR 1
+            async getEvents() {
+                try {
+                    console.log('🔄 Fetching events for Vendor 1...');
+                    const response = await fetch(`${API_BASE_URL}/events`);
+                    if (!response.ok) throw new Error('Failed to fetch events');
+                    const data = await response.json();
+                    
+                    // Handle different response formats
+                    const allEvents = Array.isArray(data) ? data : (data.events || []);
+                    
+                    // Filter events for Vendor 1 (all events go to vendor sessions)
+                    const vendorEvents = allEvents.filter(event => {
+                        // All events are assigned to Vendor 1 for sessions
+                        const isAssigned = true; // All events go to vendor sessions
+                        
+                        console.log(`Event "${event.name}" - Assigned to sessions: ${isAssigned}`);
+                        return isAssigned;
+                    });
+                    
+                    console.log('✅ Vendor 1 events:', vendorEvents);
+                    return vendorEvents;
+                } catch (error) {
+                    console.error('❌ Error fetching events:', error);
+                    return [];
+                }
+            }
+        };
+
+        // Global variables
+        let vendorTasks = [];
+        let vendorEvents = [];
+
+        // Function to show specific content page
+        function showPage(pageId) {
+            // Hide all content pages
+            document.querySelectorAll('.content-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update page title
+            const pageTitles = {
+                'dashboard': 'Vendor Dashboard',
+                'tasks': 'My Tasks',
+                'sessions': 'My Sessions',
+                'resources': 'Session Resources',
+                'meetings': 'Meetings',
+                'messages': 'Messages',
+                'profile': 'My Profile',
+                'settings': 'Settings'
+            };
+            
+            document.getElementById('pageTitle').textContent = pageTitles[pageId];
+            
+            // Load data for specific pages
+            if (pageId === 'tasks') {
+                loadTasksPage();
+            } else if (pageId === 'sessions') {
+                loadSessionsPage();
+            }
+        }
+
+        // Load and render tasks - UPDATED TO INCLUDE SESSIONS
+        async function loadVendorTasks() {
+            try {
+                console.log('🔄 Loading data for Vendor 1...');
+                
+                // Load both tasks and events
+                vendorTasks = await vendorApiService.getVendorTasks();
+                vendorEvents = await vendorApiService.getEvents();
+                
+                console.log('✅ Vendor 1 tasks loaded:', vendorTasks);
+                console.log('✅ Vendor 1 events loaded:', vendorEvents);
+                
+                updateDashboardStats();
+                renderTasksTable();
+                
+                // Refresh sessions page if it's active
+                if (document.getElementById('sessions').classList.contains('active')) {
+                    loadSessionsPage();
+                }
+                
+                if (vendorTasks.length === 0 && vendorEvents.length === 0) {
+                    console.log('ℹ️ No tasks or events found for Vendor 1');
+                }
+            } catch (error) {
+                console.error('❌ Error loading vendor data:', error);
+                vendorTasks = [];
+                vendorEvents = [];
+                updateDashboardStats();
+                renderTasksTable();
+            }
+        }
+
+        // Update dashboard statistics
+        function updateDashboardStats() {
+            // Calculate task statistics - ONLY PENDING AND COMPLETED
+            const completedTasks = vendorTasks.filter(task => task.status === 'completed').length;
+            const pendingTasks = vendorTasks.filter(task => task.status !== 'completed').length; // Everything else is pending
+            
+            const overdueTasks = vendorTasks.filter(task => {
+                if (task.status === 'completed') return false;
+                if (!task.dueDate) return false;
+                const dueDate = new Date(task.dueDate);
+                return dueDate < new Date();
+            }).length;
+            
+            const upcomingEvents = vendorEvents.filter(event => {
+                const eventDate = new Date(event.date);
+                return eventDate >= new Date();
+            }).length;
+
+            // Update cards
+            document.querySelector('.card.pending .stat').textContent = pendingTasks;
+            document.querySelector('.card.completed .stat').textContent = completedTasks;
+            document.querySelector('.card.upcoming .stat').textContent = upcomingEvents;
+            
+            // Update task stats
+            document.querySelector('.task-stat.pending .number').textContent = pendingTasks;
+            document.querySelector('.task-stat.completed .number').textContent = completedTasks;
+            document.querySelector('.task-stat.overdue .number').textContent = overdueTasks;
+            
+            // Update progress bars
+            const totalTasks = vendorTasks.length;
+            const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            
+            document.querySelector('.card.pending .progress').style.width = totalTasks > 0 ? `${(pendingTasks / totalTasks) * 100}%` : '0%';
+            document.querySelector('.card.completed .progress').style.width = `${completionRate}%`;
+            document.querySelector('.card.upcoming .progress').style.width = vendorEvents.length > 0 ? `${(upcomingEvents / vendorEvents.length) * 100}%` : '0%';
+        }
+
+        // Render tasks table
+        function renderTasksTable() {
+            const tables = [
+                document.getElementById('vendorTasksTableBody'),
+                document.getElementById('tasksPageTableBody')
+            ];
+            
+            tables.forEach(table => {
+                if (!table) return;
+                
+                table.innerHTML = '';
+                
+                if (vendorTasks.length === 0) {
+                    table.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-tasks" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                                <h3>No Tasks Assigned Yet</h3>
+                                <p>Tasks assigned to you from the organiser will appear here.</p>
+                                <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                                    <i class="fas fa-sync-alt"></i> Refresh
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                vendorTasks.forEach(task => {
+                    const row = document.createElement('tr');
+                    
+                    // Format due date
+                    const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    });
+                    
+                    // Get status class and text
+                    let statusClass = 'status-pending';
+                    let statusText = 'Pending';
+                    
+                    if (task.status === 'completed') {
+                        statusClass = 'status-completed';
+                        statusText = 'Completed';
+                    }
+                    
+                    // Get priority display
+                    const priority = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'Medium';
+                    
+                    // Use title or taskName field
+                    const taskTitle = task.title || task.taskName || 'Unnamed Task';
+                    const eventName = task.eventName || 'General Event';
+                    
+                    row.innerHTML = `
+                        <td>${taskTitle}</td>
+                        <td>${eventName}</td>
+                        <td>${dueDate}</td>
+                        <td><span class="task-status ${statusClass}">${statusText}</span></td>
+                        <td>${priority}</td>
+                        <td>
+                            <button class="action-btn update-task-btn" data-task-id="${task._id || task.id}" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-edit"></i> Update
+                            </button>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                });
+            });
+        }
+
+        // Load tasks page
+        function loadTasksPage() {
+            renderTasksTable();
+        }
+
+        // Load sessions page - UPDATED TO SHOW EVENT DETAILS
+        function loadSessionsPage() {
+            const vendorList = document.getElementById('sessionsVendorList');
+            if (!vendorList) return;
+            
+            vendorList.innerHTML = '';
+            
+            if (vendorEvents.length === 0) {
+                vendorList.innerHTML = `
+                    <div class="vendor-card" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-calendar-alt" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                        <h3>No Sessions Assigned</h3>
+                        <p>Events assigned to you will appear here as sessions.</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create session cards from events
+            vendorEvents.forEach(event => {
+                // Count tasks for this event
+                const eventTasks = vendorTasks.filter(task => task.eventName === event.name);
+                const completedTasks = eventTasks.filter(task => task.status === 'completed').length;
+                const totalTasks = eventTasks.length;
+                const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+                
+                // Format event date
+                const eventDate = new Date(event.date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const card = document.createElement('div');
+                card.className = 'vendor-card';
+                card.innerHTML = `
+                    <h4>${event.name}</h4>
+                    <p>${event.description || 'No description available'}</p>
+                    <div class="meeting-time">
+                        <i class="fas fa-clock"></i>
+                        <span>${eventDate}</span>
+                    </div>
+                    <div class="vendor-progress">
+                        <div class="vendor-progress-bar" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="vendor-stats">
+                        <span>Type: ${event.type || 'General'}</span>
+                        <span>Tasks: ${completedTasks}/${totalTasks}</span>
+                    </div>
+                `;
+                vendorList.appendChild(card);
+            });
+        }
+
+        // Initialize vendor dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Vendor Dashboard loaded - VENDOR 1 ONLY");
+            
+            // Load initial data
+            loadVendorTasks();
+            
+            // Navigation
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    
+                    // Update active state
+                    document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show the selected page
+                    showPage(pageId);
+                });
+            });
+            
+            // Update status button
+            document.getElementById('updateStatusBtn').addEventListener('click', function() {
+                showPage('tasks');
+            });
+            
+            // Refresh button
+            document.getElementById('refreshVendorBtn').addEventListener('click', function() {
+                console.log('🔄 Manual refresh triggered');
+                loadVendorTasks();
+            });
+            
+            // Task update buttons (event delegation for dynamic content)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.update-task-btn')) {
+                    const button = e.target.closest('.update-task-btn');
+                    const taskId = button.getAttribute('data-task-id');
+                    const taskRow = button.closest('tr');
+                    const taskName = taskRow ? taskRow.cells[0].textContent : 'task';
+                    
+                    // Show status update modal - ONLY TWO OPTIONS NOW
+                    const newStatus = prompt(`Update status for "${taskName}":\nEnter "pending" or "completed"`);
+                    
+                    if (newStatus && ['pending', 'completed'].includes(newStatus.toLowerCase())) {
+                        if (newStatus.toLowerCase() === 'completed') {
+                            // DELETE task from database when completed
+                            if (confirm('Are you sure you want to mark this task as completed? This will remove it from the system.')) {
+                                vendorApiService.deleteTask(taskId)
+                                    .then(result => {
+                                        if (result.success || result._id) {
+                                            alert('Task completed and removed from system!');
+                                            loadVendorTasks(); // Reload tasks from database
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error deleting task:', error);
+                                        alert('Error completing task. Please try again.');
+                                    });
+                            }
+                        } else {
+                            // For pending status, just show message (no actual update needed)
+                            alert('Task status remains as pending.');
+                        }
+                    }
+                }
+            });
+            
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                if (searchTerm) {
+                    console.log(`Searching for: ${searchTerm}`);
+                    // Implement search filtering here if needed
+                }
+            });
+            
+            // Quick action buttons
+            document.querySelectorAll('.quick-actions .btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.textContent.trim();
+                    console.log(`Quick action: ${action}`);
+                });
+            });
+            
+            // Auto-refresh tasks every 30 seconds when on relevant pages
+            setInterval(() => {
+                if (document.getElementById('tasks').classList.contains('active') || 
+                    document.getElementById('dashboard').classList.contains('active') ||
+                    document.getElementById('sessions').classList.contains('active')) {
+                    console.log('🔄 Auto-refreshing vendor data...');
+                    loadVendorTasks();
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
