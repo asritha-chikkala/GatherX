@@ -864,6 +864,21 @@
             font-size: 20px;
         }
 
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(73, 49, 41, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--dusty-purple);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive Design */
         @media (max-width: 1100px) {
             .container {
@@ -957,10 +972,12 @@
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="totalEvents">5</div>
-                            <p>3 upcoming events</p>
+                            <div class="stat" id="totalEvents">
+                                <span class="loading"></span>
+                            </div>
+                            <p id="eventsSubtitle">Loading events...</p>
                             <div class="progress-bar">
-                                <div class="progress" id="eventsProgress" style="width: 60%;"></div>
+                                <div class="progress" id="eventsProgress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -1017,13 +1034,18 @@
                                 <tr>
                                     <th>Event Name</th>
                                     <th>Date</th>
-                                    <th>Sessions</th>
+                                    <th>Location</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="eventsTableBody">
-                                <!-- Events will be populated by JavaScript -->
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 40px;">
+                                        <div class="loading"></div>
+                                        <p style="margin-top: 10px;">Loading events from backend...</p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -1083,10 +1105,7 @@
                     <label for="eventSelection">Select Event</label>
                     <select id="eventSelection" class="form-control">
                         <option value="">Choose an event</option>
-                        <option value="1">Sunset Music Festival</option>
-                        <option value="2">Creative Workshop</option>
-                        <option value="3">Product Launch</option>
-                        <option value="4">Tech Conference</option>
+                        <!-- Events will be populated dynamically -->
                     </select>
                 </div>
             </div>
@@ -1144,9 +1163,7 @@
                     <label for="feedbackEvent">Select Event</label>
                     <select id="feedbackEvent" class="form-control">
                         <option value="">Choose an event</option>
-                        <option value="1">Sunset Music Festival</option>
-                        <option value="2">Creative Workshop</option>
-                        <option value="3">Product Launch</option>
+                        <!-- Events will be populated dynamically -->
                     </select>
                 </div>
                 <div class="form-group">
@@ -1178,245 +1195,434 @@
     </div>
 
     <script>
-        // Sample Data
-        const sampleEvents = [
-            { id: 1, name: "Sunset Music Festival", date: "Oct 15, 2025", sessions: 8, status: "upcoming" },
-            { id: 2, name: "Creative Workshop", date: "Oct 20, 2025", sessions: 3, status: "upcoming" },
-            { id: 3, name: "Product Launch", date: "Oct 5, 2025", sessions: 5, status: "completed" }
-        ];
+        // API Configuration - Your backend is running on port 5000
+const API_BASE_URL = 'http://localhost:5000/api';
 
-        const sampleSessions = [
+// API Service - using your existing endpoints
+const apiService = {
+    // Use your existing GET /api/events endpoint
+    async getEvents() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/events`);
+            if (!response.ok) throw new Error('Failed to fetch events');
+            const data = await response.json();
+            return data.events || []; // Your backend returns { events: [], total: number }
+        } catch (error) {
+            console.error('Error fetching events:', error);
+            throw error;
+        }
+    },
+
+    // For sessions - using sample data for now
+    async getSessions() {
+        return [
             { id: 1, name: "Keynote: Future of AI", time: "10:00 AM - 11:00 AM", speaker: "Dr. Sarah Johnson", description: "Exploring the latest trends and future possibilities in artificial intelligence.", status: "live" },
             { id: 2, name: "Creative Design Workshop", time: "11:30 AM - 1:00 PM", speaker: "Alex Chen", description: "Hands-on workshop focusing on creative design techniques and tools.", status: "upcoming" },
             { id: 3, name: "Product Demo: New Features", time: "2:00 PM - 3:00 PM", speaker: "Maria Rodriguez", description: "Live demonstration of our latest product features and improvements.", status: "upcoming" }
         ];
+    },
 
-        const sampleQuestions = [
-            { id: 1, session: "Keynote: Future of AI", question: "How will AI impact creative industries in the next 5 years?", response: "AI will likely augment creative work rather than replace it, helping artists and designers explore new possibilities and work more efficiently.", hasResponse: true },
-            { id: 2, session: "Creative Design Workshop", question: "What software do you recommend for beginners in design?", response: "", hasResponse: false },
-            { id: 3, session: "Product Demo: New Features", question: "When will the mobile app version be available?", response: "We're targeting a Q1 2026 release for the mobile applications.", hasResponse: true }
-        ];
-
-        // DOM Elements
-        const registerEventBtn = document.getElementById('registerEventBtn');
-        const registerEventModal = document.getElementById('registerEventModal');
-        const closeModals = document.querySelectorAll('.close-modal');
-        const cancelRegisterBtn = document.getElementById('cancelRegisterBtn');
-        const saveRegisterBtn = document.getElementById('saveRegisterBtn');
-        const eventsTableBody = document.getElementById('eventsTableBody');
-        const todaysSessions = document.getElementById('todaysSessions');
-        const recentQuestions = document.getElementById('recentQuestions');
-        const askQuestionBtn = document.getElementById('askQuestionBtn');
-        const askQuestionModal = document.getElementById('askQuestionModal');
-        const cancelQuestionBtn = document.getElementById('cancelQuestionBtn');
-        const saveQuestionBtn = document.getElementById('saveQuestionBtn');
-        const feedbackModal = document.getElementById('feedbackModal');
-        const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
-        const saveFeedbackBtn = document.getElementById('saveFeedbackBtn');
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        const searchInput = document.getElementById('searchInput');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        const dashboardContent = document.getElementById('dashboardContent');
-        const otherSections = document.getElementById('otherSections');
-        const pageTitle = document.getElementById('pageTitle');
-        const viewFullScheduleBtn = document.getElementById('viewFullScheduleBtn');
-
-        // Initialize the dashboard
-        function initDashboard() {
-            renderEvents();
-            renderSessions();
-            renderQuestions();
-            updateStats();
-            setupEventListeners();
+    // Get questions from backend
+    async getQuestions() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/questions`);
+            if (!response.ok) throw new Error('Failed to fetch questions');
+            const data = await response.json();
+            return data.data || data.questions || [];
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+            return [];
         }
+    },
 
-        // Render events table
-        function renderEvents(events = sampleEvents) {
-            eventsTableBody.innerHTML = '';
-            events.forEach(event => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${event.name}</td>
-                    <td>${event.date}</td>
-                    <td>${event.sessions}</td>
-                    <td><span class="status ${event.status}">${event.status.charAt(0).toUpperCase() + event.status.slice(1)}</span></td>
-                    <td>
-                        <div class="action-buttons">
-                            ${event.status === 'upcoming' ? 
-                                <button class="btn btn-secondary view-schedule" data-id="${event.id}">View Schedule</button> : 
-                                <button class="btn btn-outline submit-feedback" data-id="${event.id}">Submit Feedback</button>
-                            }
+    // Submit question to backend
+    async submitQuestion(questionData) {
+        try {
+            console.log('Submitting question:', questionData);
+            const response = await fetch(`${API_BASE_URL}/questions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(questionData)
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server error: ${response.status} - ${errorText}`);
+            }
+            
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error submitting question:', error);
+            throw error;
+        }
+    }
+};
+
+// Sample data for fallback
+const sampleEvents = [
+    { _id: 1, name: "Sunset Music Festival", date: "2025-10-15", location: "Main Stage", status: "upcoming" },
+    { _id: 2, name: "Creative Workshop", date: "2025-10-20", location: "Workshop Room A", status: "upcoming" },
+    { _id: 3, name: "Product Launch", date: "2025-10-05", location: "Conference Hall", status: "completed" }
+];
+
+// DOM Elements
+const registerEventBtn = document.getElementById('registerEventBtn');
+const registerEventModal = document.getElementById('registerEventModal');
+const closeModals = document.querySelectorAll('.close-modal');
+const cancelRegisterBtn = document.getElementById('cancelRegisterBtn');
+const saveRegisterBtn = document.getElementById('saveRegisterBtn');
+const eventsTableBody = document.getElementById('eventsTableBody');
+const todaysSessions = document.getElementById('todaysSessions');
+const recentQuestions = document.getElementById('recentQuestions');
+const askQuestionBtn = document.getElementById('askQuestionBtn');
+const askQuestionModal = document.getElementById('askQuestionModal');
+const cancelQuestionBtn = document.getElementById('cancelQuestionBtn');
+const saveQuestionBtn = document.getElementById('saveQuestionBtn');
+const feedbackModal = document.getElementById('feedbackModal');
+const cancelFeedbackBtn = document.getElementById('cancelFeedbackBtn');
+const saveFeedbackBtn = document.getElementById('saveFeedbackBtn');
+const toast = document.getElementById('toast');
+const toastMessage = document.getElementById('toastMessage');
+const searchInput = document.getElementById('searchInput');
+const navLinks = document.querySelectorAll('.nav-links a');
+const dashboardContent = document.getElementById('dashboardContent');
+const otherSections = document.getElementById('otherSections');
+const pageTitle = document.getElementById('pageTitle');
+const viewFullScheduleBtn = document.getElementById('viewFullScheduleBtn');
+
+// Global variables
+let allEvents = [];
+
+// Initialize the dashboard
+async function initDashboard() {
+    try {
+        // Fetch real events from your backend
+        allEvents = await apiService.getEvents();
+        
+        // Use sample data for sessions and questions (or create backend endpoints later)
+        const sessions = await apiService.getSessions();
+        const questions = await apiService.getQuestions();
+        
+        renderEvents(allEvents);
+        renderSessions(sessions);
+        renderQuestions(questions);
+        updateStats(allEvents, sessions, questions);
+        populateModalEvents(allEvents);
+        
+        console.log('Dashboard loaded with', allEvents.length, 'events from backend');
+        showToast(`Successfully loaded ${allEvents.length} events from backend`);
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+        // Fallback to sample data
+        allEvents = sampleEvents;
+        const sessions = await apiService.getSessions();
+        const questions = await apiService.getQuestions();
+        renderEvents(sampleEvents);
+        renderSessions(sessions);
+        renderQuestions(questions);
+        updateStats(sampleEvents, sessions, questions);
+        populateModalEvents(sampleEvents);
+        
+        showToast('Using sample data - backend connection failed');
+    }
+}
+
+// Render events table - adapt to your backend event structure
+function renderEvents(events = []) {
+    eventsTableBody.innerHTML = '';
+    
+    if (events.length === 0) {
+        eventsTableBody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px;">
+                    <i class="fas fa-calendar-times" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px;"></i>
+                    <p>No events found</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+    
+    events.forEach(event => {
+        const row = document.createElement('tr');
+        
+        // Map your backend event fields to frontend display
+        const eventName = event.name || event.title || 'Unnamed Event';
+        const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
+        const eventLocation = event.location || event.venue || 'TBA';
+        
+        // Determine status based on date
+        let status = 'upcoming';
+        let statusText = 'Upcoming';
+        if (event.status === 'completed' || (event.date && new Date(event.date) < new Date())) {
+            status = 'completed';
+            statusText = 'Completed';
+        } else if (event.status === 'live') {
+            status = 'live';
+            statusText = 'Live';
+        }
+        
+        row.innerHTML = `
+            <td>${eventName}</td>
+            <td>${eventDate}</td>
+            <td>${eventLocation}</td>
+            <td><span class="status ${status}">${statusText}</span></td>
+            <td>
+                <div class="action-buttons">
+                    ${status === 'upcoming' || status === 'live' ? 
+                        `<button class="btn btn-secondary view-schedule" data-id="${event._id}">View Schedule</button>` : 
+                        `<button class="btn btn-outline submit-feedback" data-id="${event._id}">Submit Feedback</button>`
+                    }
+                </div>
+            </td>
+        `;
+        eventsTableBody.appendChild(row);
+    });
+}
+
+// Render sessions
+function renderSessions(sessions = []) {
+    todaysSessions.innerHTML = '';
+    
+    if (sessions.length === 0) {
+        todaysSessions.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                <i class="fas fa-microphone-slash" style="font-size: 48px; margin-bottom: 15px;"></i>
+                <p>No sessions scheduled for today</p>
+            </div>
+        `;
+        return;
+    }
+    
+    sessions.forEach(session => {
+        const card = document.createElement('div');
+        card.className = 'session-card';
+        card.innerHTML = `
+            <div class="session-card-header">
+                <h4>${session.name}</h4>
+                <span class="session-time">${session.time}</span>
+            </div>
+            <div class="session-speaker">
+                <div class="speaker-avatar">${session.speaker.split(' ').map(n => n[0]).join('')}</div>
+                <div class="speaker-name">${session.speaker}</div>
+            </div>
+            <div class="session-description">${session.description}</div>
+            <div class="session-actions">
+                <button class="btn ${session.status === 'live' ? '' : 'btn-outline'} join-session" data-id="${session.id}">
+                    <i class="fas fa-video"></i> ${session.status === 'live' ? 'Join Now' : 'Add to Schedule'}
+                </button>
+                <button class="action-btn question" data-id="${session.id}">
+                    <i class="fas fa-question"></i>
+                </button>
+            </div>
+        `;
+        todaysSessions.appendChild(card);
+    });
+}
+
+// Render questions
+function renderQuestions(questions = []) {
+    recentQuestions.innerHTML = '';
+    
+    if (questions.length === 0) {
+        recentQuestions.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                <i class="fas fa-question-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                <p>No questions yet. Ask your first question!</p>
+            </div>
+        `;
+        return;
+    }
+    
+    questions.forEach(question => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        
+        // Handle different response structures from backend
+        const questionText = question.questionText || question.question;
+        const sessionName = question.sessionName || question.session;
+        const attendeeName = question.attendeeName || 'Attendee';
+        const createdAt = question.createdAt || question.date;
+        const hasResponse = question.status === 'answered' || question.hasResponse;
+        const responseText = question.answer || question.response;
+        const answeredAt = question.answeredAt;
+        
+        card.innerHTML = `
+            <div class="question-header">
+                <h4>${questionText}</h4>
+                <span class="question-session">${sessionName}</span>
+            </div>
+            <div class="question-meta" style="font-size: 12px; color: var(--dusty-purple); margin-bottom: 10px;">
+                Asked by: ${attendeeName} • ${new Date(createdAt).toLocaleDateString()}
+            </div>
+            <div class="question-text">
+                ${hasResponse ? 
+                    `<div class="question-response">
+                        <div class="response-header">
+                            <i class="fas fa-reply"></i>
+                            <span>Organizer Response</span>
+                            ${answeredAt ? `<small style="margin-left: auto;">${new Date(answeredAt).toLocaleDateString()}</small>` : ''}
                         </div>
-                    </td>
-                `;
-                eventsTableBody.appendChild(row);
-            });
-        }
-
-        // Render sessions
-        function renderSessions(sessions = sampleSessions) {
-            todaysSessions.innerHTML = '';
-            sessions.forEach(session => {
-                const card = document.createElement('div');
-                card.className = 'session-card';
-                card.innerHTML = `
-                    <div class="session-card-header">
-                        <h4>${session.name}</h4>
-                        <span class="session-time">${session.time}</span>
-                    </div>
-                    <div class="session-speaker">
-                        <div class="speaker-avatar">${session.speaker.split(' ').map(n => n[0]).join('')}</div>
-                        <div class="speaker-name">${session.speaker}</div>
-                    </div>
-                    <div class="session-description">${session.description}</div>
-                    <div class="session-actions">
-                        <button class="btn ${session.status === 'live' ? '' : 'btn-outline'} join-session" data-id="${session.id}">
-                            <i class="fas fa-video"></i> ${session.status === 'live' ? 'Join Now' : 'Add to Schedule'}
-                        </button>
-                        <button class="action-btn question" data-id="${session.id}">
-                            <i class="fas fa-question"></i>
-                        </button>
-                    </div>
-                `;
-                todaysSessions.appendChild(card);
-            });
-        }
-
-        // Render questions
-        function renderQuestions(questions = sampleQuestions) {
-            recentQuestions.innerHTML = '';
-            questions.forEach(question => {
-                const card = document.createElement('div');
-                card.className = 'question-card';
-                card.innerHTML = `
-                    <div class="question-header">
-                        <h4>${question.question}</h4>
-                        <span class="question-session">${question.session}</span>
-                    </div>
-                    <div class="question-text">
-                        ${question.hasResponse ? 
-                            `<div class="question-response">
-                                <div class="response-header">
-                                    <i class="fas fa-reply"></i>
-                                    <span>Organizer Response</span>
-                                </div>
-                                <div class="response-text">${question.response}</div>
-                            </div>` : 
-                            '<div class="status upcoming">Awaiting Response</div>'
-                        }
-                    </div>
-                `;
-                recentQuestions.appendChild(card);
-            });
-        }
-
-        // Update dashboard statistics
-        function updateStats() {
-            // In a real app, these would be calculated from actual data
-            document.getElementById('totalEvents').textContent = sampleEvents.length;
-            
-            const upcomingEvents = sampleEvents.filter(event => event.status === 'upcoming').length;
-            document.getElementById('eventsProgress').style.width = ${(upcomingEvents / sampleEvents.length) * 100}%;
-            
-            document.getElementById('totalSessions').textContent = sampleSessions.length;
-            document.getElementById('sessionsProgress').style.width = '75%';
-            
-            document.getElementById('questionsAsked').textContent = sampleQuestions.length;
-            const answeredQuestions = sampleQuestions.filter(q => q.hasResponse).length;
-            document.getElementById('questionsProgress').style.width = ${(answeredQuestions / sampleQuestions.length) * 100}%;
-            
-            document.getElementById('feedbackSubmitted').textContent = '3';
-            document.getElementById('feedbackProgress').style.width = '100%';
-        }
-
-        // Show toast notification
-        function showToast(message) {
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Modal controls
-            registerEventBtn.addEventListener('click', () => {
-                registerEventModal.style.display = 'flex';
-            });
-
-            askQuestionBtn.addEventListener('click', () => {
-                askQuestionModal.style.display = 'flex';
-            });
-
-            closeModals.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    registerEventModal.style.display = 'none';
-                    askQuestionModal.style.display = 'none';
-                    feedbackModal.style.display = 'none';
-                });
-            });
-
-            cancelRegisterBtn.addEventListener('click', () => {
-                registerEventModal.style.display = 'none';
-            });
-
-            cancelQuestionBtn.addEventListener('click', () => {
-                askQuestionModal.style.display = 'none';
-            });
-
-            cancelFeedbackBtn.addEventListener('click', () => {
-                feedbackModal.style.display = 'none';
-            });
-
-            // Save registration
-            saveRegisterBtn.addEventListener('click', () => {
-                const name = document.getElementById('attendeeName').value;
-                const email = document.getElementById('attendeeEmail').value;
-                const eventId = document.getElementById('eventSelection').value;
-
-                if (!name || !email || !eventId) {
-                    alert('Please fill in all fields');
-                    return;
+                        <div class="response-text">${responseText}</div>
+                    </div>` : 
+                    '<div class="status upcoming">Awaiting Response from Organizer</div>'
                 }
+            </div>
+        `;
+        recentQuestions.appendChild(card);
+    });
+}
 
-                // In a real app, this would send data to a server
-                registerEventModal.style.display = 'none';
-                
-                // Reset form
-                document.getElementById('attendeeName').value = '';
-                document.getElementById('attendeeEmail').value = '';
-                document.getElementById('eventSelection').value = '';
-                
-                showToast('Successfully registered for the event!');
+// Update dashboard statistics
+function updateStats(events = [], sessions = [], questions = []) {
+    // Update events card
+    const totalEvents = events.length;
+    const upcomingEvents = events.filter(event => {
+        const eventDate = new Date(event.date);
+        return eventDate >= new Date() || event.status === 'upcoming' || event.status === 'live';
+    }).length;
+    
+    document.getElementById('totalEvents').textContent = totalEvents;
+    document.getElementById('eventsSubtitle').textContent = `${upcomingEvents} upcoming events`;
+    document.getElementById('eventsProgress').style.width = totalEvents > 0 ? `${(upcomingEvents / totalEvents) * 100}%` : '0%';
+    
+    // Update other cards
+    document.getElementById('totalSessions').textContent = sessions.length;
+    document.getElementById('sessionsProgress').style.width = '75%';
+    
+    document.getElementById('questionsAsked').textContent = questions.length;
+    const answeredQuestions = questions.filter(q => q.status === 'answered' || q.hasResponse).length;
+    document.getElementById('questionsProgress').style.width = questions.length > 0 ? `${(answeredQuestions / questions.length) * 100}%` : '0%';
+    
+    document.getElementById('feedbackSubmitted').textContent = '3';
+    document.getElementById('feedbackProgress').style.width = '100%';
+}
+
+// Populate event dropdowns in modals
+function populateModalEvents(events) {
+    const eventSelection = document.getElementById('eventSelection');
+    const feedbackEvent = document.getElementById('feedbackEvent');
+    
+    // Clear existing options except the first one
+    while (eventSelection.children.length > 1) {
+        eventSelection.removeChild(eventSelection.lastChild);
+    }
+    while (feedbackEvent.children.length > 1) {
+        feedbackEvent.removeChild(feedbackEvent.lastChild);
+    }
+    
+    // Add events to dropdowns
+    events.forEach(event => {
+        const eventName = event.name || event.title || 'Unnamed Event';
+        const option1 = document.createElement('option');
+        option1.value = event._id;
+        option1.textContent = eventName;
+        eventSelection.appendChild(option1);
+        
+        const option2 = document.createElement('option');
+        option2.value = event._id;
+        option2.textContent = eventName;
+        feedbackEvent.appendChild(option2);
+    });
+}
+
+// Show toast notification
+function showToast(message) {
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+// Setup event listeners
+function setupEventListeners() {
+    // Modal controls
+    registerEventBtn.addEventListener('click', () => {
+        registerEventModal.style.display = 'flex';
+    });
+
+    askQuestionBtn.addEventListener('click', () => {
+        askQuestionModal.style.display = 'flex';
+    });
+
+    closeModals.forEach(btn => {
+        btn.addEventListener('click', () => {
+            registerEventModal.style.display = 'none';
+            askQuestionModal.style.display = 'none';
+            feedbackModal.style.display = 'none';
+        });
+    });
+
+    cancelRegisterBtn.addEventListener('click', () => {
+        registerEventModal.style.display = 'none';
+    });
+
+    cancelQuestionBtn.addEventListener('click', () => {
+        askQuestionModal.style.display = 'none';
+    });
+
+    cancelFeedbackBtn.addEventListener('click', () => {
+        feedbackModal.style.display = 'none';
+    });
+
+    // Save registration
+    saveRegisterBtn.addEventListener('click', () => {
+        const name = document.getElementById('attendeeName').value;
+        const email = document.getElementById('attendeeEmail').value;
+        const eventId = document.getElementById('eventSelection').value;
+
+        if (!name || !email || !eventId) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        // In a real app, this would send data to a server
+        registerEventModal.style.display = 'none';
+        
+        // Reset form
+        document.getElementById('attendeeName').value = '';
+        document.getElementById('attendeeEmail').value = '';
+        document.getElementById('eventSelection').value = '';
+        
+        showToast('Successfully registered for the event!');
+    });
+
+    // Save question
+    saveQuestionBtn.addEventListener('click', async () => {
+        const sessionId = document.getElementById('questionSession').value;
+        const sessionName = document.getElementById('questionSession').options[document.getElementById('questionSession').selectedIndex].text;
+        const questionText = document.getElementById('questionText').value;
+        const isAnonymous = document.getElementById('anonymousQuestion').checked;
+        
+        // For demo - in real app, get from user session
+        const attendeeName = isAnonymous ? "Anonymous" : "Attendee User";
+        const attendeeEmail = isAnonymous ? "anonymous@example.com" : "attendee@example.com";
+
+        if (!sessionId || !questionText) {
+            alert('Please select a session and enter your question');
+            return;
+        }
+
+        try {
+            const result = await apiService.submitQuestion({
+                sessionId,
+                sessionName,
+                questionText,
+                attendeeName,
+                attendeeEmail,
+                isAnonymous
             });
 
-            // Save question
-            saveQuestionBtn.addEventListener('click', () => {
-                const sessionId = document.getElementById('questionSession').value;
-                const questionText = document.getElementById('questionText').value;
-                const isAnonymous = document.getElementById('anonymousQuestion').checked;
-
-                if (!sessionId || !questionText) {
-                    alert('Please select a session and enter your question');
-                    return;
-                }
-
-                // In a real app, this would send data to a server
-                const selectedSession = sampleSessions.find(s => s.id == sessionId);
+            if (result.success) {
+                // Refresh questions list
+                const questions = await apiService.getQuestions();
+                renderQuestions(questions);
+                updateStats(allEvents, await apiService.getSessions(), questions);
                 
-                const newQuestion = {
-                    id: sampleQuestions.length + 1,
-                    session: selectedSession.name,
-                    question: questionText,
-                    response: "",
-                    hasResponse: false
-                };
-
-                sampleQuestions.unshift(newQuestion);
-                renderQuestions();
-                updateStats();
                 askQuestionModal.style.display = 'none';
                 
                 // Reset form
@@ -1424,213 +1630,214 @@
                 document.getElementById('questionText').value = '';
                 document.getElementById('anonymousQuestion').checked = false;
                 
-                showToast('Question submitted successfully!');
-            });
+                showToast('Question submitted successfully! Organizers will respond soon.');
+            }
+        } catch (error) {
+            console.error('Error submitting question:', error);
+            showToast('Error: Could not submit question. Check if backend is running.');
+        }
+    });
 
-            // Save feedback
-            saveFeedbackBtn.addEventListener('click', () => {
-                const eventId = document.getElementById('feedbackEvent').value;
-                const feedbackText = document.getElementById('feedbackText').value;
+    // Save feedback
+    saveFeedbackBtn.addEventListener('click', () => {
+        const eventId = document.getElementById('feedbackEvent').value;
+        const feedbackText = document.getElementById('feedbackText').value;
 
-                if (!eventId || !feedbackText) {
-                    alert('Please select an event and provide feedback');
-                    return;
-                }
+        if (!eventId || !feedbackText) {
+            alert('Please select an event and provide feedback');
+            return;
+        }
 
-                // In a real app, this would send data to a server
-                feedbackModal.style.display = 'none';
+        // In a real app, this would send data to a server
+        feedbackModal.style.display = 'none';
+        
+        // Reset form
+        document.getElementById('feedbackEvent').value = '';
+        document.getElementById('feedbackText').value = '';
+        
+        showToast('Thank you for your feedback!');
+    });
+
+    // Search functionality
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        if (searchTerm) {
+            const filteredEvents = allEvents.filter(event => 
+                (event.name && event.name.toLowerCase().includes(searchTerm)) ||
+                (event.location && event.location.toLowerCase().includes(searchTerm))
+            );
+            renderEvents(filteredEvents);
+        } else {
+            renderEvents(allEvents);
+        }
+    });
+
+    // Navigation
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = link.getAttribute('data-section');
+            
+            // Update active state
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+            
+            // Update page title
+            pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
+            
+            // Show appropriate content
+            if (section === 'dashboard') {
+                dashboardContent.style.display = 'block';
+                otherSections.style.display = 'none';
+            } else {
+                dashboardContent.style.display = 'none';
+                otherSections.style.display = 'block';
+                otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
                 
-                // Reset form
-                document.getElementById('feedbackEvent').value = '';
-                document.getElementById('feedbackText').value = '';
-                
-                showToast('Thank you for your feedback!');
-            });
-
-            // Search functionality
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                
-                if (searchTerm) {
-                    const filteredEvents = sampleEvents.filter(event => 
-                        event.name.toLowerCase().includes(searchTerm)
-                    );
-                    const filteredSessions = sampleSessions.filter(session => 
-                        session.name.toLowerCase().includes(searchTerm) || 
-                        session.speaker.toLowerCase().includes(searchTerm)
-                    );
-                    const filteredQuestions = sampleQuestions.filter(question => 
-                        question.question.toLowerCase().includes(searchTerm) || 
-                        question.session.toLowerCase().includes(searchTerm)
-                    );
-                    
-                    renderEvents(filteredEvents);
-                    renderSessions(filteredSessions);
-                    renderQuestions(filteredQuestions);
-                } else {
-                    renderEvents();
-                    renderSessions();
-                    renderQuestions();
-                }
-            });
-
-            // Navigation
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = link.getAttribute('data-section');
-                    
-                    // Update active state
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    
-                    // Update page title
-                    pageTitle.textContent = ${link.textContent.trim()} - Sunset Events;
-                    
-                    // Show appropriate content
-                    if (section === 'dashboard') {
-                        dashboardContent.style.display = 'block';
-                        otherSections.style.display = 'none';
-                    } else {
-                        dashboardContent.style.display = 'none';
-                        otherSections.style.display = 'block';
-                        otherSections.innerHTML = <div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>;
-                        
-                        // Special handling for feedback section
-                        if (section === 'feedback') {
-                            otherSections.innerHTML = `
-                                <div class="feature-section">
-                                    <div class="section-header">
-                                        <h3>Submit Feedback</h3>
+                // Special handling for feedback section
+                if (section === 'feedback') {
+                    otherSections.innerHTML = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3>Submit Feedback</h3>
+                            </div>
+                            <p>Share your thoughts about events you've attended to help us improve.</p>
+                            <button class="btn" id="openFeedbackModal"><i class="fas fa-comment-dots"></i> Submit Feedback</button>
+                        </div>
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3>Your Previous Feedback</h3>
+                            </div>
+                            <div class="question-cards">
+                                <div class="question-card">
+                                    <div class="question-header">
+                                        <h4>Sunset Music Festival</h4>
+                                        <span class="question-session">Oct 15, 2025</span>
                                     </div>
-                                    <p>Share your thoughts about events you've attended to help us improve.</p>
-                                    <button class="btn" id="openFeedbackModal"><i class="fas fa-comment-dots"></i> Submit Feedback</button>
-                                </div>
-                                <div class="feature-section">
-                                    <div class="section-header">
-                                        <h3>Your Previous Feedback</h3>
-                                    </div>
-                                    <div class="question-cards">
-                                        <div class="question-card">
-                                            <div class="question-header">
-                                                <h4>Sunset Music Festival</h4>
-                                                <span class="question-session">Oct 15, 2025</span>
-                                            </div>
-                                            <div class="question-text">
-                                                <p>"The virtual experience was amazing! The audio quality was excellent and the interactive features made it feel like I was really there."</p>
-                                                <div class="rating-stars" style="margin-top: 10px;">
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                    <i class="fas fa-star" style="color: gold;"></i>
-                                                </div>
-                                            </div>
+                                    <div class="question-text">
+                                        <p>"The virtual experience was amazing! The audio quality was excellent and the interactive features made it feel like I was really there."</p>
+                                        <div class="rating-stars" style="margin-top: 10px;">
+                                            <i class="fas fa-star" style="color: gold;"></i>
+                                            <i class="fas fa-star" style="color: gold;"></i>
+                                            <i class="fas fa-star" style="color: gold;"></i>
+                                            <i class="fas fa-star" style="color: gold;"></i>
+                                            <i class="fas fa-star" style="color: gold;"></i>
                                         </div>
                                     </div>
                                 </div>
-                            `;
-                            
-                            document.getElementById('openFeedbackModal').addEventListener('click', () => {
-                                feedbackModal.style.display = 'flex';
-                            });
-                        }
-                    }
-                });
-            });
-
-            // Card click actions
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const action = card.getAttribute('data-action');
-                    switch(action) {
-                        case 'view-events':
-                            navLinks[1].click(); // Click the "My Events" nav link
-                            break;
-                        case 'view-sessions':
-                            navLinks[3].click(); // Click the "Sessions" nav link
-                            break;
-                        case 'view-questions':
-                            navLinks[4].click(); // Click the "My Questions" nav link
-                            break;
-                        case 'view-feedback':
-                            navLinks[6].click(); // Click the "Submit Feedback" nav link
-                            break;
-                    }
-                });
-            });
-
-            // Event delegation for dynamic elements
-            document.addEventListener('click', (e) => {
-                // Join session
-                if (e.target.closest('.join-session')) {
-                    const sessionId = e.target.closest('.join-session').getAttribute('data-id');
-                    const session = sampleSessions.find(s => s.id == sessionId);
+                            </div>
+                        </div>
+                    `;
                     
-                    if (session.status === 'live') {
-                        showToast(Joining session: ${session.name});
-                    } else {
-                        showToast(Added ${session.name} to your schedule);
-                    }
-                }
-                
-                // Ask question from session
-                if (e.target.closest('.question')) {
-                    const sessionId = e.target.closest('.question').getAttribute('data-id');
-                    const session = sampleSessions.find(s => s.id == sessionId);
-                    
-                    document.getElementById('questionSession').value = sessionId;
-                    askQuestionModal.style.display = 'flex';
-                }
-                
-                // View schedule
-                if (e.target.closest('.view-schedule')) {
-                    const eventId = e.target.closest('.view-schedule').getAttribute('data-id');
-                    showToast(Viewing schedule for event ${eventId});
-                }
-                
-                // Submit feedback
-                if (e.target.closest('.submit-feedback')) {
-                    const eventId = e.target.closest('.submit-feedback').getAttribute('data-id');
-                    document.getElementById('feedbackEvent').value = eventId;
-                    feedbackModal.style.display = 'flex';
-                }
-            });
-
-            // View full schedule
-            viewFullScheduleBtn.addEventListener('click', () => {
-                navLinks[2].click(); // Click the "Event Schedule" nav link
-            });
-
-            // Notifications
-            document.getElementById('notificationsBtn').addEventListener('click', () => {
-                showToast('Notifications panel would open here');
-            });
-
-            // Rating stars
-            const stars = document.querySelectorAll('#feedbackRating i');
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const rating = parseInt(star.getAttribute('data-rating'));
-                    
-                    // Update star display
-                    stars.forEach((s, index) => {
-                        if (index < rating) {
-                            s.classList.remove('far');
-                            s.classList.add('fas');
-                            s.style.color = 'gold';
-                        } else {
-                            s.classList.remove('fas');
-                            s.classList.add('far');
-                            s.style.color = '';
-                        }
+                    document.getElementById('openFeedbackModal').addEventListener('click', () => {
+                        feedbackModal.style.display = 'flex';
                     });
-                });
-            });
-        }
+                }
+            }
+        });
+    });
 
-        // Initialize the dashboard when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initDashboard);
+    // Card click actions
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+            const action = card.getAttribute('data-action');
+            switch(action) {
+                case 'view-events':
+                    navLinks[1].click(); // Click the "My Events" nav link
+                    break;
+                case 'view-sessions':
+                    navLinks[3].click(); // Click the "Sessions" nav link
+                    break;
+                case 'view-questions':
+                    navLinks[4].click(); // Click the "My Questions" nav link
+                    break;
+                case 'view-feedback':
+                    navLinks[6].click(); // Click the "Submit Feedback" nav link
+                    break;
+            }
+        });
+    });
+
+    // Event delegation for dynamic elements
+    document.addEventListener('click', (e) => {
+        // Join session
+        if (e.target.closest('.join-session')) {
+            const sessionId = e.target.closest('.join-session').getAttribute('data-id');
+            const sessions = [
+                { id: 1, name: "Keynote: Future of AI", status: "live" },
+                { id: 2, name: "Creative Design Workshop", status: "upcoming" },
+                { id: 3, name: "Product Demo: New Features", status: "upcoming" }
+            ];
+            const session = sessions.find(s => s.id == sessionId);
+            
+            if (session && session.status === 'live') {
+                showToast(`Joining session: ${session.name}`);
+            } else {
+                showToast(`Added ${session ? session.name : 'session'} to your schedule`);
+            }
+        }
+        
+        // Ask question from session
+        if (e.target.closest('.question')) {
+            const sessionId = e.target.closest('.question').getAttribute('data-id');
+            
+            document.getElementById('questionSession').value = sessionId;
+            askQuestionModal.style.display = 'flex';
+        }
+        
+        // View schedule
+        if (e.target.closest('.view-schedule')) {
+            const eventId = e.target.closest('.view-schedule').getAttribute('data-id');
+            const event = allEvents.find(e => e._id == eventId);
+            showToast(`Viewing schedule for: ${event ? event.name : 'event'}`);
+        }
+        
+        // Submit feedback
+        if (e.target.closest('.submit-feedback')) {
+            const eventId = e.target.closest('.submit-feedback').getAttribute('data-id');
+            document.getElementById('feedbackEvent').value = eventId;
+            feedbackModal.style.display = 'flex';
+        }
+    });
+
+    // View full schedule
+    viewFullScheduleBtn.addEventListener('click', () => {
+        navLinks[2].click(); // Click the "Event Schedule" nav link
+    });
+
+    // Notifications
+    document.getElementById('notificationsBtn').addEventListener('click', () => {
+        showToast('Notifications panel would open here');
+    });
+
+    // Rating stars
+    const stars = document.querySelectorAll('#feedbackRating i');
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = parseInt(star.getAttribute('data-rating'));
+            
+            // Update star display
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('far');
+                    s.classList.add('fas');
+                    s.style.color = 'gold';
+                } else {
+                    s.classList.remove('fas');
+                    s.classList.add('far');
+                    s.style.color = '';
+                }
+            });
+        });
+    });
+}
+
+// Initialize the dashboard when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    setupEventListeners();
+    initDashboard();
+});
     </script>
 </body>
 </html>

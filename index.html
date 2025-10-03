@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatherX - Virtual Event Management Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-brown: #493129;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
+            color: var(--deep-brown);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--soft-pink);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+        }
+
+        .btn-outline:hover {
+            background: var(--dusty-purple);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: var(--dusty-purple);
+        }
+
+        /* Role Cards Section */
+        .roles-section {
+            padding: 80px 0;
+            background: white;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--deep-brown);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--dusty-purple);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .role-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .role-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .role-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple), var(--soft-pink), var(--light-blue), var(--light-cream));
+        }
+
+        .role-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(73, 49, 41, 0.15);
+        }
+
+        .role-card.organizer {
+            border-top-color: var(--deep-brown);
+        }
+
+        .role-card.attendee {
+            border-top-color: var(--dusty-purple);
+        }
+
+        .role-card.vendor {
+            border-top-color: var(--soft-pink);
+        }
+
+        .role-card.sponsor {
+            border-top-color: var(--light-blue);
+        }
+
+        .role-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .role-card.organizer .role-icon {
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+        }
+
+        .role-card.attendee .role-icon {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+        }
+
+        .role-card.vendor .role-icon {
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+        }
+
+        .role-card.sponsor .role-icon {
+            background: linear-gradient(135deg, var(--light-blue), var(--light-cream));
+        }
+
+        .role-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--deep-brown);
+        }
+
+        .role-card p {
+            color: var(--dusty-purple);
+            margin-bottom: 20px;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background: white;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--deep-brown);
+        }
+
+        .feature-card p {
+            color: var(--dusty-purple);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        .footer-logo h2 {
+            font-size: 24px;
+        }
+
+        .footer-logo span {
+            color: var(--soft-pink);
+        }
+
+        .footer-about p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--soft-pink);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--soft-pink);
+        }
+
+        .newsletter p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .newsletter-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .role-cards, .features-grid, .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .role-cards, .features-grid, .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h1>Gather<span>X</span></h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Transform Your Virtual Events Experience</h2>
+                <p>All-in-one platform for organizers, attendees, vendors, and sponsors</p>
+                <a href="#" class="btn" style="padding: 15px 30px; font-size: 18px;">
+                    <i class="fas fa-rocket"></i> Get Started Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Role Cards Section -->
+    <section class="roles-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Choose Your Role</h2>
+                <p>Access tailored features based on your role in the event ecosystem</p>
+            </div>
+            
+            <div class="role-cards">
+                <div class="role-card organizer">
+                    <div class="role-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Organizer</h3>
+                    <p>Create and manage events, sessions, and vendor tasks</p>
+                    <a href="organiser.html" class="btn">Access Dashboard</a>
+                </div>
+                
+                <div class="role-card attendee">
+                    <div class="role-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Attendee</h3>
+                    <p>Register for events, join sessions, and ask questions</p>
+                    <a href="attendee.html" class="btn">Join Events</a>
+                </div>
+                
+                <div class="role-card vendor">
+                    <div class="role-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <h3>Vendor</h3>
+                    <p>Manage assigned tasks and coordinate with organizers</p>
+                    <a href="vendor.html" class="btn">View Tasks</a>
+                </div>
+                
+                <div class="role-card sponsor">
+                    <div class="role-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Sponsor</h3>
+                    <p>Track ROI, manage payments, and view analytics</p>
+                    <a href="sponser.html" class="btn">Sponsor Portal</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Platform Features</h2>
+                <p>Everything you need for successful virtual events</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Live Streaming</h3>
+                    <p>High-quality video streaming with Zoom, YouTube, and custom iframe integration</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Interactive Q&A</h3>
+                    <p>Real-time question submission and organizer responses during sessions</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Task Management</h3>
+                    <p>Assign and track vendor tasks with progress monitoring</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>ROI Analytics</h3>
+                    <p>Comprehensive analytics and ROI tracking for sponsors</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bullhorn"></i>
+                    </div>
+                    <h3>Announcements</h3>
+                    <p>Broadcast important updates to all event participants</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3>Smart Scheduling</h3>
+                    <p>Automated scheduling with conflict detection and reminders</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2>Gather<span>X</span></h2>
+                    </div>
+                    <p>All-in-one virtual event management platform for organizers, attendees, vendors, and sponsors.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Organizer Dashboard</a></li>
+                        <li><a href="#">Attendee Portal</a></li>
+                        <li><a href="#">Vendor Center</a></li>
+                        <li><a href="#">Sponsor Hub</a></li>
+                        <li><a href="#">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tutorials</a></li>
+                        <li><a href="#">Community</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GatherX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

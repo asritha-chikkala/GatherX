@@ -15,7 +15,7 @@ const connectDB = require('./config/database');
 const events = require('./routes/events');
 const tasks = require('./routes/tasks');
 const activities = require('./routes/activities');
-
+const question = require('./routes/questions');
 // Import middleware
 const errorHandler = require('./middleware/errorHandler');
 
@@ -50,6 +50,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/events', events);
 app.use('/api/tasks', tasks);
 app.use('/api/activities', activities);
+app.use('/api/questions', question);
 
 // Health check route
 app.get('/api/health', (req, res) => {
