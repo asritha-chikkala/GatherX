@@ -17,10 +17,8 @@ Built with **MongoDB Atlas**, **secure access control**, and **role-specific das
 - Attendee-Friendly UI → Easy event registration, joining sessions, and feedback  
 - Meetings & Communication → Centralized announcements, Q&A, and pre-event meetings  
 
-**Event Dashboard Preview:**  
-![WhatsApp Image 2025-10-04 at 15 13 04_d638c895](https://github.com/user-attachments/assets/5949c3e2-a26e-47f0-8e00-eefc03d40b0)  
 
-**Another Dashboard Screenshot:**  
+**Homepage Screenshot:**  
 <img width="1872" height="784" alt="image" src="https://github.com/user-attachments/assets/badd519d-954e-4c20-b751-a2fd2703613e" />
 
 ---
