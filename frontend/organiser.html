@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunset Events - Organizer Dashboard</title>
+    <title>GatherX - Organizer Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -433,7 +433,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-sunset"></i>
                 </div>
-                <h1>Sunset <span>Events</span></h1>
+                <h1>Gather <span>X</span></h1>
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -1338,7 +1338,7 @@
             
             elements.otherSections.innerHTML = content;
             
-            // Setup event listeners for dynamically created elements
+            
             if (section === 'create-event') {
                 setupCreateEventSection();
             }
@@ -1353,7 +1353,7 @@
         }
     }
 
-    // Setup create event section form
+    
     function setupCreateEventSection() {
         const saveBtn = document.getElementById('sectionSaveEventBtn');
         if (saveBtn) {
@@ -1381,11 +1381,11 @@
                     const newEvent = await apiService.createEvent(eventData);
                     events.push(newEvent);
                     
-                    // Update dashboard and reload the create-event section to show new event
+                    
                     updateDashboard();
                     loadSection('create-event');
                     
-                    // Clear form
+                    
                     document.getElementById('sectionEventName').value = '';
                     document.getElementById('sectionEventDate').value = '';
                     document.getElementById('sectionEventDescription').value = '';
@@ -1413,19 +1413,19 @@
         if (!confirmDelete) return;
         
         try {
-            // Show loading state
+            
             showToast('Deleting event...');
             
-            // Call the delete API
+           
             await apiService.deleteEvent(eventId);
             
-            // Remove from local state
+            
             events = events.filter(event => event._id !== eventId);
             
-            // Update the UI
+            
             updateDashboard();
             
-            // If we're in the view-events section, reload it
+            
             const currentSection = document.querySelector('.nav-links a.active')?.getAttribute('data-section');
             if (currentSection === 'view-events') {
                 loadSection('view-events');
@@ -1454,7 +1454,7 @@
             
             showToast('Answer sent successfully!');
             
-            // Reload the questions section to show updated state
+            
             loadSection('questions');
             
         } catch (error) {
@@ -1470,7 +1470,7 @@
         navigator.clipboard.writeText(text).then(() => {
             showToast('Zoom link copied to clipboard!');
         }).catch(() => {
-            // Fallback for older browsers
+            
             const textArea = document.createElement('textarea');
             textArea.value = text;
             document.body.appendChild(textArea);
@@ -1481,7 +1481,7 @@
         });
     };
 
-    // Start the app
+   
     document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
