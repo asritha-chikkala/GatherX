@@ -892,6 +892,145 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Schedule Detail Card */
+        .schedule-detail-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 20px 40px rgba(73, 49, 41, 0.3);
+            z-index: 2000;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .schedule-detail-card.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .schedule-card-header {
+            padding: 20px 25px;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .schedule-card-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close-schedule-card {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .close-schedule-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .schedule-card-body {
+            padding: 25px;
+        }
+
+        .schedule-detail-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+        }
+
+        .schedule-detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .detail-content {
+            flex: 1;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: var(--dusty-purple);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            color: var(--deep-brown);
+            font-weight: 500;
+        }
+
+        .detail-description {
+            font-size: 14px;
+            color: var(--deep-brown);
+            line-height: 1.5;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(73, 49, 41, 0.7);
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         /* Responsive Design */
         @media (max-width: 1100px) {
             .container {
@@ -931,6 +1070,11 @@
             .event-cards, .question-cards {
                 grid-template-columns: 1fr;
             }
+
+            .schedule-detail-card {
+                width: 95%;
+                max-width: 95%;
+            }
         }
     </style>
 </head>
@@ -950,7 +1094,6 @@
                 <li><a href="#" data-section="registered-events"><i class="fas fa-check-circle"></i> Registered Events</a></li>
                 <li><a href="#" data-section="schedule"><i class="fas fa-clock"></i> Event Schedule</a></li>
                 <li><a href="#" data-section="questions"><i class="fas fa-question-circle"></i> My Questions</a></li>
-                <li><a href="#" data-section="announcements"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="#" data-section="feedback"><i class="fas fa-comment-dots"></i> Submit Feedback</a></li>
             </ul>
         </div>
@@ -1015,10 +1158,12 @@
                             <i class="fas fa-question-circle"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="questionsAsked">7</div>
-                            <p>5 answered by organizers</p>
+                            <div class="stat" id="questionsAsked">
+                                <span class="loading"></span>
+                            </div>
+                            <p id="questionsAnswered">Loading...</p>
                             <div class="progress-bar">
-                                <div class="progress" id="questionsProgress" style="width: 71%;"></div>
+                                <div class="progress" id="questionsProgress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -1028,10 +1173,10 @@
                             <i class="fas fa-comment-dots"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="feedbackSubmitted">3</div>
+                            <div class="stat" id="feedbackSubmitted">0</div>
                             <p>For completed events</p>
                             <div class="progress-bar">
-                                <div class="progress" id="feedbackProgress" style="width: 100%;"></div>
+                                <div class="progress" id="feedbackProgress" style="width: 0%;"></div>
                             </div>
                         </div>
                     </div>
@@ -1140,6 +1285,13 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label for="questionEvent">Select Event</label>
+                    <select id="questionEvent" class="form-control">
+                        <option value="">Choose an event</option>
+                        <!-- Events will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="questionText">Your Question</label>
                     <textarea id="questionText" class="form-control" rows="4" placeholder="Enter your question for the speaker or organizer"></textarea>
                 </div>
@@ -1172,16 +1324,6 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="feedbackRating">Overall Rating</label>
-                    <div id="feedbackRating" class="rating-stars">
-                        <i class="far fa-star" data-rating="1"></i>
-                        <i class="far fa-star" data-rating="2"></i>
-                        <i class="far fa-star" data-rating="3"></i>
-                        <i class="far fa-star" data-rating="4"></i>
-                        <i class="far fa-star" data-rating="5"></i>
-                    </div>
-                </div>
-                <div class="form-group">
                     <label for="feedbackText">Your Feedback</label>
                     <textarea id="feedbackText" class="form-control" rows="4" placeholder="Share your thoughts about the event"></textarea>
                 </div>
@@ -1193,6 +1335,66 @@
         </div>
     </div>
 
+    <!-- Schedule Detail Card -->
+    <div class="overlay" id="scheduleOverlay"></div>
+    <div class="schedule-detail-card" id="scheduleDetailCard">
+        <div class="schedule-card-header">
+            <h3 id="scheduleEventTitle">Event Details</h3>
+            <button class="close-schedule-card">&times;</button>
+        </div>
+        <div class="schedule-card-body">
+            <div class="schedule-detail-item">
+                <div class="detail-icon">
+                    <i class="fas fa-calendar"></i>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Date & Time</div>
+                    <div class="detail-value" id="scheduleDateTime">Loading...</div>
+                </div>
+            </div>
+            <div class="schedule-detail-item">
+                <div class="detail-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value" id="scheduleLocation">Loading...</div>
+                </div>
+            </div>
+            <div class="schedule-detail-item">
+                <div class="detail-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Meeting Link</div>
+                    <div class="detail-value">
+                        <button class="btn btn-zoom" id="scheduleZoomLinkBtn">
+                            <i class="fas fa-video"></i> Join Zoom Meeting
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="schedule-detail-item">
+                <div class="detail-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Description</div>
+                    <div class="detail-value" id="scheduleDescription">Loading...</div>
+                </div>
+            </div>
+            <div class="schedule-detail-item">
+                <div class="detail-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="detail-content">
+                    <div class="detail-label">Event Type</div>
+                    <div class="detail-value" id="scheduleType">Loading...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
@@ -1200,7 +1402,7 @@
     </div>
 
     <script>
-        // API Configuration - Your backend is running on port 5000
+        // API Configuration
         const API_BASE_URL = 'https://gatherx-1vsr.onrender.com/api';
 
         // Session Storage Keys
@@ -1209,15 +1411,15 @@
             USER_DATA: 'sunsetEvents_userData'
         };
 
-        // API Service - UPDATED to work with your backend
+        // API Service
         const apiService = {
-            // Use your existing GET /api/events endpoint
+            // Get events from backend
             async getEvents() {
                 try {
                     const response = await fetch(`${API_BASE_URL}/events`);
                     if (!response.ok) throw new Error('Failed to fetch events');
                     const data = await response.json();
-                    return data.events || []; // Your backend returns { events: [], total: number }
+                    return data.events || [];
                 } catch (error) {
                     console.error('Error fetching events:', error);
                     throw error;
@@ -1228,17 +1430,18 @@
             async getRegisteredEvents() {
                 try {
                     const registeredEvents = JSON.parse(sessionStorage.getItem(SESSION_KEYS.REGISTERED_EVENTS) || '[]');
-                    console.log('Loaded registered events from session:', registeredEvents);
                     return registeredEvents;
                 } catch (error) {
-                    console.error('Error loading registered events from session:', error);
+                    console.error('Error loading registered events:', error);
                     return [];
                 }
             },
 
-            // Register for an event - USING YOUR NEW ENDPOINT
+            // Register for an event - FIXED: Uses correct parameter name
             async registerForEvent(eventId, attendeeData) {
                 try {
+                    console.log('Registering for event:', eventId, attendeeData);
+                    
                     const response = await fetch(`${API_BASE_URL}/events/${eventId}/register`, {
                         method: 'POST',
                         headers: {
@@ -1274,21 +1477,19 @@
                     // Check if already registered
                     const alreadyRegistered = currentRegistered.find(event => event._id === eventData._id);
                     if (!alreadyRegistered) {
-                        // Add user data to event for session storage
                         const eventWithUser = {
                             ...eventData,
                             userRegistration: {
                                 name: userData.name,
                                 email: userData.email,
-                                phone: userData.phone,
-                                company: userData.company,
+                                phone: userData.phone || '',
+                                company: userData.company || '',
                                 registeredAt: new Date().toISOString()
                             }
                         };
                         
                         currentRegistered.push(eventWithUser);
                         sessionStorage.setItem(SESSION_KEYS.REGISTERED_EVENTS, JSON.stringify(currentRegistered));
-                        console.log('Saved to registered events:', eventWithUser.name);
                     }
                 } catch (error) {
                     console.error('Error saving to registered events:', error);
@@ -1304,20 +1505,32 @@
                     return data.data || [];
                 } catch (error) {
                     console.error('Error fetching questions:', error);
-                    return [];
+                    throw error;
                 }
             },
 
             // Submit question to backend
             async submitQuestion(questionData) {
                 try {
-                    console.log('Submitting question:', questionData);
+                    // Find the event to get session name
+                    const events = await this.getEvents();
+                    const event = events.find(e => e._id === questionData.eventId);
+                    
+                    const questionPayload = {
+                        sessionId: questionData.eventId,
+                        sessionName: event ? event.name : 'Event',
+                        questionText: questionData.questionText,
+                        attendeeName: questionData.attendeeName,
+                        attendeeEmail: questionData.attendeeEmail,
+                        isAnonymous: questionData.isAnonymous
+                    };
+                    
                     const response = await fetch(`${API_BASE_URL}/questions`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(questionData)
+                        body: JSON.stringify(questionPayload)
                     });
                     
                     if (!response.ok) {
@@ -1330,6 +1543,20 @@
                 } catch (error) {
                     console.error('Error submitting question:', error);
                     throw error;
+                }
+            },
+
+            // Get user's questions specifically
+            async getUserQuestions(userEmail) {
+                try {
+                    const allQuestions = await this.getQuestions();
+                    return allQuestions.filter(q => 
+                        q.attendeeEmail === userEmail || 
+                        (q.isAnonymous && q.attendeeEmail === 'anonymous@example.com')
+                    );
+                } catch (error) {
+                    console.error('Error getting user questions:', error);
+                    return [];
                 }
             }
         };
@@ -1358,41 +1585,130 @@
         const otherSections = document.getElementById('otherSections');
         const pageTitle = document.getElementById('pageTitle');
         const viewFullScheduleBtn = document.getElementById('viewFullScheduleBtn');
+        
+        // Schedule Detail Card Elements
+        const scheduleOverlay = document.getElementById('scheduleOverlay');
+        const scheduleDetailCard = document.getElementById('scheduleDetailCard');
+        const closeScheduleCard = document.querySelector('.close-schedule-card');
+        const scheduleEventTitle = document.getElementById('scheduleEventTitle');
+        const scheduleDateTime = document.getElementById('scheduleDateTime');
+        const scheduleLocation = document.getElementById('scheduleLocation');
+        const scheduleZoomLinkBtn = document.getElementById('scheduleZoomLinkBtn');
+        const scheduleDescription = document.getElementById('scheduleDescription');
+        const scheduleType = document.getElementById('scheduleType');
 
         // Global variables
         let allEvents = [];
         let registeredEvents = [];
         let allRegisteredEvents = [];
+        let userQuestions = [];
+        let currentScheduleEvent = null;
+
+        // Calculate event status based on date
+        function calculateEventStatus(event) {
+            const now = new Date();
+            const eventDate = new Date(event.date);
+            
+            if (event.status === 'completed' || event.status === 'cancelled') {
+                return event.status;
+            }
+            
+            if (eventDate < now) {
+                return 'completed';
+            }
+            
+            // If event is within 2 hours, consider it live
+            const timeUntilEvent = eventDate - now;
+            const twoHours = 2 * 60 * 60 * 1000;
+            
+            if (timeUntilEvent <= twoHours && timeUntilEvent > 0) {
+                return 'live';
+            }
+            
+            return 'upcoming';
+        }
 
         // Initialize the dashboard
         async function initDashboard() {
             try {
-                // Fetch real events from your backend
-                allEvents = await apiService.getEvents();
+                showLoadingState();
                 
-                // Fetch registered events - USING SESSION STORAGE
-                allRegisteredEvents = await apiService.getRegisteredEvents();
-                registeredEvents = allRegisteredEvents.map(event => event._id);
+                // Load data sequentially
+                try {
+                    allEvents = await apiService.getEvents();
+                } catch (error) {
+                    console.error('Failed to load events:', error);
+                    showToast('Error loading events from server');
+                    allEvents = [];
+                }
                 
-                // Fetch questions
-                const questions = await apiService.getQuestions();
+                try {
+                    allRegisteredEvents = await apiService.getRegisteredEvents();
+                    registeredEvents = allRegisteredEvents.map(event => event._id);
+                } catch (error) {
+                    console.error('Failed to load registered events:', error);
+                    allRegisteredEvents = [];
+                    registeredEvents = [];
+                }
                 
+                try {
+                    userQuestions = await apiService.getUserQuestions('attendee@example.com');
+                } catch (error) {
+                    console.error('Failed to load questions:', error);
+                    userQuestions = [];
+                }
+                
+                // Render all components
                 renderEvents(allEvents);
                 renderRegisteredEventsList();
-                renderQuestions(questions);
-                updateStats(allEvents, allRegisteredEvents, questions);
+                renderQuestions(userQuestions);
+                updateStats(allEvents, allRegisteredEvents, userQuestions);
                 populateModalEvents(allEvents);
                 
-                console.log('Dashboard loaded with', allEvents.length, 'events from backend');
-                console.log('Registered events:', allRegisteredEvents.length);
-                showToast(`Successfully loaded ${allEvents.length} events from backend`);
+                if (allEvents.length === 0) {
+                    showToast('No events found in database');
+                } else {
+                    showToast(`Loaded ${allEvents.length} events successfully`);
+                }
+                
             } catch (error) {
-                console.error('Error loading dashboard:', error);
-                showToast('Error loading data from backend');
+                console.error('Critical error in dashboard initialization:', error);
+                showToast('Failed to initialize dashboard');
             }
         }
 
-        // Render events table - adapt to your backend event structure
+        // Show loading state
+        function showLoadingState() {
+            eventsTableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 40px;">
+                        <div class="loading"></div>
+                        <p style="margin-top: 10px;">Connecting to backend server...</p>
+                    </td>
+                </tr>
+            `;
+            
+            registeredEventsList.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div class="loading"></div>
+                    <p style="margin-top: 10px;">Loading registered events...</p>
+                </div>
+            `;
+            
+            recentQuestions.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div class="loading"></div>
+                    <p style="margin-top: 10px;">Loading questions...</p>
+                </div>
+            `;
+            
+            // Update stats to show loading
+            document.getElementById('totalEvents').innerHTML = '<span class="loading"></span>';
+            document.getElementById('totalRegisteredEvents').innerHTML = '<span class="loading"></span>';
+            document.getElementById('questionsAsked').innerHTML = '<span class="loading"></span>';
+        }
+
+        // Render events table
         function renderEvents(events = []) {
             eventsTableBody.innerHTML = '';
             
@@ -1401,7 +1717,7 @@
                     <tr>
                         <td colspan="5" style="text-align: center; padding: 40px;">
                             <i class="fas fa-calendar-times" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px;"></i>
-                            <p>No events found</p>
+                            <p>No events available in database</p>
                         </td>
                     </tr>
                 `;
@@ -1411,30 +1727,22 @@
             events.forEach(event => {
                 const row = document.createElement('tr');
                 
-                // Map your backend event fields to frontend display
-                const eventName = event.name || event.title || 'Unnamed Event';
+                const eventName = event.name;
                 const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
-                const eventLocation = event.location || event.venue || 'TBA';
-                const zoomLink = event.zoomLink || event.meetingLink || '#';
+                const eventLocation = event.location;
+                const zoomLink = event.zoomLink || '#';
                 
-                // Determine status based on date and registration
-                let status = 'upcoming';
-                let statusText = 'Upcoming';
+                // Calculate status
+                const status = calculateEventStatus(event);
                 const isRegistered = registeredEvents.includes(event._id);
                 
-                if (event.status === 'completed' || (event.date && new Date(event.date) < new Date())) {
-                    status = 'completed';
-                    statusText = 'Completed';
-                } else if (event.status === 'live') {
-                    status = 'live';
-                    statusText = 'Live';
-                } else if (isRegistered) {
-                    status = 'registered';
+                let statusText = status.charAt(0).toUpperCase() + status.slice(1);
+                if (isRegistered && status === 'upcoming') {
                     statusText = 'Registered';
                 }
                 
                 row.innerHTML = `
-                    <td>${eventName}</td>
+                    <td><strong>${eventName}</strong></td>
                     <td>${eventDate}</td>
                     <td>${eventLocation}</td>
                     <td><span class="status ${status}">${statusText}</span></td>
@@ -1448,10 +1756,9 @@
                                     <i class="fas fa-user-plus"></i> Register
                                 </button>`
                             }
-                            ${status === 'upcoming' || status === 'live' ? 
-                                `<button class="btn btn-outline view-schedule" data-id="${event._id}">View Schedule</button>` : 
-                                `<button class="btn btn-outline submit-feedback" data-id="${event._id}">Submit Feedback</button>`
-                            }
+                            <button class="btn btn-outline view-schedule" data-id="${event._id}">
+                                View Schedule
+                            </button>
                         </div>
                     </td>
                 `;
@@ -1459,7 +1766,7 @@
             });
         }
 
-        // Render registered events in the My Registered Events section
+        // Render registered events
         function renderRegisteredEventsList() {
             registeredEventsList.innerHTML = '';
             
@@ -1480,17 +1787,15 @@
                 const card = document.createElement('div');
                 card.className = 'event-card';
                 
-                const eventName = event.name || event.title || 'Unnamed Event';
+                const eventName = event.name;
                 const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
                 const eventTime = event.date ? new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD';
-                const eventLocation = event.location || event.venue || 'Virtual Event';
-                const zoomLink = event.zoomLink || event.meetingLink || '#';
-                const eventDescription = event.description || 'Join this amazing event!';
+                const eventLocation = event.location;
+                const zoomLink = event.zoomLink || '#';
+                const eventDescription = event.description;
                 
-                // Determine if event is live based on date/time
-                const now = new Date();
-                const eventDateTime = new Date(event.date);
-                const isLive = eventDateTime <= now && eventDateTime > new Date(now.getTime() - 2 * 60 * 60 * 1000); // Live if within 2 hours of start
+                const status = calculateEventStatus(event);
+                const isLive = status === 'live';
                 
                 card.innerHTML = `
                     <div class="event-card-header">
@@ -1508,89 +1813,13 @@
                         <button class="btn ${isLive ? 'btn-success' : 'btn-outline'} join-meeting" data-link="${zoomLink}">
                             <i class="fas fa-video"></i> ${isLive ? 'Join Meeting' : 'View Details'}
                         </button>
-                        <button class="action-btn calendar" data-event='${JSON.stringify(event).replace(/'/g, "&apos;")}'>
-                            <i class="fas fa-calendar-plus"></i>
+                        <button class="btn btn-outline view-schedule-card" data-id="${event._id}">
+                            View Schedule
                         </button>
                     </div>
                 `;
                 registeredEventsList.appendChild(card);
             });
-        }
-
-        // Render registered events section in navigation
-        function renderRegisteredEvents() {
-            const registeredEventsSection = document.getElementById('registeredEventsContent');
-            if (!registeredEventsSection) return;
-
-            if (allRegisteredEvents.length === 0) {
-                registeredEventsSection.innerHTML = `
-                    <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
-                        <i class="fas fa-calendar-check" style="font-size: 48px; margin-bottom: 15px;"></i>
-                        <p>You haven't registered for any events yet.</p>
-                        <button class="btn" onclick="document.getElementById('registerEventBtn').click()">
-                            <i class="fas fa-plus"></i> Register for an Event
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = `
-                <div class="table-container">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Event Name</th>
-                                <th>Date</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                                <th>Meeting Link</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-
-            allRegisteredEvents.forEach(event => {
-                const eventName = event.name || event.title || 'Unnamed Event';
-                const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
-                const eventLocation = event.location || event.venue || 'TBA';
-                const zoomLink = event.zoomLink || event.meetingLink || '#';
-                
-                let status = 'upcoming';
-                let statusText = 'Upcoming';
-                if (event.status === 'completed' || (event.date && new Date(event.date) < new Date())) {
-                    status = 'completed';
-                    statusText = 'Completed';
-                } else if (event.status === 'live') {
-                    status = 'live';
-                    statusText = 'Live';
-                }
-
-                html += `
-                    <tr>
-                        <td>${eventName}</td>
-                        <td>${eventDate}</td>
-                        <td>${eventLocation}</td>
-                        <td><span class="status ${status}">${statusText}</span></td>
-                        <td>
-                            ${status === 'live' || status === 'upcoming' ? 
-                                `<button class="btn btn-zoom join-zoom" data-link="${zoomLink}">
-                                    <i class="fas fa-video"></i> Join Meeting
-                                </button>` : 
-                                '<span style="color: var(--soft-pink);">Event Completed</span>'
-                            }
-                        </td>
-                    </tr>
-                `;
-            });
-
-            html += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-
-            registeredEventsSection.innerHTML = html;
         }
 
         // Render questions
@@ -1607,17 +1836,18 @@
                 return;
             }
             
-            questions.forEach(question => {
+            const sortedQuestions = questions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            
+            sortedQuestions.slice(0, 4).forEach(question => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
                 
-                // Handle different response structures from backend
-                const questionText = question.questionText || question.question;
-                const sessionName = question.sessionName || question.session || 'General';
-                const attendeeName = question.attendeeName || 'Attendee';
-                const createdAt = question.createdAt || question.date;
-                const hasResponse = question.status === 'answered' || question.hasResponse;
-                const responseText = question.answer || question.response;
+                const questionText = question.questionText;
+                const sessionName = question.sessionName;
+                const attendeeName = question.attendeeName;
+                const createdAt = question.createdAt;
+                const hasResponse = question.status === 'answered' && question.answer;
+                const responseText = question.answer;
                 const answeredAt = question.answeredAt;
                 
                 card.innerHTML = `
@@ -1646,25 +1876,62 @@
             });
         }
 
+        // Show schedule detail card
+        function showScheduleDetail(eventId) {
+            const event = allEvents.find(e => e._id === eventId) || allRegisteredEvents.find(e => e._id === eventId);
+            if (!event) {
+                showToast('Event not found');
+                return;
+            }
+            
+            currentScheduleEvent = event;
+            
+            // Populate schedule card with event details
+            scheduleEventTitle.textContent = event.name;
+            scheduleDateTime.textContent = event.date ? `${new Date(event.date).toLocaleDateString()} at ${new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 'TBD';
+            scheduleLocation.textContent = event.location;
+            scheduleDescription.textContent = event.description;
+            scheduleType.textContent = event.type ? event.type.charAt(0).toUpperCase() + event.type.slice(1) : 'General';
+            
+            // Set up Zoom link
+            scheduleZoomLinkBtn.onclick = () => {
+                if (event.zoomLink && event.zoomLink !== '#') {
+                    window.open(event.zoomLink, '_blank');
+                } else {
+                    showToast('Zoom link not available for this event');
+                }
+            };
+            
+            // Show the card and overlay
+            scheduleOverlay.classList.add('active');
+            scheduleDetailCard.classList.add('active');
+        }
+
+        // Hide schedule detail card
+        function hideScheduleDetail() {
+            scheduleOverlay.classList.remove('active');
+            scheduleDetailCard.classList.remove('active');
+            currentScheduleEvent = null;
+        }
+
         // Update dashboard statistics
         function updateStats(events = [], registeredEvents = [], questions = []) {
             // Update events card
             const totalEvents = events.length;
             const upcomingEvents = events.filter(event => {
-                const eventDate = new Date(event.date);
-                return eventDate >= new Date() || event.status === 'upcoming' || event.status === 'live';
+                const status = calculateEventStatus(event);
+                return status === 'upcoming' || status === 'live';
             }).length;
             
             document.getElementById('totalEvents').textContent = totalEvents;
             document.getElementById('eventsSubtitle').textContent = `${upcomingEvents} upcoming events`;
             document.getElementById('eventsProgress').style.width = totalEvents > 0 ? `${(upcomingEvents / totalEvents) * 100}%` : '0%';
             
-            // Update my events card - now based on registered events
+            // Update my events card
             const totalRegisteredEvents = registeredEvents.length;
             const liveEvents = registeredEvents.filter(event => {
-                const eventDateTime = new Date(event.date);
-                const now = new Date();
-                return eventDateTime <= now && eventDateTime > new Date(now.getTime() - 2 * 60 * 60 * 1000);
+                const status = calculateEventStatus(event);
+                return status === 'live';
             }).length;
             
             document.getElementById('totalRegisteredEvents').textContent = totalRegisteredEvents;
@@ -1672,23 +1939,26 @@
             document.getElementById('registeredEventsProgress').style.width = totalRegisteredEvents > 0 ? `${(liveEvents / totalRegisteredEvents) * 100}%` : '0%';
             
             // Update questions card
-            document.getElementById('questionsAsked').textContent = questions.length;
-            const answeredQuestions = questions.filter(q => q.status === 'answered' || q.hasResponse).length;
-            document.getElementById('questionsProgress').style.width = questions.length > 0 ? `${(answeredQuestions / questions.length) * 100}%` : '0%';
+            const totalQuestions = questions.length;
+            const answeredQuestions = questions.filter(q => q.status === 'answered' && q.answer).length;
             
-            // Update feedback card
-            document.getElementById('feedbackSubmitted').textContent = '3';
-            document.getElementById('feedbackProgress').style.width = '100%';
+            document.getElementById('questionsAsked').textContent = totalQuestions;
+            document.getElementById('questionsAnswered').textContent = `${answeredQuestions} answered by organizers`;
+            document.getElementById('questionsProgress').style.width = totalQuestions > 0 ? `${(answeredQuestions / totalQuestions) * 100}%` : '0%';
         }
 
         // Populate event dropdowns in modals
         function populateModalEvents(events) {
             const eventSelection = document.getElementById('eventSelection');
+            const questionEvent = document.getElementById('questionEvent');
             const feedbackEvent = document.getElementById('feedbackEvent');
             
             // Clear existing options except the first one
             while (eventSelection.children.length > 1) {
                 eventSelection.removeChild(eventSelection.lastChild);
+            }
+            while (questionEvent.children.length > 1) {
+                questionEvent.removeChild(questionEvent.lastChild);
             }
             while (feedbackEvent.children.length > 1) {
                 feedbackEvent.removeChild(feedbackEvent.lastChild);
@@ -1696,7 +1966,8 @@
             
             // Add events to dropdowns
             events.forEach(event => {
-                const eventName = event.name || event.title || 'Unnamed Event';
+                const eventName = event.name;
+                
                 const option1 = document.createElement('option');
                 option1.value = event._id;
                 option1.textContent = eventName;
@@ -1705,7 +1976,12 @@
                 const option2 = document.createElement('option');
                 option2.value = event._id;
                 option2.textContent = eventName;
-                feedbackEvent.appendChild(option2);
+                questionEvent.appendChild(option2);
+
+                const option3 = document.createElement('option');
+                option3.value = event._id;
+                option3.textContent = eventName;
+                feedbackEvent.appendChild(option3);
             });
         }
 
@@ -1715,7 +1991,7 @@
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-            }, 3000);
+            }, 4000);
         }
 
         // Setup event listeners
@@ -1761,6 +2037,9 @@
                 }
 
                 try {
+                    saveRegisterBtn.innerHTML = '<div class="loading"></div> Registering...';
+                    saveRegisterBtn.disabled = true;
+
                     const result = await apiService.registerForEvent(eventId, {
                         name: name,
                         email: email,
@@ -1769,14 +2048,14 @@
                     });
 
                     if (result) {
-                        // Refresh events and registered events
+                        // Refresh data
                         allEvents = await apiService.getEvents();
                         allRegisteredEvents = await apiService.getRegisteredEvents();
                         registeredEvents = allRegisteredEvents.map(event => event._id);
                         
                         renderEvents(allEvents);
                         renderRegisteredEventsList();
-                        updateStats(allEvents, allRegisteredEvents, []);
+                        updateStats(allEvents, allRegisteredEvents, userQuestions);
                         
                         registerEventModal.style.display = 'none';
                         
@@ -1788,54 +2067,65 @@
                         showToast('Successfully registered for the event!');
                     }
                 } catch (error) {
-                    console.error('Error registering for event:', error);
-                    showToast('Error: Could not register for event. ' + error.message);
+                    console.error('Registration error:', error);
+                    showToast('Error: ' + error.message);
+                } finally {
+                    saveRegisterBtn.innerHTML = '<i class="fas fa-save"></i> Register';
+                    saveRegisterBtn.disabled = false;
                 }
             });
 
             // Save question
             saveQuestionBtn.addEventListener('click', async () => {
                 const questionText = document.getElementById('questionText').value;
+                const eventId = document.getElementById('questionEvent').value;
                 const isAnonymous = document.getElementById('anonymousQuestion').checked;
                 
-                // For demo - in real app, get from user session
                 const attendeeName = isAnonymous ? "Anonymous" : "Attendee User";
-                const attendeeEmail = isAnonymous ? "anonymous@example.com" : "attendee@example.com";
+                const attendeeEmail = "attendee@example.com";
 
-                if (!questionText) {
-                    alert('Please enter your question');
+                if (!questionText || !eventId) {
+                    alert('Please select an event and enter your question');
                     return;
                 }
 
                 try {
+                    saveQuestionBtn.innerHTML = '<div class="loading"></div> Submitting...';
+                    saveQuestionBtn.disabled = true;
+
                     const result = await apiService.submitQuestion({
                         questionText,
                         attendeeName,
                         attendeeEmail,
+                        eventId,
                         isAnonymous
                     });
 
                     if (result.success) {
-                        // Refresh questions list
-                        const questions = await apiService.getQuestions();
-                        renderQuestions(questions);
-                        updateStats(allEvents, allRegisteredEvents, questions);
+                        // Refresh questions
+                        userQuestions = await apiService.getUserQuestions(attendeeEmail);
+                        renderQuestions(userQuestions);
+                        updateStats(allEvents, allRegisteredEvents, userQuestions);
                         
                         askQuestionModal.style.display = 'none';
                         
                         // Reset form
                         document.getElementById('questionText').value = '';
+                        document.getElementById('questionEvent').value = '';
                         document.getElementById('anonymousQuestion').checked = false;
                         
-                        showToast('Question submitted successfully! Organizers will respond soon.');
+                        showToast('Question submitted successfully!');
                     }
                 } catch (error) {
-                    console.error('Error submitting question:', error);
-                    showToast('Error: Could not submit question. Check if backend is running.');
+                    console.error('Question submission error:', error);
+                    showToast('Error: ' + error.message);
+                } finally {
+                    saveQuestionBtn.innerHTML = '<i class="fas fa-save"></i> Submit Question';
+                    saveQuestionBtn.disabled = false;
                 }
             });
 
-            // Save feedback
+            // Save feedback - SIMPLE IMPLEMENTATION
             saveFeedbackBtn.addEventListener('click', () => {
                 const eventId = document.getElementById('feedbackEvent').value;
                 const feedbackText = document.getElementById('feedbackText').value;
@@ -1845,7 +2135,7 @@
                     return;
                 }
 
-                // In a real app, this would send data to a server
+                // Simple implementation - just show success message
                 feedbackModal.style.display = 'none';
                 
                 // Reset form
@@ -1870,108 +2160,9 @@
                 }
             });
 
-            // Navigation
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = link.getAttribute('data-section');
-                    
-                    // Update active state
-                    navLinks.forEach(l => l.classList.remove('active'));
-                    link.classList.add('active');
-                    
-                    // Update page title
-                    pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
-                    
-                    // Show appropriate content
-                    if (section === 'dashboard') {
-                        dashboardContent.style.display = 'block';
-                        otherSections.style.display = 'none';
-                    } else {
-                        dashboardContent.style.display = 'none';
-                        otherSections.style.display = 'block';
-                        
-                        if (section === 'registered-events') {
-                            otherSections.innerHTML = `
-                                <div class="feature-section">
-                                    <div class="section-header">
-                                        <h3>My Registered Events</h3>
-                                    </div>
-                                    <div id="registeredEventsContent">
-                                        <div class="loading"></div>
-                                        <p style="text-align: center; margin-top: 10px;">Loading registered events...</p>
-                                    </div>
-                                </div>
-                            `;
-                            // Render registered events
-                            setTimeout(() => renderRegisteredEvents(), 100);
-                        } else {
-                            otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
-                            
-                            // Special handling for feedback section
-                            if (section === 'feedback') {
-                                otherSections.innerHTML = `
-                                    <div class="feature-section">
-                                        <div class="section-header">
-                                            <h3>Submit Feedback</h3>
-                                        </div>
-                                        <p>Share your thoughts about events you've attended to help us improve.</p>
-                                        <button class="btn" id="openFeedbackModal"><i class="fas fa-comment-dots"></i> Submit Feedback</button>
-                                    </div>
-                                    <div class="feature-section">
-                                        <div class="section-header">
-                                            <h3>Your Previous Feedback</h3>
-                                        </div>
-                                        <div class="question-cards">
-                                            <div class="question-card">
-                                                <div class="question-header">
-                                                    <h4>Sunset Music Festival</h4>
-                                                    <span class="question-session">Oct 15, 2025</span>
-                                                </div>
-                                                <div class="question-text">
-                                                    <p>"The virtual experience was amazing! The audio quality was excellent and the interactive features made it feel like I was really there."</p>
-                                                    <div class="rating-stars" style="margin-top: 10px;">
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                        <i class="fas fa-star" style="color: gold;"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
-                                
-                                document.getElementById('openFeedbackModal').addEventListener('click', () => {
-                                    feedbackModal.style.display = 'flex';
-                                });
-                            }
-                        }
-                    }
-                });
-            });
-
-            // Card click actions
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('click', () => {
-                    const action = card.getAttribute('data-action');
-                    switch(action) {
-                        case 'view-events':
-                            navLinks[1].click(); // Click the "My Events" nav link
-                            break;
-                        case 'view-registered-events':
-                            navLinks[2].click(); // Click the "Registered Events" nav link
-                            break;
-                        case 'view-questions':
-                            navLinks[4].click(); // Click the "My Questions" nav link
-                            break;
-                        case 'view-feedback':
-                            navLinks[6].click(); // Click the "Submit Feedback" nav link
-                            break;
-                    }
-                });
-            });
+            // Schedule detail card controls
+            closeScheduleCard.addEventListener('click', hideScheduleDetail);
+            scheduleOverlay.addEventListener('click', hideScheduleDetail);
 
             // Event delegation for dynamic elements
             document.addEventListener('click', (e) => {
@@ -1997,30 +2188,22 @@
                     registerEventModal.style.display = 'flex';
                 }
                 
-                // Add to calendar
-                if (e.target.closest('.calendar')) {
-                    const eventData = JSON.parse(e.target.closest('.calendar').getAttribute('data-event').replace(/&apos;/g, "'"));
-                    showToast(`Added "${eventData.name}" to your calendar`);
-                }
-                
                 // View schedule
-                if (e.target.closest('.view-schedule')) {
-                    const eventId = e.target.closest('.view-schedule').getAttribute('data-id');
-                    const event = allEvents.find(e => e._id == eventId);
-                    showToast(`Viewing schedule for: ${event ? event.name : 'event'}`);
+                if (e.target.closest('.view-schedule') || e.target.closest('.view-schedule-card')) {
+                    const button = e.target.closest('.view-schedule') || e.target.closest('.view-schedule-card');
+                    const eventId = button.getAttribute('data-id');
+                    showScheduleDetail(eventId);
                 }
-                
-                // Submit feedback
-                if (e.target.closest('.submit-feedback')) {
-                    const eventId = e.target.closest('.submit-feedback').getAttribute('data-id');
-                    document.getElementById('feedbackEvent').value = eventId;
+
+                // Submit feedback from navigation
+                if (e.target.closest('[data-section="feedback"]')) {
                     feedbackModal.style.display = 'flex';
                 }
             });
 
             // View full schedule
             viewFullScheduleBtn.addEventListener('click', () => {
-                navLinks[3].click(); // Click the "Event Schedule" nav link
+                navLinks[3].click();
             });
 
             // Notifications
@@ -2028,24 +2211,332 @@
                 showToast('Notifications panel would open here');
             });
 
-            // Rating stars
-            const stars = document.querySelectorAll('#feedbackRating i');
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const rating = parseInt(star.getAttribute('data-rating'));
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = link.getAttribute('data-section');
                     
-                    // Update star display
-                    stars.forEach((s, index) => {
-                        if (index < rating) {
-                            s.classList.remove('far');
-                            s.classList.add('fas');
-                            s.style.color = 'gold';
-                        } else {
-                            s.classList.remove('fas');
-                            s.classList.add('far');
-                            s.style.color = '';
+                    // Update active state
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    // Update page title
+                    pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
+                    
+                    // Show appropriate content
+                    if (section === 'dashboard') {
+                        dashboardContent.style.display = 'block';
+                        otherSections.style.display = 'none';
+                    } else {
+                        dashboardContent.style.display = 'none';
+                        otherSections.style.display = 'block';
+                        
+                        if (section === 'events') {
+                            // My Events - show ALL events
+                            otherSections.innerHTML = `
+                                <div class="feature-section">
+                                    <div class="section-header">
+                                        <h3>All Events</h3>
+                                        <button class="btn" id="registerEventBtn2"><i class="fas fa-plus"></i> Register for Event</button>
+                                    </div>
+                                    <div class="table-container">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Event Name</th>
+                                                    <th>Date</th>
+                                                    <th>Location</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="allEventsTableBody">
+                                                <div class="loading"></div>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            `;
+                            // Render all events in the table
+                            setTimeout(() => {
+                                renderEvents(allEvents);
+                                document.getElementById('registerEventBtn2').addEventListener('click', () => {
+                                    registerEventModal.style.display = 'flex';
+                                });
+                            }, 100);
+                        } else if (section === 'registered-events') {
+                            otherSections.innerHTML = `
+                                <div class="feature-section">
+                                    <div class="section-header">
+                                        <h3>My Registered Events</h3>
+                                    </div>
+                                    <div id="registeredEventsContent">
+                                        <div class="loading"></div>
+                                        <p style="text-align: center; margin-top: 10px;">Loading registered events...</p>
+                                    </div>
+                                </div>
+                            `;
+                            // Render registered events
+                            setTimeout(() => {
+                                const registeredEventsSection = document.getElementById('registeredEventsContent');
+                                if (allRegisteredEvents.length === 0) {
+                                    registeredEventsSection.innerHTML = `
+                                        <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                            <i class="fas fa-calendar-check" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                            <p>You haven't registered for any events yet.</p>
+                                            <button class="btn" onclick="document.getElementById('registerEventBtn').click()">
+                                                <i class="fas fa-plus"></i> Register for an Event
+                                            </button>
+                                        </div>
+                                    `;
+                                } else {
+                                    let html = `
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Event Name</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                        <th>Location</th>
+                                                        <th>Status</th>
+                                                        <th>Meeting Link</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                    `;
+
+                                    allRegisteredEvents.forEach(event => {
+                                        const eventName = event.name;
+                                        const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
+                                        const eventTime = event.date ? new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD';
+                                        const eventLocation = event.location;
+                                        const zoomLink = event.zoomLink || '#';
+                                        const status = calculateEventStatus(event);
+                                        
+                                        html += `
+                                            <tr>
+                                                <td>${eventName}</td>
+                                                <td>${eventDate}</td>
+                                                <td>${eventTime}</td>
+                                                <td>${eventLocation}</td>
+                                                <td><span class="status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
+                                                <td>
+                                                    ${status === 'live' || status === 'upcoming' ? 
+                                                        `<button class="btn btn-zoom join-zoom" data-link="${zoomLink}">
+                                                            <i class="fas fa-video"></i> Join Meeting
+                                                        </button>` : 
+                                                        '<span style="color: var(--soft-pink);">Event Completed</span>'
+                                                    }
+                                                </td>
+                                            </tr>
+                                        `;
+                                    });
+
+                                    html += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    `;
+                                    registeredEventsSection.innerHTML = html;
+                                }
+                            }, 100);
+                        } else if (section === 'schedule') {
+                            otherSections.innerHTML = `
+                                <div class="feature-section">
+                                    <div class="section-header">
+                                        <h3>Event Schedule</h3>
+                                    </div>
+                                    <div id="scheduleContent">
+                                        <div class="loading"></div>
+                                        <p style="text-align: center; margin-top: 10px;">Loading schedule...</p>
+                                    </div>
+                                </div>
+                            `;
+                            // Render event schedule with Zoom links
+                            setTimeout(() => {
+                                const scheduleSection = document.getElementById('scheduleContent');
+                                if (allRegisteredEvents.length === 0) {
+                                    scheduleSection.innerHTML = `
+                                        <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                            <i class="fas fa-calendar-times" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                            <p>No registered events to show in schedule.</p>
+                                            <button class="btn" onclick="document.getElementById('registerEventBtn').click()">
+                                                <i class="fas fa-plus"></i> Register for an Event
+                                            </button>
+                                        </div>
+                                    `;
+                                } else {
+                                    let html = `
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Event Name</th>
+                                                        <th>Date & Time</th>
+                                                        <th>Location</th>
+                                                        <th>Status</th>
+                                                        <th>Zoom Link</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                    `;
+
+                                    allRegisteredEvents.forEach(event => {
+                                        const eventName = event.name;
+                                        const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
+                                        const eventTime = event.date ? new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD';
+                                        const eventLocation = event.location;
+                                        const zoomLink = event.zoomLink || '#';
+                                        const status = calculateEventStatus(event);
+
+                                        html += `
+                                            <tr>
+                                                <td>${eventName}</td>
+                                                <td>${eventDate} at ${eventTime}</td>
+                                                <td>${eventLocation}</td>
+                                                <td><span class="status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
+                                                <td>
+                                                    ${status === 'live' || status === 'upcoming' ? 
+                                                        `<button class="btn btn-zoom join-zoom" data-link="${zoomLink}">
+                                                            <i class="fas fa-video"></i> Join Meeting
+                                                        </button>` : 
+                                                        '<span style="color: var(--soft-pink);">Event Completed</span>'
+                                                    }
+                                                </td>
+                                            </tr>
+                                        `;
+                                    });
+
+                                    html += `
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    `;
+                                    scheduleSection.innerHTML = html;
+                                }
+                            }, 100);
+                        } else if (section === 'questions') {
+                            otherSections.innerHTML = `
+                                <div class="feature-section">
+                                    <div class="section-header">
+                                        <h3>My Questions</h3>
+                                        <button class="btn" id="askQuestionBtn2"><i class="fas fa-plus"></i> Ask a Question</button>
+                                    </div>
+                                    <div id="myQuestionsContent">
+                                        <div class="loading"></div>
+                                        <p style="text-align: center; margin-top: 10px;">Loading your questions...</p>
+                                    </div>
+                                </div>
+                            `;
+                            // Render user's questions with answers
+                            setTimeout(() => {
+                                const questionsSection = document.getElementById('myQuestionsContent');
+                                if (userQuestions.length === 0) {
+                                    questionsSection.innerHTML = `
+                                        <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                            <i class="fas fa-question-circle" style="font-size: 48px; margin-bottom: 15px;"></i>
+                                            <p>You haven't asked any questions yet.</p>
+                                            <button class="btn" onclick="document.getElementById('askQuestionBtn').click()">
+                                                <i class="fas fa-plus"></i> Ask a Question
+                                            </button>
+                                        </div>
+                                    `;
+                                } else {
+                                    let html = `
+                                        <div class="question-cards">
+                                    `;
+
+                                    userQuestions.forEach(question => {
+                                        const questionText = question.questionText;
+                                        const sessionName = question.sessionName;
+                                        const attendeeName = question.attendeeName;
+                                        const createdAt = question.createdAt;
+                                        const hasResponse = question.status === 'answered' && question.answer;
+                                        const responseText = question.answer;
+                                        const answeredAt = question.answeredAt;
+
+                                        html += `
+                                            <div class="question-card">
+                                                <div class="question-header">
+                                                    <h4>${questionText}</h4>
+                                                    <span class="question-session">${sessionName}</span>
+                                                </div>
+                                                <div class="question-meta" style="font-size: 12px; color: var(--dusty-purple); margin-bottom: 10px;">
+                                                    Asked by: ${attendeeName} • ${new Date(createdAt).toLocaleDateString()}
+                                                </div>
+                                                <div class="question-text">
+                                                    ${hasResponse ? 
+                                                        `<div class="question-response">
+                                                            <div class="response-header">
+                                                                <i class="fas fa-reply"></i>
+                                                                <span>Organizer Response</span>
+                                                                ${answeredAt ? `<small style="margin-left: auto;">${new Date(answeredAt).toLocaleDateString()}</small>` : ''}
+                                                            </div>
+                                                            <div class="response-text">${responseText}</div>
+                                                        </div>` : 
+                                                        '<div class="status upcoming">Awaiting Response from Organizer</div>'
+                                                    }
+                                                </div>
+                                            </div>
+                                        `;
+                                    });
+
+                                    html += `</div>`;
+                                    questionsSection.innerHTML = html;
+                                }
+                                document.getElementById('askQuestionBtn2').addEventListener('click', () => {
+                                    askQuestionModal.style.display = 'flex';
+                                });
+                            }, 100);
+                        } else if (section === 'feedback') {
+                            otherSections.innerHTML = `
+                                <div class="feature-section">
+                                    <div class="section-header">
+                                        <h3>Submit Feedback</h3>
+                                        <button class="btn" id="openFeedbackModal"><i class="fas fa-comment-dots"></i> Submit Feedback</button>
+                                    </div>
+                                    <div class="question-cards">
+                                        <div class="question-card">
+                                            <div class="question-header">
+                                                <h4>Share Your Experience</h4>
+                                            </div>
+                                            <div class="question-text">
+                                                <p>Click the "Submit Feedback" button above to share your thoughts about events you've attended.</p>
+                                                <p>Your feedback helps us improve future events!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            document.getElementById('openFeedbackModal').addEventListener('click', () => {
+                                feedbackModal.style.display = 'flex';
+                            });
                         }
-                    });
+                    }
+                });
+            });
+
+            // Card click actions
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const action = card.getAttribute('data-action');
+                    switch(action) {
+                        case 'view-events':
+                            navLinks[1].click();
+                            break;
+                        case 'view-registered-events':
+                            navLinks[2].click();
+                            break;
+                        case 'view-questions':
+                            navLinks[4].click();
+                            break;
+                        case 'view-feedback':
+                            navLinks[5].click();
+                            break;
+                    }
                 });
             });
         }

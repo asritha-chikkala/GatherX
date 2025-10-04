@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - GatherX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-brown: #493129;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
+            color: var(--deep-brown);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--soft-pink);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--soft-pink);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--soft-pink);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: var(--dusty-purple);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--deep-brown);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--dusty-purple);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Our Story Section */
+        .story-section {
+            background: white;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+        }
+
+        .story-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .story-text {
+            flex: 1;
+        }
+
+        .story-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--deep-brown);
+        }
+
+        .story-text p {
+            margin-bottom: 20px;
+            color: var(--dusty-purple);
+            font-size: 17px;
+        }
+
+        .story-image {
+            flex: 1;
+            height: 400px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 15px 30px rgba(139, 89, 123, 0.2);
+        }
+
+        /* Mission & Vision */
+        .mission-vision {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+
+        .mission-card, .vision-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .mission-card:hover, .vision-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .mission-card {
+            border-left-color: var(--deep-brown);
+        }
+
+        .vision-card {
+            border-left-color: var(--light-blue);
+        }
+
+        .mission-vision-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .mission-card .mission-vision-icon {
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+        }
+
+        .vision-card .mission-vision-icon {
+            background: linear-gradient(135deg, var(--light-blue), var(--light-cream));
+        }
+
+        .mission-card h3, .vision-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--deep-brown);
+        }
+
+        .mission-card p, .vision-card p {
+            color: var(--dusty-purple);
+        }
+
+        /* Core Values */
+        .values-section {
+            background: white;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            transition: transform 0.3s ease;
+            background: rgba(249, 236, 171, 0.1);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            background: rgba(139, 89, 123, 0.05);
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            color: white;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+        }
+
+        .value-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--deep-brown);
+        }
+
+        .value-card p {
+            color: var(--dusty-purple);
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 80px 0;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .team-card {
+            text-align: center;
+            background: white;
+            border-radius: 16px;
+            padding: 30px 20px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+        }
+
+        .team-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: var(--deep-brown);
+        }
+
+        .team-card .role {
+            color: var(--dusty-purple);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .team-card p {
+            color: var(--dusty-purple);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(139, 89, 123, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dusty-purple);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--dusty-purple);
+            color: white;
+        }
+
+        /* Impact Section */
+        .impact-section {
+            background: white;
+            border-radius: 20px;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+            padding: 80px 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            background: rgba(249, 236, 171, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            color: var(--dusty-purple);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        .footer-logo h2 {
+            font-size: 24px;
+        }
+
+        .footer-logo span {
+            color: var(--soft-pink);
+        }
+
+        .footer-about p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .footer-social-link:hover {
+            background: var(--soft-pink);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--soft-pink);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .story-content {
+                flex-direction: column;
+            }
+            
+            .mission-vision, .values-grid, .team-grid, .stats, .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .mission-vision, .values-grid, .team-grid, .stats, .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h1>Gather<span>X</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                        
+                        <li><a href="aboutus.html" class="active">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>About GatherX</h2>
+                <p>Connecting people through seamless virtual event experiences</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="content-section story-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Story</h2>
+                <p>How we're revolutionizing virtual event management</p>
+            </div>
+            
+            <div class="story-content">
+                <div class="story-text">
+                    <h3>From Vision to Reality</h3>
+                    <p>GatherX emerged from a simple observation: virtual events were becoming increasingly important, but the available platforms were fragmented and difficult to use. Event organizers struggled with multiple tools, attendees faced confusing interfaces</p>
+                    <p>With backgrounds in event management and technology, set out to create a unified platform that would serve all stakeholders in the event ecosystem. We believed that virtual events should be as engaging and productive as in-person gatherings, if not more.</p>
+                    <p>Today, GatherX has evolved into a comprehensive solution trusted by thousands of organizations worldwide. We continue to innovate, adding new features and capabilities to make virtual events more accessible, engaging, and valuable for everyone involved.</p>
+                </div>
+                <div class="story-image">
+                    <i class="fas fa-rocket"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Mission & Vision</h2>
+                <p>What drives us forward every day</p>
+            </div>
+            
+            <div class="mission-vision">
+                <div class="mission-card">
+                    <div class="mission-vision-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3>Our Mission</h3>
+                    <p>To democratize access to high-quality virtual events by providing an intuitive, all-in-one platform that empowers organizers, engages attendees, supports vendors, and delivers value to sponsors.</p>
+                </div>
+                
+                <div class="vision-card">
+                    <div class="mission-vision-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3>Our Vision</h3>
+                    <p>To become the world's leading virtual event platform, breaking down geographical barriers and creating meaningful connections that transcend physical limitations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values Section -->
+    <section class="content-section values-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Core Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>User-Centric</h3>
+                    <p>We prioritize the needs and experiences of all our users - organizers, attendees, vendors, and sponsors.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We continuously push boundaries to deliver cutting-edge features that enhance virtual event experiences.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Reliability</h3>
+                    <p>We maintain the highest standards of security, privacy, and platform stability for all our users.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Collaboration</h3>
+                    <p>We believe in the power of partnerships and work closely with our clients to ensure their success.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Excellence</h3>
+                    <p>We strive for excellence in every aspect of our platform, from user interface to customer support.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Accessibility</h3>
+                    <p>We're committed to making virtual events accessible to everyone, regardless of location or ability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="content-section team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Meet Our Leadership Team</h2>
+                <p>The passionate people behind GatherX</p>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">A</div>
+                    <h3>Asritha</h3>
+                    <div class="role">Backend</div>
+                    <p>Asritha oversees the project and focuses on the organizer experience. She ensures that event creation, session management, task assignment, announcements, and attendee interactions are centralized and organized.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/asritha-chikkala-300397336/" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">H</div>
+                    <h3>Hasini</h3>
+                    <div class="role">UI/UX Developer</div>
+                    <p>Hasini is responsible for designing the attendee experience. She ensures attendees can register, view schedules, join sessions, ask questions, and submit feedback easily, making the event experience smooth and engaging.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/bala-sri-hasini-koppuravuri-483327338/" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">S</div>
+                    <h3>Sneha</h3>
+                    <div class="role">Database</div>
+                    <p>Sneha focuses on the sponsor experience. She ensures sponsors have clear visibility on the sessions they support, can track engagement, and easily follow announcements, helping sponsors feel included and valued.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/sai-sneha-gunda-8769a7337/" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">G</div>
+                    <h3>Geethika</h3>
+                    <div class="role">Frontend Developer</div>
+                    <p>Geethika is in charge of the vendor experience. She ensures vendors can view their assigned tasks, update progress, access resources, and communicate with organizers, helping them stay organized and accountable.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/venkata-geethika-vangala-808a44336/" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="team-avatar">M</div>
+                    <h3>Meghana</h3>
+                    <div class="role">Communication</div>
+                    <p>Meghana manages meetings and communication across roles. She ensures organizers can schedule meetings, send announcements, and manage Q&A. Vendors, sponsors, and attendees see only relevant information, keeping communication clear and efficient.</p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/meghana-bandla-18887335b/" class="social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="content-section impact-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Impact</h2>
+                <p>Making a difference in the event industry</p>
+            </div>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Events Hosted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">75K+</div>
+                    <div class="stat-label">Attendees</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.2K+</div>
+                    <div class="stat-label">Vendors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2>Gather<span>X</span></h2>
+                    </div>
+                    <p>All-in-one virtual event management platform for organizers, attendees, vendors, and sponsors.</p>
+                    <div class="footer-social-links">
+                        
+                        
+                        <a href="https://www.linkedin.com/in/asritha-chikkala-300397336/" class="footer-social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="organiser.html">Organizer Dashboard</a></li>
+                        <li><a href="attendee.html">Attendee Portal</a></li>
+                        <li><a href="vendor.html">Vendor Center</a></li>
+                        <li><a href="sponsor.html">Sponsor Hub</a></li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="aboutus.html">About Us</a></li>
+                        
+                        <li><a href="contact.html">Contact</a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GatherX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
