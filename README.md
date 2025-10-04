@@ -120,11 +120,11 @@ Statuses → *Scheduled | Attended | Canceled*
 
 ## **🚀 Tech Stack**  
 
-- **Frontend:** *(React / Angular / Vue – specify your stack)*  
+- **Frontend:** *(html/css/javascript)*  
 - **Backend:** Node.js + Express  
 - **Database:** MongoDB Atlas  
 - **Auth & Access:** Role-based middleware  
-- **Deployment:** *(Heroku / Vercel / Render, etc.)*  
+- **Deployment:** *(Render)*  
 
 📸 *(Insert **Tech Stack Graphic with Logos** here)*  
 
@@ -135,15 +135,5 @@ Statuses → *Scheduled | Attended | Canceled*
 This platform eliminates the **chaos of managing multi-role events**.  
 With **real-time updates, role-specific dashboards, and smooth communication**, it’s built for **scalability, hackathons, and professional conferences**.  
 
----
 
-## **📸 Where to Add Images**  
 
-1. **System Architecture Diagram** → under *Core Features*  
-2. **Role Flowcharts (Icons + Workflow)** → under each Role section  
-3. **Dashboard Screenshots (per role)** → under each Role section  
-4. **Database ER Diagram** → under *Backend & System Design*  
-5. **Meetings Screenshot** → under *Meetings & Communication*  
-6. **Tech Stack Graphic (with logos)** → under *Tech Stack*  
-
----
