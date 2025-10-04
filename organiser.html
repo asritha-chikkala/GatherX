@@ -987,6 +987,11 @@
                         <option value="networking">Networking</option>
                     </select>
                 </div>
+                <!-- Zoom Link Field Added -->
+                <div class="form-group">
+                    <label for="zoomLink">Zoom Meeting Link</label>
+                    <input type="url" id="zoomLink" class="form-control" placeholder="https://zoom.us/j/xxxxxxxxx">
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" id="cancelEventBtn">Cancel</button>
@@ -1588,9 +1593,10 @@
             const date = document.getElementById('eventDate').value;
             const description = document.getElementById('eventDescription').value;
             const type = document.getElementById('eventType').value;
+            const zoomLink = document.getElementById('zoomLink').value;
 
             if (!name || !date || !description || !type) {
-                alert('Please fill in all fields');
+                alert('Please fill in all required fields');
                 return;
             }
 
@@ -1602,7 +1608,8 @@
                     type: type,
                     location: "Virtual Event",
                     attendees: 0,
-                    status: 'upcoming'
+                    status: 'upcoming',
+                    zoomLink: zoomLink || '' // Add zoom link to event data
                 };
 
                 const newEvent = await apiService.saveEvent(eventData);
@@ -1618,6 +1625,7 @@
                 document.getElementById('eventDate').value = '';
                 document.getElementById('eventDescription').value = '';
                 document.getElementById('eventType').value = '';
+                document.getElementById('zoomLink').value = '';
                 
                 showToast('Event created and saved to database! 🎉');
             } catch (error) {
@@ -1756,6 +1764,7 @@
                     document.getElementById('eventDate').value = new Date(event.date).toISOString().slice(0, 16);
                     document.getElementById('eventDescription').value = event.description;
                     document.getElementById('eventType').value = event.type;
+                    document.getElementById('zoomLink').value = event.zoomLink || '';
                     
                     // Change save button to update
                     const saveBtn = document.getElementById('saveEventBtn');
@@ -1765,7 +1774,8 @@
                             name: document.getElementById('eventName').value,
                             date: document.getElementById('eventDate').value,
                             description: document.getElementById('eventDescription').value,
-                            type: document.getElementById('eventType').value
+                            type: document.getElementById('eventType').value,
+                            zoomLink: document.getElementById('zoomLink').value
                         };
                         
                         try {

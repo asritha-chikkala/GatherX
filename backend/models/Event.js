@@ -1,3 +1,4 @@
+// models/Event.js
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
@@ -29,10 +30,26 @@ const eventSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  // ADD THIS - Store registered users
+  registeredUsers: [{
+    name: String,
+    email: String,
+    phone: String,
+    company: String,
+    registeredAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   status: {
     type: String,
     enum: ['upcoming', 'live', 'completed', 'cancelled'],
     default: 'upcoming'
+  },
+  zoomLink: {
+    type: String,
+    trim: true,
+    default: ''
   }
 }, {
   timestamps: true
