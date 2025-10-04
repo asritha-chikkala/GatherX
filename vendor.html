@@ -1097,16 +1097,8 @@
                     </div>
                     <p>Access all resources, documents, and materials for your assigned sessions.</p>
                     
-                    <div class="resource-list">
-                        <div class="resource-card">
-                            <h4>No Resources Available</h4>
-                            <p>Resources will appear here when assigned by organizers.</p>
-                            <div class="resource-actions">
-                                <button class="action-btn" style="padding: 6px 12px; font-size: 12px;">
-                                    <i class="fas fa-eye"></i> View
-                                </button>
-                            </div>
-                        </div>
+                    <div class="resource-list" id="zoomResourcesList">
+                        <!-- Zoom links will be populated by JavaScript -->
                     </div>
                 </div>
             </div>
@@ -1324,6 +1316,8 @@
                 loadTasksPage();
             } else if (pageId === 'sessions') {
                 loadSessionsPage();
+            } else if (pageId === 'resources') {
+                loadResourcesPage();
             }
         }
 
@@ -1345,6 +1339,11 @@
                 // Refresh sessions page if it's active
                 if (document.getElementById('sessions').classList.contains('active')) {
                     loadSessionsPage();
+                }
+                
+                // Refresh resources page if it's active
+                if (document.getElementById('resources').classList.contains('active')) {
+                    loadResourcesPage();
                 }
                 
                 if (vendorTasks.length === 0 && vendorEvents.length === 0) {
@@ -1532,6 +1531,74 @@
             });
         }
 
+        // Load resources page - NEW FUNCTION FOR ZOOM LINKS
+        function loadResourcesPage() {
+            const resourcesList = document.getElementById('zoomResourcesList');
+            if (!resourcesList) return;
+            
+            resourcesList.innerHTML = '';
+            
+            if (vendorEvents.length === 0) {
+                resourcesList.innerHTML = `
+                    <div class="resource-card" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-link" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                        <h3>No Session Resources Available</h3>
+                        <p>Resources will appear here when assigned by organizers.</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Create resource cards from events with Zoom links
+            vendorEvents.forEach(event => {
+                if (event.zoomLink) {
+                    const card = document.createElement('div');
+                    card.className = 'resource-card';
+                    card.innerHTML = `
+                        <h4>${event.name} - Zoom Meeting</h4>
+                        <p>Join the Zoom meeting for this session</p>
+                        <div class="meeting-time">
+                            <i class="fas fa-calendar"></i>
+                            <span>${new Date(event.date).toLocaleDateString('en-US', {
+                                weekday: 'short',
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}</span>
+                        </div>
+                        <div class="resource-actions">
+                            <a href="${event.zoomLink}" target="_blank" class="btn btn-success" style="text-decoration: none;">
+                                <i class="fas fa-video"></i> Join Zoom Meeting
+                            </a>
+                            <button class="action-btn copy-zoom-link" data-link="${event.zoomLink}" style="padding: 6px 12px; font-size: 12px;">
+                                <i class="fas fa-copy"></i> Copy Link
+                            </button>
+                        </div>
+                    `;
+                    resourcesList.appendChild(card);
+                }
+            });
+            
+            // If no events have Zoom links, show a message
+            if (resourcesList.children.length === 0) {
+                resourcesList.innerHTML = `
+                    <div class="resource-card" style="text-align: center; padding: 40px;">
+                        <i class="fas fa-video-slash" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
+                        <h3>No Zoom Links Available</h3>
+                        <p>Zoom meeting links will appear here when added by organizers.</p>
+                        <button class="btn" style="margin-top: 15px;" onclick="loadVendorTasks()">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
         // Initialize vendor dashboard
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Vendor Dashboard loaded - VENDOR 1 ONLY");
@@ -1598,6 +1665,22 @@
                         }
                     }
                 }
+                
+                // Copy Zoom link functionality
+                if (e.target.closest('.copy-zoom-link')) {
+                    const button = e.target.closest('.copy-zoom-link');
+                    const zoomLink = button.getAttribute('data-link');
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(zoomLink)
+                        .then(() => {
+                            alert('Zoom link copied to clipboard!');
+                        })
+                        .catch(err => {
+                            console.error('Failed to copy: ', err);
+                            alert('Failed to copy link to clipboard');
+                        });
+                }
             });
             
             // Search functionality
@@ -1621,7 +1704,8 @@
             setInterval(() => {
                 if (document.getElementById('tasks').classList.contains('active') || 
                     document.getElementById('dashboard').classList.contains('active') ||
-                    document.getElementById('sessions').classList.contains('active')) {
+                    document.getElementById('sessions').classList.contains('active') ||
+                    document.getElementById('resources').classList.contains('active')) {
                     console.log('🔄 Auto-refreshing vendor data...');
                     loadVendorTasks();
                 }

@@ -62,10 +62,53 @@ const deleteEvent = async (req, res) => {
   }
 };
 
+
+// controllers/eventsController.js - ADD THIS FUNCTION
+const registerUserForEvent = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+    const { name, email, phone, company } = req.body;
+
+    const event = await Event.findByIdAndUpdate(
+      eventId,
+      {
+        $push: {
+          registeredUsers: {
+            name,
+            email,
+            phone,
+            company
+          }
+        },
+        $inc: { attendees: 1 }
+      },
+      { new: true }
+    );
+
+    if (!event) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.json({
+      message: 'Successfully registered for event',
+      event: event
+    });
+
+  } catch (error) {
+    res.status(400).json({ 
+      message: 'Error registering for event', 
+      error: error.message 
+    });
+  }
+};
+
+// Add to your existing exports
 module.exports = {
   getEvents,
   getEvent,
   createEvent,
   updateEvent,
-  deleteEvent
+  deleteEvent,
+  registerUserForEvent  // ADD THIS
 };
+
