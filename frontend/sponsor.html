@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunset Events - Sponsor Dashboard</title>
+    <title>GatherX - Sponsor Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -440,7 +440,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <h1>Sunset <span>Events</span></h1>
+                <h1>Gather <span>X</span></h1>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item active" data-section="dashboard">
@@ -576,7 +576,7 @@
             }
         }
 
-        // UI Functions
+        
         function showError(container, message) {
             container.innerHTML = `
                 <div class="empty-state">
@@ -707,26 +707,26 @@
             const navItems = document.querySelectorAll('.nav-item');
             const sections = document.querySelectorAll('.content-section');
             
-            // Load initial data
+            
             loadInitialData();
             
             navItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    // Remove active class from all items
+                   
                     navItems.forEach(i => i.classList.remove('active'));
-                    // Add active class to clicked item
+                    
                     this.classList.add('active');
                     
-                    // Hide all sections
+                    
                     sections.forEach(section => {
                         section.style.display = 'none';
                     });
                     
-                    // Show the selected section
+                    
                     const sectionId = this.getAttribute('data-section') + '-section';
                     document.getElementById(sectionId).style.display = 'block';
                     
-                    // Refresh data for the section
+                    
                     if (sectionId === 'events-section') {
                         renderEvents(events);
                     } else if (sectionId === 'meetings-section') {
@@ -741,7 +741,7 @@
                 events = await fetchEvents();
                 activities = await fetchActivities();
                 
-                // Update all sections with real data
+                
                 updateDashboardStats(events);
                 renderEvents(events);
                 renderMeetings(events);
@@ -751,7 +751,7 @@
             }
         }
 
-        // Health check
+       
         async function checkServerHealth() {
             try {
                 const response = await fetch(`${API_BASE_URL}/health`);
@@ -762,7 +762,7 @@
             }
         }
 
-        // Initialize health check
+        
         checkServerHealth();
     </script>
 </body>

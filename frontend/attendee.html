@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sunset Events - Attendee Dashboard</title>
+    <title>GatherX- Attendee Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -32,7 +32,7 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Styles */
+        
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
@@ -135,7 +135,7 @@
             text-align: center;
         }
 
-        /* Main Content Styles */
+        
         .main-content {
             flex: 1;
             padding: 30px;
@@ -245,7 +245,7 @@
             font-weight: bold;
         }
 
-        /* Dashboard Cards */
+       
         .dashboard-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -393,7 +393,7 @@
             background: linear-gradient(90deg, var(--light-blue), var(--light-cream));
         }
 
-        /* Feature Sections */
+        
         .feature-section {
             background: white;
             border-radius: 16px;
@@ -461,7 +461,7 @@
             background: linear-gradient(135deg, #2d8cff, #0062cc);
         }
 
-        /* Tables and Lists */
+        
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
@@ -588,7 +588,7 @@
             color: var(--soft-pink);
         }
 
-        /* Event Cards */
+        
         .event-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -671,7 +671,7 @@
             gap: 10px;
         }
 
-        /* Question Cards */
+        
         .question-cards {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -741,7 +741,7 @@
             line-height: 1.5;
         }
 
-        /* Footer */
+       
         .footer {
             text-align: center;
             padding: 20px;
@@ -751,7 +751,7 @@
             opacity: 0.7;
         }
 
-        /* Modal Styles */
+        
         .modal {
             display: none;
             position: fixed;
@@ -850,7 +850,7 @@
             gap: 10px;
         }
 
-        /* Toast Notifications */
+        
         .toast {
             position: fixed;
             top: 20px;
@@ -877,7 +877,7 @@
             font-size: 20px;
         }
 
-        /* Loading Spinner */
+        
         .loading {
             display: inline-block;
             width: 20px;
@@ -892,7 +892,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Schedule Detail Card */
+        
         .schedule-detail-card {
             position: fixed;
             top: 50%;
@@ -1031,7 +1031,7 @@
             visibility: visible;
         }
 
-        /* Responsive Design */
+        
         @media (max-width: 1100px) {
             .container {
                 flex-direction: column;
@@ -1080,13 +1080,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
+       
         <div class="sidebar">
             <div class="logo">
                 <div class="logo-icon">
                     <i class="fas fa-sunset"></i>
                 </div>
-                <h1>Sunset <span>Events</span></h1>
+                <h1> Gather<span>X</span></h1>
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -1098,7 +1098,7 @@
             </ul>
         </div>
 
-        <!-- Main Content -->
+        
         <div class="main-content">
             <div class="header">
                 <h2 id="pageTitle">Attendee Dashboard</h2>
@@ -1118,9 +1118,9 @@
                 </div>
             </div>
 
-            <!-- Dashboard Content -->
+            
             <div id="dashboardContent">
-                <!-- Dashboard Cards -->
+                
                 <div class="dashboard-cards">
                     <div class="card events" data-action="view-events">
                         <div class="card-header">
@@ -1182,7 +1182,7 @@
                     </div>
                 </div>
 
-                <!-- Upcoming Events Section -->
+                
                 <div class="feature-section">
                     <div class="section-header">
                         <h3>Upcoming Events</h3>
@@ -1211,41 +1211,41 @@
                     </div>
                 </div>
 
-                <!-- My Registered Events Section -->
+                
                 <div class="feature-section">
                     <div class="section-header">
                         <h3>My Registered Events</h3>
                         <button class="btn btn-outline" id="viewFullScheduleBtn"><i class="fas fa-calendar-alt"></i> View Full Schedule</button>
                     </div>
                     <div class="event-cards" id="registeredEventsList">
-                        <!-- Registered events will be populated by JavaScript -->
+                       
                     </div>
                 </div>
 
-                <!-- Recent Questions Section -->
+                
                 <div class="feature-section">
                     <div class="section-header">
                         <h3>Recent Questions & Answers</h3>
                         <button class="btn" id="askQuestionBtn"><i class="fas fa-plus"></i> Ask a Question</button>
                     </div>
                     <div class="question-cards" id="recentQuestions">
-                        <!-- Questions will be populated by JavaScript -->
+                        
                     </div>
                 </div>
             </div>
 
-            <!-- Other Section Contents (initially hidden) -->
+            
             <div id="otherSections" style="display: none;">
-                <!-- Content for other sections will be loaded here -->
+                
             </div>
 
             <div class="footer">
-                <p>Sunset Events Virtual Management System | © 2025</p>
+                <p>GatherX Virtual Management System | © 2025</p>
             </div>
         </div>
     </div>
 
-    <!-- Register for Event Modal -->
+    
     <div class="modal" id="registerEventModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1265,7 +1265,7 @@
                     <label for="eventSelection">Select Event</label>
                     <select id="eventSelection" class="form-control">
                         <option value="">Choose an event</option>
-                        <!-- Events will be populated dynamically -->
+                        
                     </select>
                 </div>
             </div>
@@ -1276,7 +1276,7 @@
         </div>
     </div>
 
-    <!-- Ask Question Modal -->
+    
     <div class="modal" id="askQuestionModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1288,7 +1288,7 @@
                     <label for="questionEvent">Select Event</label>
                     <select id="questionEvent" class="form-control">
                         <option value="">Choose an event</option>
-                        <!-- Events will be populated dynamically -->
+                       
                     </select>
                 </div>
                 <div class="form-group">
@@ -1308,7 +1308,7 @@
         </div>
     </div>
 
-    <!-- Submit Feedback Modal -->
+   
     <div class="modal" id="feedbackModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -1320,7 +1320,7 @@
                     <label for="feedbackEvent">Select Event</label>
                     <select id="feedbackEvent" class="form-control">
                         <option value="">Choose an event</option>
-                        <!-- Events will be populated dynamically -->
+                        
                     </select>
                 </div>
                 <div class="form-group">
@@ -1335,7 +1335,7 @@
         </div>
     </div>
 
-    <!-- Schedule Detail Card -->
+    
     <div class="overlay" id="scheduleOverlay"></div>
     <div class="schedule-detail-card" id="scheduleDetailCard">
         <div class="schedule-card-header">
@@ -1395,25 +1395,25 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
         <span id="toastMessage">Action completed successfully!</span>
     </div>
 
     <script>
-        // API Configuration
+        
         const API_BASE_URL = 'https://gatherx-1vsr.onrender.com/api';
 
-        // Session Storage Keys
+       
         const SESSION_KEYS = {
             REGISTERED_EVENTS: 'sunsetEvents_registeredEvents',
             USER_DATA: 'sunsetEvents_userData'
         };
 
-        // API Service
+       
         const apiService = {
-            // Get events from backend
+            
             async getEvents() {
                 try {
                     const response = await fetch(`${API_BASE_URL}/events`);
@@ -1426,7 +1426,7 @@
                 }
             },
 
-            // Get registered events from sessionStorage
+            
             async getRegisteredEvents() {
                 try {
                     const registeredEvents = JSON.parse(sessionStorage.getItem(SESSION_KEYS.REGISTERED_EVENTS) || '[]');
@@ -1437,7 +1437,7 @@
                 }
             },
 
-            // Register for an event - FIXED: Uses correct parameter name
+            
             async registerForEvent(eventId, attendeeData) {
                 try {
                     console.log('Registering for event:', eventId, attendeeData);
@@ -1457,7 +1457,7 @@
                     
                     const data = await response.json();
                     
-                    // Save to sessionStorage after successful registration
+                    
                     if (data.event) {
                         this.saveToRegisteredEvents(data.event, attendeeData);
                     }
@@ -1469,12 +1469,12 @@
                 }
             },
 
-            // Save registered event to sessionStorage
+            
             saveToRegisteredEvents(eventData, userData) {
                 try {
                     const currentRegistered = JSON.parse(sessionStorage.getItem(SESSION_KEYS.REGISTERED_EVENTS) || '[]');
                     
-                    // Check if already registered
+                    
                     const alreadyRegistered = currentRegistered.find(event => event._id === eventData._id);
                     if (!alreadyRegistered) {
                         const eventWithUser = {
@@ -1496,7 +1496,7 @@
                 }
             },
 
-            // Get questions from backend
+           
             async getQuestions() {
                 try {
                     const response = await fetch(`${API_BASE_URL}/questions`);
@@ -1509,10 +1509,10 @@
                 }
             },
 
-            // Submit question to backend
+            
             async submitQuestion(questionData) {
                 try {
-                    // Find the event to get session name
+                    
                     const events = await this.getEvents();
                     const event = events.find(e => e._id === questionData.eventId);
                     
@@ -1546,7 +1546,7 @@
                 }
             },
 
-            // Get user's questions specifically
+            
             async getUserQuestions(userEmail) {
                 try {
                     const allQuestions = await this.getQuestions();
@@ -1561,7 +1561,7 @@
             }
         };
 
-        // DOM Elements
+        
         const registerEventBtn = document.getElementById('registerEventBtn');
         const registerEventModal = document.getElementById('registerEventModal');
         const closeModals = document.querySelectorAll('.close-modal');
@@ -1586,7 +1586,7 @@
         const pageTitle = document.getElementById('pageTitle');
         const viewFullScheduleBtn = document.getElementById('viewFullScheduleBtn');
         
-        // Schedule Detail Card Elements
+        
         const scheduleOverlay = document.getElementById('scheduleOverlay');
         const scheduleDetailCard = document.getElementById('scheduleDetailCard');
         const closeScheduleCard = document.querySelector('.close-schedule-card');
@@ -1597,14 +1597,14 @@
         const scheduleDescription = document.getElementById('scheduleDescription');
         const scheduleType = document.getElementById('scheduleType');
 
-        // Global variables
+        
         let allEvents = [];
         let registeredEvents = [];
         let allRegisteredEvents = [];
         let userQuestions = [];
         let currentScheduleEvent = null;
 
-        // Calculate event status based on date
+        
         function calculateEventStatus(event) {
             const now = new Date();
             const eventDate = new Date(event.date);
@@ -1617,7 +1617,7 @@
                 return 'completed';
             }
             
-            // If event is within 2 hours, consider it live
+            
             const timeUntilEvent = eventDate - now;
             const twoHours = 2 * 60 * 60 * 1000;
             
@@ -1628,12 +1628,12 @@
             return 'upcoming';
         }
 
-        // Initialize the dashboard
+        
         async function initDashboard() {
             try {
                 showLoadingState();
                 
-                // Load data sequentially
+              
                 try {
                     allEvents = await apiService.getEvents();
                 } catch (error) {
@@ -1658,7 +1658,7 @@
                     userQuestions = [];
                 }
                 
-                // Render all components
+                
                 renderEvents(allEvents);
                 renderRegisteredEventsList();
                 renderQuestions(userQuestions);
@@ -1677,7 +1677,7 @@
             }
         }
 
-        // Show loading state
+        
         function showLoadingState() {
             eventsTableBody.innerHTML = `
                 <tr>
@@ -1702,13 +1702,13 @@
                 </div>
             `;
             
-            // Update stats to show loading
+            
             document.getElementById('totalEvents').innerHTML = '<span class="loading"></span>';
             document.getElementById('totalRegisteredEvents').innerHTML = '<span class="loading"></span>';
             document.getElementById('questionsAsked').innerHTML = '<span class="loading"></span>';
         }
 
-        // Render events table
+        
         function renderEvents(events = []) {
             eventsTableBody.innerHTML = '';
             
@@ -1732,7 +1732,7 @@
                 const eventLocation = event.location;
                 const zoomLink = event.zoomLink || '#';
                 
-                // Calculate status
+                
                 const status = calculateEventStatus(event);
                 const isRegistered = registeredEvents.includes(event._id);
                 
@@ -1766,7 +1766,7 @@
             });
         }
 
-        // Render registered events
+        
         function renderRegisteredEventsList() {
             registeredEventsList.innerHTML = '';
             
@@ -1822,7 +1822,7 @@
             });
         }
 
-        // Render questions
+        
         function renderQuestions(questions = []) {
             recentQuestions.innerHTML = '';
             
@@ -1876,7 +1876,7 @@
             });
         }
 
-        // Show schedule detail card
+        
         function showScheduleDetail(eventId) {
             const event = allEvents.find(e => e._id === eventId) || allRegisteredEvents.find(e => e._id === eventId);
             if (!event) {
@@ -1886,14 +1886,14 @@
             
             currentScheduleEvent = event;
             
-            // Populate schedule card with event details
+            
             scheduleEventTitle.textContent = event.name;
             scheduleDateTime.textContent = event.date ? `${new Date(event.date).toLocaleDateString()} at ${new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` : 'TBD';
             scheduleLocation.textContent = event.location;
             scheduleDescription.textContent = event.description;
             scheduleType.textContent = event.type ? event.type.charAt(0).toUpperCase() + event.type.slice(1) : 'General';
             
-            // Set up Zoom link
+           
             scheduleZoomLinkBtn.onclick = () => {
                 if (event.zoomLink && event.zoomLink !== '#') {
                     window.open(event.zoomLink, '_blank');
@@ -1902,21 +1902,21 @@
                 }
             };
             
-            // Show the card and overlay
+            
             scheduleOverlay.classList.add('active');
             scheduleDetailCard.classList.add('active');
         }
 
-        // Hide schedule detail card
+        
         function hideScheduleDetail() {
             scheduleOverlay.classList.remove('active');
             scheduleDetailCard.classList.remove('active');
             currentScheduleEvent = null;
         }
 
-        // Update dashboard statistics
+        
         function updateStats(events = [], registeredEvents = [], questions = []) {
-            // Update events card
+            
             const totalEvents = events.length;
             const upcomingEvents = events.filter(event => {
                 const status = calculateEventStatus(event);
@@ -1927,7 +1927,7 @@
             document.getElementById('eventsSubtitle').textContent = `${upcomingEvents} upcoming events`;
             document.getElementById('eventsProgress').style.width = totalEvents > 0 ? `${(upcomingEvents / totalEvents) * 100}%` : '0%';
             
-            // Update my events card
+            
             const totalRegisteredEvents = registeredEvents.length;
             const liveEvents = registeredEvents.filter(event => {
                 const status = calculateEventStatus(event);
@@ -1938,7 +1938,7 @@
             document.getElementById('registeredEventsSubtitle').textContent = `${liveEvents} live meetings`;
             document.getElementById('registeredEventsProgress').style.width = totalRegisteredEvents > 0 ? `${(liveEvents / totalRegisteredEvents) * 100}%` : '0%';
             
-            // Update questions card
+            
             const totalQuestions = questions.length;
             const answeredQuestions = questions.filter(q => q.status === 'answered' && q.answer).length;
             
@@ -1947,13 +1947,13 @@
             document.getElementById('questionsProgress').style.width = totalQuestions > 0 ? `${(answeredQuestions / totalQuestions) * 100}%` : '0%';
         }
 
-        // Populate event dropdowns in modals
+        
         function populateModalEvents(events) {
             const eventSelection = document.getElementById('eventSelection');
             const questionEvent = document.getElementById('questionEvent');
             const feedbackEvent = document.getElementById('feedbackEvent');
             
-            // Clear existing options except the first one
+            
             while (eventSelection.children.length > 1) {
                 eventSelection.removeChild(eventSelection.lastChild);
             }
@@ -1964,7 +1964,7 @@
                 feedbackEvent.removeChild(feedbackEvent.lastChild);
             }
             
-            // Add events to dropdowns
+            
             events.forEach(event => {
                 const eventName = event.name;
                 
@@ -1985,7 +1985,7 @@
             });
         }
 
-        // Show toast notification
+        
         function showToast(message) {
             toastMessage.textContent = message;
             toast.classList.add('show');
@@ -1994,9 +1994,9 @@
             }, 4000);
         }
 
-        // Setup event listeners
+       
         function setupEventListeners() {
-            // Modal controls
+            
             registerEventBtn.addEventListener('click', () => {
                 registerEventModal.style.display = 'flex';
             });
@@ -2025,7 +2025,7 @@
                 feedbackModal.style.display = 'none';
             });
 
-            // Save registration
+            
             saveRegisterBtn.addEventListener('click', async () => {
                 const name = document.getElementById('attendeeName').value;
                 const email = document.getElementById('attendeeEmail').value;
@@ -2048,7 +2048,7 @@
                     });
 
                     if (result) {
-                        // Refresh data
+                        
                         allEvents = await apiService.getEvents();
                         allRegisteredEvents = await apiService.getRegisteredEvents();
                         registeredEvents = allRegisteredEvents.map(event => event._id);
@@ -2059,7 +2059,7 @@
                         
                         registerEventModal.style.display = 'none';
                         
-                        // Reset form
+                       
                         document.getElementById('attendeeName').value = '';
                         document.getElementById('attendeeEmail').value = '';
                         document.getElementById('eventSelection').value = '';
@@ -2075,7 +2075,7 @@
                 }
             });
 
-            // Save question
+            
             saveQuestionBtn.addEventListener('click', async () => {
                 const questionText = document.getElementById('questionText').value;
                 const eventId = document.getElementById('questionEvent').value;
@@ -2102,14 +2102,14 @@
                     });
 
                     if (result.success) {
-                        // Refresh questions
+                        
                         userQuestions = await apiService.getUserQuestions(attendeeEmail);
                         renderQuestions(userQuestions);
                         updateStats(allEvents, allRegisteredEvents, userQuestions);
                         
                         askQuestionModal.style.display = 'none';
                         
-                        // Reset form
+                        
                         document.getElementById('questionText').value = '';
                         document.getElementById('questionEvent').value = '';
                         document.getElementById('anonymousQuestion').checked = false;
@@ -2125,7 +2125,7 @@
                 }
             });
 
-            // Save feedback - SIMPLE IMPLEMENTATION
+            
             saveFeedbackBtn.addEventListener('click', () => {
                 const eventId = document.getElementById('feedbackEvent').value;
                 const feedbackText = document.getElementById('feedbackText').value;
@@ -2135,17 +2135,17 @@
                     return;
                 }
 
-                // Simple implementation - just show success message
+                
                 feedbackModal.style.display = 'none';
                 
-                // Reset form
+                
                 document.getElementById('feedbackEvent').value = '';
                 document.getElementById('feedbackText').value = '';
                 
                 showToast('Thank you for your feedback!');
             });
 
-            // Search functionality
+            
             searchInput.addEventListener('input', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
                 
@@ -2160,13 +2160,13 @@
                 }
             });
 
-            // Schedule detail card controls
+            
             closeScheduleCard.addEventListener('click', hideScheduleDetail);
             scheduleOverlay.addEventListener('click', hideScheduleDetail);
 
-            // Event delegation for dynamic elements
+            
             document.addEventListener('click', (e) => {
-                // Join Zoom meeting
+               
                 if (e.target.closest('.join-zoom') || e.target.closest('.join-meeting')) {
                     const button = e.target.closest('.join-zoom') || e.target.closest('.join-meeting');
                     const zoomLink = button.getAttribute('data-link');
@@ -2178,53 +2178,53 @@
                     }
                 }
                 
-                // Register for event
+                
                 if (e.target.closest('.register-event')) {
                     const eventId = e.target.closest('.register-event').getAttribute('data-id');
                     const event = allEvents.find(e => e._id == eventId);
                     
-                    // Pre-fill the registration modal
+                    
                     document.getElementById('eventSelection').value = eventId;
                     registerEventModal.style.display = 'flex';
                 }
                 
-                // View schedule
+                
                 if (e.target.closest('.view-schedule') || e.target.closest('.view-schedule-card')) {
                     const button = e.target.closest('.view-schedule') || e.target.closest('.view-schedule-card');
                     const eventId = button.getAttribute('data-id');
                     showScheduleDetail(eventId);
                 }
 
-                // Submit feedback from navigation
+                
                 if (e.target.closest('[data-section="feedback"]')) {
                     feedbackModal.style.display = 'flex';
                 }
             });
 
-            // View full schedule
+            
             viewFullScheduleBtn.addEventListener('click', () => {
                 navLinks[3].click();
             });
 
-            // Notifications
+           
             document.getElementById('notificationsBtn').addEventListener('click', () => {
                 showToast('Notifications panel would open here');
             });
 
-            // Navigation
+            
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     const section = link.getAttribute('data-section');
                     
-                    // Update active state
+                   
                     navLinks.forEach(l => l.classList.remove('active'));
                     link.classList.add('active');
                     
-                    // Update page title
+                    
                     pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
                     
-                    // Show appropriate content
+                    
                     if (section === 'dashboard') {
                         dashboardContent.style.display = 'block';
                         otherSections.style.display = 'none';
@@ -2233,7 +2233,7 @@
                         otherSections.style.display = 'block';
                         
                         if (section === 'events') {
-                            // My Events - show ALL events
+                            
                             otherSections.innerHTML = `
                                 <div class="feature-section">
                                     <div class="section-header">
@@ -2258,7 +2258,7 @@
                                     </div>
                                 </div>
                             `;
-                            // Render all events in the table
+                            
                             setTimeout(() => {
                                 renderEvents(allEvents);
                                 document.getElementById('registerEventBtn2').addEventListener('click', () => {
@@ -2277,7 +2277,7 @@
                                     </div>
                                 </div>
                             `;
-                            // Render registered events
+                           
                             setTimeout(() => {
                                 const registeredEventsSection = document.getElementById('registeredEventsContent');
                                 if (allRegisteredEvents.length === 0) {
@@ -2354,7 +2354,7 @@
                                     </div>
                                 </div>
                             `;
-                            // Render event schedule with Zoom links
+                           
                             setTimeout(() => {
                                 const scheduleSection = document.getElementById('scheduleContent');
                                 if (allRegisteredEvents.length === 0) {
@@ -2385,19 +2385,19 @@
 
                                     allRegisteredEvents.forEach(event => {
                                         const eventName = event.name;
-                                        const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
+                       const eventDate = event.date ? new Date(event.date).toLocaleDateString() : 'TBD';
                                         const eventTime = event.date ? new Date(event.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'TBD';
-                                        const eventLocation = event.location;
+                    const eventLocation = event.location;
                                         const zoomLink = event.zoomLink || '#';
-                                        const status = calculateEventStatus(event);
+                     const status = calculateEventStatus(event);
 
                                         html += `
                                             <tr>
                                                 <td>${eventName}</td>
-                                                <td>${eventDate} at ${eventTime}</td>
+                                        <td>${eventDate} at ${eventTime}</td>
                                                 <td>${eventLocation}</td>
-                                                <td><span class="status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
-                                                <td>
+                                 <td><span class="status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
+                                     <td>
                                                     ${status === 'live' || status === 'upcoming' ? 
                                                         `<button class="btn btn-zoom join-zoom" data-link="${zoomLink}">
                                                             <i class="fas fa-video"></i> Join Meeting
@@ -2430,7 +2430,7 @@
                                     </div>
                                 </div>
                             `;
-                            // Render user's questions with answers
+                            
                             setTimeout(() => {
                                 const questionsSection = document.getElementById('myQuestionsContent');
                                 if (userQuestions.length === 0) {
@@ -2519,7 +2519,7 @@
                 });
             });
 
-            // Card click actions
+            
             document.querySelectorAll('.card').forEach(card => {
                 card.addEventListener('click', () => {
                     const action = card.getAttribute('data-action');
@@ -2541,7 +2541,7 @@
             });
         }
 
-        // Initialize the dashboard when DOM is loaded
+        
         document.addEventListener('DOMContentLoaded', () => {
             setupEventListeners();
             initDashboard();

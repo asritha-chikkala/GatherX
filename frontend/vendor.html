@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vendor Dashboard - Sunset Events</title>
+    <title>GatherX-Vendor dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -884,7 +884,7 @@
                 <div class="logo-icon">
                     <i class="fas fa-sunset"></i>
                 </div>
-                <h1>Sunset <span>Events</span></h1>
+                <h1>Gather <span>X</span></h1>
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
@@ -1065,7 +1065,7 @@
                                 </tr>
                             </thead>
                             <tbody id="tasksPageTableBody">
-                                <!-- Tasks will be populated by JavaScript -->
+                               
                             </tbody>
                         </table>
                     </div>
@@ -1082,7 +1082,7 @@
                     <p>Overview of all sessions you're assigned to with their details and preparation status.</p>
                     
                     <div class="vendor-list" id="sessionsVendorList">
-                        <!-- Sessions will be populated by JavaScript -->
+                        
                     </div>
                 </div>
             </div>
@@ -1097,7 +1097,7 @@
                     <p>Access all resources, documents, and materials for your assigned sessions.</p>
                     
                     <div class="resource-list" id="zoomResourcesList">
-                        <!-- Zoom links will be populated by JavaScript -->
+                        
                     </div>
                 </div>
             </div>
@@ -1187,7 +1187,7 @@
             </div>
 
             <div class="footer">
-                <p>Sunset Events Vendor Portal | © 2025</p>
+                <p>GatherX Vendor Portal | © 2025</p>
             </div>
         </div>
     </div>
@@ -1196,24 +1196,24 @@
         // API Configuration
         const API_BASE_URL = 'https://gatherx-1vsr.onrender.com/api';
 
-        // API Service for Vendor - UPDATED FOR EVENTS
+       
         const vendorApiService = {
-            // Get vendor tasks - ONLY FOR VENDOR 1
+            
             async getVendorTasks() {
                 try {
                     console.log('🔄 Fetching tasks for Vendor 1...');
                     
-                    // Get all tasks and filter for Vendor 1
+                    
                     const response = await fetch(`${API_BASE_URL}/tasks`);
                     if (!response.ok) throw new Error('Failed to fetch tasks');
                     
                     const data = await response.json();
                     console.log('✅ All tasks from API:', data);
                     
-                    // Handle different response formats
+                    
                     const allTasks = Array.isArray(data) ? data : (data.tasks || data.data || []);
                     
-                    // Filter tasks for Vendor 1
+                    
                     const vendorTasks = allTasks.filter(task => {
                         const matchesVendor = 
                             task.vendor === 'Vendor 1' || 
@@ -1253,7 +1253,7 @@
                 }
             },
 
-            // Get events - UPDATED TO FILTER FOR VENDOR 1
+            
             async getEvents() {
                 try {
                     console.log('🔄 Fetching events for Vendor 1...');
@@ -1261,13 +1261,13 @@
                     if (!response.ok) throw new Error('Failed to fetch events');
                     const data = await response.json();
                     
-                    // Handle different response formats
+                    
                     const allEvents = Array.isArray(data) ? data : (data.events || []);
                     
-                    // Filter events for Vendor 1 (all events go to vendor sessions)
+                   
                     const vendorEvents = allEvents.filter(event => {
-                        // All events are assigned to Vendor 1 for sessions
-                        const isAssigned = true; // All events go to vendor sessions
+                        
+                        const isAssigned = true; 
                         
                         console.log(`Event "${event.name}" - Assigned to sessions: ${isAssigned}`);
                         return isAssigned;
@@ -1282,21 +1282,21 @@
             }
         };
 
-        // Global variables
+        
         let vendorTasks = [];
         let vendorEvents = [];
 
-        // Function to show specific content page
+        
         function showPage(pageId) {
-            // Hide all content pages
+            
             document.querySelectorAll('.content-page').forEach(page => {
                 page.classList.remove('active');
             });
             
-            // Show the selected page
+           
             document.getElementById(pageId).classList.add('active');
             
-            // Update page title
+            
             const pageTitles = {
                 'dashboard': 'Vendor Dashboard',
                 'tasks': 'My Tasks',
@@ -1320,7 +1320,7 @@
             }
         }
 
-        // Load and render tasks - UPDATED TO INCLUDE SESSIONS
+        
         async function loadVendorTasks() {
             try {
                 console.log('🔄 Loading data for Vendor 1...');
@@ -1335,12 +1335,12 @@
                 updateDashboardStats();
                 renderTasksTable();
                 
-                // Refresh sessions page if it's active
+                
                 if (document.getElementById('sessions').classList.contains('active')) {
                     loadSessionsPage();
                 }
                 
-                // Refresh resources page if it's active
+                
                 if (document.getElementById('resources').classList.contains('active')) {
                     loadResourcesPage();
                 }
@@ -1357,11 +1357,11 @@
             }
         }
 
-        // Update dashboard statistics
+        
         function updateDashboardStats() {
-            // Calculate task statistics - ONLY PENDING AND COMPLETED
+            
             const completedTasks = vendorTasks.filter(task => task.status === 'completed').length;
-            const pendingTasks = vendorTasks.filter(task => task.status !== 'completed').length; // Everything else is pending
+            const pendingTasks = vendorTasks.filter(task => task.status !== 'completed').length;
             
             const overdueTasks = vendorTasks.filter(task => {
                 if (task.status === 'completed') return false;
@@ -1375,17 +1375,17 @@
                 return eventDate >= new Date();
             }).length;
 
-            // Update cards
+           
             document.querySelector('.card.pending .stat').textContent = pendingTasks;
             document.querySelector('.card.completed .stat').textContent = completedTasks;
             document.querySelector('.card.upcoming .stat').textContent = upcomingEvents;
             
-            // Update task stats
+           
             document.querySelector('.task-stat.pending .number').textContent = pendingTasks;
             document.querySelector('.task-stat.completed .number').textContent = completedTasks;
             document.querySelector('.task-stat.overdue .number').textContent = overdueTasks;
             
-            // Update progress bars
+         
             const totalTasks = vendorTasks.length;
             const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
             
@@ -1394,7 +1394,7 @@
             document.querySelector('.card.upcoming .progress').style.width = vendorEvents.length > 0 ? `${(upcomingEvents / vendorEvents.length) * 100}%` : '0%';
         }
 
-        // Render tasks table
+        
         function renderTasksTable() {
             const tables = [
                 document.getElementById('vendorTasksTableBody'),
@@ -1425,14 +1425,14 @@
                 vendorTasks.forEach(task => {
                     const row = document.createElement('tr');
                     
-                    // Format due date
+                    
                     const dueDate = new Date(task.dueDate).toLocaleDateString('en-US', {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric'
                     });
                     
-                    // Get status class and text
+                    
                     let statusClass = 'status-pending';
                     let statusText = 'Pending';
                     
@@ -1441,10 +1441,10 @@
                         statusText = 'Completed';
                     }
                     
-                    // Get priority display
+                   
                     const priority = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'Medium';
                     
-                    // Use title or taskName field
+                    
                     const taskTitle = task.title || task.taskName || 'Unnamed Task';
                     const eventName = task.eventName || 'General Event';
                     
@@ -1465,12 +1465,12 @@
             });
         }
 
-        // Load tasks page
+       
         function loadTasksPage() {
             renderTasksTable();
         }
 
-        // Load sessions page - UPDATED TO SHOW EVENT DETAILS
+        
         function loadSessionsPage() {
             const vendorList = document.getElementById('sessionsVendorList');
             if (!vendorList) return;
@@ -1491,15 +1491,15 @@
                 return;
             }
             
-            // Create session cards from events
+            
             vendorEvents.forEach(event => {
-                // Count tasks for this event
+                
                 const eventTasks = vendorTasks.filter(task => task.eventName === event.name);
                 const completedTasks = eventTasks.filter(task => task.status === 'completed').length;
                 const totalTasks = eventTasks.length;
                 const progress = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
                 
-                // Format event date
+               
                 const eventDate = new Date(event.date).toLocaleDateString('en-US', {
                     weekday: 'short',
                     month: 'short',
@@ -1530,7 +1530,7 @@
             });
         }
 
-        // Load resources page - NEW FUNCTION FOR ZOOM LINKS
+        
         function loadResourcesPage() {
             const resourcesList = document.getElementById('zoomResourcesList');
             if (!resourcesList) return;
@@ -1551,7 +1551,7 @@
                 return;
             }
             
-            // Create resource cards from events with Zoom links
+            
             vendorEvents.forEach(event => {
                 if (event.zoomLink) {
                     const card = document.createElement('div');
@@ -1583,7 +1583,7 @@
                 }
             });
             
-            // If no events have Zoom links, show a message
+            
             if (resourcesList.children.length === 0) {
                 resourcesList.innerHTML = `
                     <div class="resource-card" style="text-align: center; padding: 40px;">
@@ -1598,40 +1598,40 @@
             }
         }
 
-        // Initialize vendor dashboard
+        
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Vendor Dashboard loaded - VENDOR 1 ONLY");
             
-            // Load initial data
+            
             loadVendorTasks();
             
-            // Navigation
+            
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const pageId = this.getAttribute('data-page');
                     
-                    // Update active state
+                    
                     document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
                     
-                    // Show the selected page
+                    
                     showPage(pageId);
                 });
             });
             
-            // Update status button
+           
             document.getElementById('updateStatusBtn').addEventListener('click', function() {
                 showPage('tasks');
             });
             
-            // Refresh button
+            
             document.getElementById('refreshVendorBtn').addEventListener('click', function() {
                 console.log('🔄 Manual refresh triggered');
                 loadVendorTasks();
             });
             
-            // Task update buttons (event delegation for dynamic content)
+            
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.update-task-btn')) {
                     const button = e.target.closest('.update-task-btn');
@@ -1639,7 +1639,7 @@
                     const taskRow = button.closest('tr');
                     const taskName = taskRow ? taskRow.cells[0].textContent : 'task';
                     
-                    // Show status update modal - ONLY TWO OPTIONS NOW
+                    
                     const newStatus = prompt(`Update status for "${taskName}":\nEnter "pending" or "completed"`);
                     
                     if (newStatus && ['pending', 'completed'].includes(newStatus.toLowerCase())) {
@@ -1650,7 +1650,7 @@
                                     .then(result => {
                                         if (result.success || result._id) {
                                             alert('Task completed and removed from system!');
-                                            loadVendorTasks(); // Reload tasks from database
+                                            loadVendorTasks(); 
                                         }
                                     })
                                     .catch(error => {
@@ -1659,18 +1659,18 @@
                                     });
                             }
                         } else {
-                            // For pending status, just show message (no actual update needed)
+                            
                             alert('Task status remains as pending.');
                         }
                     }
                 }
                 
-                // Copy Zoom link functionality
+               
                 if (e.target.closest('.copy-zoom-link')) {
                     const button = e.target.closest('.copy-zoom-link');
                     const zoomLink = button.getAttribute('data-link');
                     
-                    // Copy to clipboard
+                    
                     navigator.clipboard.writeText(zoomLink)
                         .then(() => {
                             alert('Zoom link copied to clipboard!');
@@ -1682,16 +1682,16 @@
                 }
             });
             
-            // Search functionality
+            
             document.getElementById('searchInput').addEventListener('input', function(e) {
                 const searchTerm = e.target.value.toLowerCase();
                 if (searchTerm) {
                     console.log(`Searching for: ${searchTerm}`);
-                    // Implement search filtering here if needed
+                    
                 }
             });
             
-            // Quick action buttons
+           
             document.querySelectorAll('.quick-actions .btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const action = this.textContent.trim();
@@ -1699,7 +1699,7 @@
                 });
             });
             
-            // Auto-refresh tasks every 30 seconds when on relevant pages
+            
             setInterval(() => {
                 if (document.getElementById('tasks').classList.contains('active') || 
                     document.getElementById('dashboard').classList.contains('active') ||
