@@ -25,6 +25,7 @@
             background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
             color: var(--deep-brown);
             line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         .container {
@@ -39,6 +40,9 @@
             color: white;
             padding: 20px 0;
             box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .header-content {
@@ -465,7 +469,7 @@
             <div class="hero-content">
                 <h2>Transform Your Virtual Events Experience</h2>
                 <p>All-in-one platform for organizers, attendees, vendors, and sponsors</p>
-                <a href="#" class="btn" style="padding: 15px 30px; font-size: 18px;">
+                <a href="#role-section" class="btn" style="padding: 15px 30px; font-size: 18px;">
                     <i class="fas fa-rocket"></i> Get Started Now
                 </a>
             </div>
@@ -473,7 +477,7 @@
     </section>
 
     <!-- Role Cards Section -->
-    <section class="roles-section">
+    <section id="role-section" class="roles-section">
         <div class="container">
             <div class="section-title">
                 <h2>Choose Your Role</h2>
@@ -594,7 +598,7 @@
                     <p>All-in-one virtual event management platform for organizers, attendees, vendors, and sponsors.</p>
                     <div class="social-links">
                         
-                        <a href="#" class="social-link">
+                        <a href="https://www.linkedin.com/in/asritha-chikkala-300397336/" class="social-link">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
                         
@@ -617,11 +621,10 @@
                 <div class="footer-links-container">
                     <h3 class="footer-heading">Company</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        
+                        <li><a href="contact.html">Contact</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -631,5 +634,15 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Smooth scroll to role section when clicking the Get Started button
+        document.querySelector('.btn[href="#role-section"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('role-section').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>

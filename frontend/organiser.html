@@ -32,26 +32,13 @@
             min-height: 100vh;
         }
 
-        /* Sidebar Styles */
+        /* Sidebar */
         .sidebar {
             width: 280px;
             background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
             color: white;
             padding: 25px 0;
             box-shadow: 5px 0 25px rgba(73, 49, 41, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent 0%, rgba(239, 163, 160, 0.1) 100%);
-            pointer-events: none;
         }
 
         .logo {
@@ -102,29 +89,11 @@
             border-radius: 10px;
             transition: all 0.3s ease;
             font-weight: 500;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-links a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .nav-links a:hover::before {
-            left: 100%;
         }
 
         .nav-links a:hover, .nav-links a.active {
             background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
             color: white;
-            box-shadow: 0 5px 15px rgba(139, 89, 123, 0.4);
             transform: translateX(5px);
         }
 
@@ -132,15 +101,13 @@
             margin-right: 15px;
             font-size: 18px;
             width: 20px;
-            text-align: center;
         }
 
-        /* Main Content Styles */
+        /* Main Content */
         .main-content {
             flex: 1;
             padding: 30px;
             overflow-y: auto;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
         }
 
         .header {
@@ -152,19 +119,12 @@
             background: white;
             border-radius: 16px;
             box-shadow: 0 5px 20px rgba(73, 49, 41, 0.08);
-            border-left: 5px solid var(--dusty-purple);
         }
 
         .header h2 {
             font-size: 28px;
             color: var(--deep-brown);
             font-weight: 700;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
         }
 
         .search-box {
@@ -177,15 +137,6 @@
             border-radius: 30px;
             width: 280px;
             font-size: 14px;
-            transition: all 0.3s;
-            background: rgba(249, 236, 171, 0.2);
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--dusty-purple);
-            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
-            background: white;
         }
 
         .search-box i {
@@ -200,9 +151,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            background: rgba(73, 49, 41, 0.05);
-            padding: 8px 15px;
-            border-radius: 30px;
         }
 
         .user-avatar {
@@ -214,34 +162,6 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: bold;
-            font-size: 18px;
-            box-shadow: 0 4px 10px rgba(239, 163, 160, 0.3);
-        }
-
-        .notifications {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .notifications i {
-            font-size: 22px;
-            color: var(--dusty-purple);
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: var(--soft-pink);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-weight: bold;
         }
 
@@ -258,43 +178,19 @@
             border-radius: 16px;
             padding: 25px;
             box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border-top: 5px solid;
+            transition: transform 0.3s ease;
             cursor: pointer;
-        }
-
-        .card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple), var(--soft-pink), var(--light-blue), var(--light-cream));
-        }
-
-        .card.events {
-            border-top-color: var(--deep-brown);
-        }
-
-        .card.attendees {
-            border-top-color: var(--dusty-purple);
-        }
-
-        .card.tasks {
-            border-top-color: var(--soft-pink);
-        }
-
-        .card.engagement {
-            border-top-color: var(--light-blue);
+            border-top: 5px solid;
         }
 
         .card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(73, 49, 41, 0.15);
         }
+
+        .card.events { border-top-color: var(--deep-brown); }
+        .card.tasks { border-top-color: var(--soft-pink); }
+        .card.attendees { border-top-color: var(--dusty-purple); }
+        .card.engagement { border-top-color: var(--light-blue); }
 
         .card-header {
             display: flex;
@@ -307,115 +203,12 @@
             font-size: 16px;
             color: var(--deep-brown);
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .card-header i {
-            font-size: 28px;
-            opacity: 0.8;
-        }
-
-        .card.events .card-header i {
-            color: var(--deep-brown);
-        }
-
-        .card.attendees .card-header i {
-            color: var(--dusty-purple);
-        }
-
-        .card.tasks .card-header i {
-            color: var(--soft-pink);
-        }
-
-        .card.engagement .card-header i {
-            color: var(--light-blue);
-        }
-
-        .card-content {
-            color: var(--deep-brown);
         }
 
         .stat {
             font-size: 36px;
             font-weight: 800;
             margin: 10px 0;
-            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card.attendees .stat {
-            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card.tasks .stat {
-            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card.engagement .stat {
-            background: linear-gradient(135deg, var(--light-blue), var(--light-cream));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background-color: rgba(73, 49, 41, 0.1);
-            border-radius: 5px;
-            margin-top: 15px;
-            overflow: hidden;
-        }
-
-        .progress {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 0.5s ease;
-        }
-
-        .card.events .progress {
-            background: linear-gradient(90deg, var(--deep-brown), var(--dusty-purple));
-        }
-
-        .card.attendees .progress {
-            background: linear-gradient(90deg, var(--dusty-purple), var(--soft-pink));
-        }
-
-        .card.tasks .progress {
-            background: linear-gradient(90deg, var(--soft-pink), var(--light-blue));
-        }
-
-        .card.engagement .progress {
-            background: linear-gradient(90deg, var(--light-blue), var(--light-cream));
-        }
-
-        /* Feature Sections */
-        .feature-section {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
-            border-left: 5px solid var(--dusty-purple);
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
-        }
-
-        .section-header h3 {
-            font-size: 22px;
-            color: var(--deep-brown);
-            font-weight: 700;
         }
 
         .btn {
@@ -427,33 +220,39 @@
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 89, 123, 0.3);
         }
 
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+        .btn.delete {
+            background: linear-gradient(135deg, #ff4757, #ff3742);
+            padding: 8px 12px;
+            font-size: 12px;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--dusty-purple);
-            color: var(--dusty-purple);
+        .btn.delete:hover {
+            background: linear-gradient(135deg, #ff3742, #ff2e3b);
+            transform: translateY(-2px);
         }
 
-        .btn-outline:hover {
-            background: var(--dusty-purple);
-            color: white;
+        .feature-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
         }
 
-        /* Tables and Lists */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
@@ -471,19 +270,6 @@
             border-bottom: 1px solid rgba(73, 49, 41, 0.1);
         }
 
-        .table th {
-            color: var(--deep-brown);
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: rgba(249, 236, 171, 0.3);
-        }
-
-        .table tr:hover {
-            background-color: rgba(239, 163, 160, 0.1);
-        }
-
         .status {
             padding: 6px 12px;
             border-radius: 20px;
@@ -492,100 +278,11 @@
             display: inline-block;
         }
 
-        .status.live {
-            background: rgba(73, 49, 41, 0.1);
-            color: var(--deep-brown);
-        }
+        .status.upcoming { background: rgba(139, 89, 123, 0.1); color: var(--dusty-purple); }
+        .status.pending { background: rgba(249, 236, 171, 0.3); color: var(--deep-brown); }
+        .status.in-progress { background: rgba(158, 200, 249, 0.3); color: var(--light-blue); }
+        .status.completed { background: rgba(239, 163, 160, 0.2); color: var(--soft-pink); }
 
-        .status.upcoming {
-            background: rgba(139, 89, 123, 0.1);
-            color: var(--dusty-purple);
-        }
-
-        .status.completed {
-            background: rgba(239, 163, 160, 0.2);
-            color: var(--soft-pink);
-        }
-
-        .task-list {
-            list-style: none;
-        }
-
-        .task-list li {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .task-list li:last-child {
-            border-bottom: none;
-        }
-
-        .task-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .task-info i {
-            font-size: 18px;
-            color: var(--dusty-purple);
-            width: 20px;
-        }
-
-        .task-details {
-            flex: 1;
-        }
-
-        .task-meta {
-            font-size: 13px;
-            color: var(--dusty-purple);
-            margin-top: 5px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--deep-brown);
-            font-size: 16px;
-            transition: all 0.3s;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-btn.edit:hover {
-            background: rgba(73, 49, 41, 0.1);
-            color: var(--deep-brown);
-        }
-
-        .action-btn.delete:hover {
-            background: rgba(239, 163, 160, 0.2);
-            color: var(--soft-pink);
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--deep-brown);
-            margin-top: 30px;
-            font-size: 14px;
-            opacity: 0.7;
-        }
-
-        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -597,7 +294,6 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
         }
 
         .modal-content {
@@ -605,14 +301,6 @@
             border-radius: 16px;
             width: 500px;
             max-width: 90%;
-            box-shadow: 0 20px 40px rgba(73, 49, 41, 0.3);
-            animation: modalAppear 0.3s ease;
-            overflow: hidden;
-        }
-
-        @keyframes modalAppear {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-header {
@@ -624,34 +312,12 @@
             align-items: center;
         }
 
-        .modal-header h3 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-        }
-
         .modal-body {
             padding: 25px;
-            max-height: 60vh;
-            overflow-y: auto;
         }
 
         .form-group {
             margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--deep-brown);
         }
 
         .form-control {
@@ -660,31 +326,8 @@
             border: 1px solid rgba(73, 49, 41, 0.2);
             border-radius: 8px;
             font-size: 16px;
-            transition: border 0.3s;
-            background: rgba(249, 236, 171, 0.1);
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: var(--dusty-purple);
-            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
-            background: white;
-        }
-
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .modal-footer {
-            padding: 20px 25px;
-            border-top: 1px solid rgba(73, 49, 41, 0.1);
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        /* Toast Notifications */
         .toast {
             position: fixed;
             top: 20px;
@@ -693,10 +336,6 @@
             padding: 15px 20px;
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
-            border-left: 4px solid var(--dusty-purple);
-            display: flex;
-            align-items: center;
-            gap: 10px;
             transform: translateX(120%);
             transition: transform 0.3s ease;
             z-index: 1100;
@@ -706,49 +345,6 @@
             transform: translateX(0);
         }
 
-        .toast i {
-            color: var(--dusty-purple);
-            font-size: 20px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1100px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-            }
-            
-            .dashboard-cards {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .dashboard-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .header-actions {
-                width: 100%;
-                justify-content: space-between;
-            }
-            
-            .search-box input {
-                width: 200px;
-            }
-        }
-
-        /* Loading Spinner */
         .spinner {
             border: 3px solid rgba(73, 49, 41, 0.1);
             border-radius: 50%;
@@ -757,7 +353,6 @@
             height: 20px;
             animation: spin 1s linear infinite;
             display: inline-block;
-            margin-right: 10px;
         }
 
         @keyframes spin {
@@ -765,34 +360,68 @@
             100% { transform: rotate(360deg); }
         }
 
-        .status.critical {
-            background: rgba(239, 163, 160, 0.3);
-            color: var(--soft-pink);
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--dusty-purple);
+            transition: transform 0.2s ease;
         }
 
-        .status.high {
-            background: rgba(139, 89, 123, 0.2);
-            color: var(--dusty-purple);
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.1);
         }
 
-        .status.medium {
-            background: rgba(73, 49, 41, 0.1);
-            color: var(--deep-brown);
+        .question-item {
+            background: rgba(249, 236, 171, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
-        .status.low {
-            background: rgba(158, 200, 249, 0.2);
-            color: var(--light-blue);
+        .meeting-item {
+            background: rgba(139, 89, 123, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
         }
-        
-        .status.pending {
-            background: rgba(249, 236, 171, 0.3);
-            color: var(--deep-brown);
+
+        .sponsor-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            border: 2px solid var(--light-cream);
         }
-        
-        .status.in-progress {
-            background: rgba(158, 200, 249, 0.3);
-            color: var(--light-blue);
+
+        .sponsor-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+        .create-event-form {
+            background: rgba(249, 236, 171, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px dashed var(--dusty-purple);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -808,16 +437,12 @@
             </div>
             <ul class="nav-links">
                 <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
-                <li><a href="#" data-section="events"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
-                <li><a href="#" data-section="events"><i class="fas fa-list"></i> View Events</a></li>
-                <li><a href="#" data-section="sessions"><i class="fas fa-microphone"></i> Sessions & Speakers</a></li>
+                <li><a href="#" data-section="create-event"><i class="fas fa-calendar-plus"></i> Create Event</a></li>
+                <li><a href="#" data-section="view-events"><i class="fas fa-list"></i> View Events</a></li>
                 <li><a href="#" data-section="tasks"><i class="fas fa-tasks"></i> Vendor Tasks</a></li>
-                <li><a href="#" data-section="announcements"><i class="fas fa-bullhorn"></i> Announcements</a></li>
                 <li><a href="#" data-section="meetings"><i class="fas fa-clock"></i> Schedule Meetings</a></li>
                 <li><a href="#" data-section="questions"><i class="fas fa-question-circle"></i> Attendee Questions</a></li>
                 <li><a href="#" data-section="sponsors"><i class="fas fa-star"></i> Sponsors</a></li>
-                <li><a href="#" data-section="analytics"><i class="fas fa-chart-bar"></i> Analytics</a></li>
-                <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
             </ul>
         </div>
 
@@ -826,14 +451,7 @@
             <div class="header">
                 <h2 id="pageTitle">Event Organizer Dashboard</h2>
                 <div class="header-actions">
-                    <div class="search-box">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search events, attendees...">
-                    </div>
-                    <div class="notifications" id="notificationsBtn">
-                        <i class="fas fa-bell"></i>
-                        <div class="notification-badge">3</div>
-                    </div>
+                    
                     <div class="user-info">
                         <div class="user-avatar">OE</div>
                         <span>Organizer</span>
@@ -843,117 +461,81 @@
 
             <!-- Dashboard Content -->
             <div id="dashboardContent">
-                <!-- Dashboard Cards -->
                 <div class="dashboard-cards">
-                    <div class="card events" data-action="view-events">
+                    <div class="card events">
                         <div class="card-header">
                             <h3>Total Events</h3>
                             <i class="fas fa-calendar"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="totalEvents">12</div>
-                            <p>3 events live now</p>
-                            <div class="progress-bar">
-                                <div class="progress" id="eventsProgress" style="width: 75%;"></div>
-                            </div>
+                            <div class="stat" id="totalEvents">0</div>
+                            <p>Loading events...</p>
                         </div>
                     </div>
-                    <div class="card attendees" data-action="view-attendees">
+                    <div class="card tasks">
                         <div class="card-header">
-                            <h3>Attendees</h3>
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="card-content">
-                            <div class="stat" id="totalAttendees">1,248</div>
-                            <p>Across all events</p>
-                            <div class="progress-bar">
-                                <div class="progress" id="attendeesProgress" style="width: 82%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card tasks" data-action="view-tasks">
-                        <div class="card-header">
-                            <h3>Tasks Completed</h3>
+                            <h3>Vendor 1 Tasks</h3>
                             <i class="fas fa-tasks"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="tasksCompleted">84%</div>
-                            <p id="tasksText">36 of 43 tasks done</p>
-                            <div class="progress-bar">
-                                <div class="progress" id="tasksProgress" style="width: 84%;"></div>
-                            </div>
+                            <div class="stat" id="totalTasks">0</div>
+                            <p>Loading tasks...</p>
                         </div>
                     </div>
-                    <div class="card engagement" data-action="view-analytics">
+                    <div class="card attendees">
                         <div class="card-header">
-                            <h3>Engagement Rate</h3>
-                            <i class="fas fa-chart-line"></i>
+                            <h3>Total Attendees</h3>
+                            <i class="fas fa-users"></i>
                         </div>
                         <div class="card-content">
-                            <div class="stat" id="engagementRate">76%</div>
-                            <p>Across all sessions</p>
-                            <div class="progress-bar">
-                                <div class="progress" id="engagementProgress" style="width: 76%;"></div>
-                            </div>
+                            <div class="stat" id="totalAttendees">0</div>
+                            <p>Across all events</p>
+                        </div>
+                    </div>
+                    <div class="card engagement">
+                        <div class="card-header">
+                            <h3>Unanswered Questions</h3>
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="card-content">
+                            <div class="stat" id="totalQuestions">0</div>
+                            <p>Requiring attention</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Upcoming Events Section -->
                 <div class="feature-section">
                     <div class="section-header">
-                        <h3>Your Events</h3>
-                        <button class="btn" id="createEventBtn"><i class="fas fa-plus"></i> Create New Event</button>
+                        <h3>Recent Events</h3>
+                        <button class="btn" id="createEventBtn"><i class="fas fa-plus"></i> Create Event</button>
                     </div>
-                    <div class="table-container">
-                        <table class="table" id="eventsTable">
-                            <thead>
-                                <tr>
-                                    <th>Event Name</th>
-                                    <th>Date</th>
-                                    <th>Attendees</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="eventsTableBody">
-                                <!-- Events will be populated by JavaScript -->
-                            </tbody>
-                        </table>
+                    <div id="eventsList">
+                        <div class="spinner"></div> Loading events from database...
                     </div>
                 </div>
 
-                <!-- Tasks Section -->
                 <div class="feature-section">
                     <div class="section-header">
-                        <h3>Vendor Tasks</h3>
-                        <button class="btn" id="createTaskBtn"><i class="fas fa-plus"></i> Assign New Task</button>
+                        <h3>Vendor 1 Tasks</h3>
+                        <button class="btn" id="createTaskBtn"><i class="fas fa-plus"></i> Create Task</button>
                     </div>
-                    <ul class="task-list" id="tasksList">
-                        <!-- Tasks will be populated by JavaScript -->
-                    </ul>
+                    <div id="tasksList">
+                        <div class="spinner"></div> Loading tasks from database...
+                    </div>
                 </div>
 
-                <!-- Recent Activity Section -->
                 <div class="feature-section">
                     <div class="section-header">
                         <h3>Recent Activity</h3>
-                        <button class="btn btn-outline" id="filterActivityBtn"><i class="fas fa-filter"></i> Filter</button>
                     </div>
-                    <ul class="task-list" id="activityList">
-                        <!-- Activities will be populated by JavaScript -->
-                    </ul>
+                    <div id="activityList">
+                        <div class="spinner"></div> Loading activity...
+                    </div>
                 </div>
             </div>
 
-            <!-- Other Section Contents (initially hidden) -->
-            <div id="otherSections" style="display: none;">
-                <!-- Content for other sections will be loaded here -->
-            </div>
-
-            <div class="footer">
-                <p>Sunset Events Virtual Management System | © 2025</p>
-            </div>
+            <!-- Other Sections -->
+            <div id="otherSections" style="display: none;"></div>
         </div>
     </div>
 
@@ -966,19 +548,19 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="eventName">Event Name</label>
+                    <label>Event Name *</label>
                     <input type="text" id="eventName" class="form-control" placeholder="Enter event name">
                 </div>
                 <div class="form-group">
-                    <label for="eventDate">Event Date & Time</label>
+                    <label>Event Date & Time *</label>
                     <input type="datetime-local" id="eventDate" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="eventDescription">Description</label>
+                    <label>Description *</label>
                     <textarea id="eventDescription" class="form-control" rows="3" placeholder="Enter event description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="eventType">Event Type</label>
+                    <label>Event Type *</label>
                     <select id="eventType" class="form-control">
                         <option value="">Select event type</option>
                         <option value="conference">Conference</option>
@@ -987,15 +569,17 @@
                         <option value="networking">Networking</option>
                     </select>
                 </div>
-                <!-- Zoom Link Field Added -->
                 <div class="form-group">
-                    <label for="zoomLink">Zoom Meeting Link</label>
-                    <input type="url" id="zoomLink" class="form-control" placeholder="https://zoom.us/j/xxxxxxxxx">
+                    <label>Location *</label>
+                    <input type="text" id="eventLocation" class="form-control" placeholder="Enter event location" value="Virtual Event">
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancelEventBtn">Cancel</button>
-                <button class="btn" id="saveEventBtn">Create Event</button>
+                <div class="form-group">
+                    <label>Zoom Meeting Link</label>
+                    <input type="url" id="zoomLink" class="form-control" placeholder="https://zoom.us/j/5">
+                </div>
+                <button class="btn" id="saveEventBtn" style="width: 100%;">
+                    <i class="fas fa-save"></i> Create Event
+                </button>
             </div>
         </div>
     </div>
@@ -1004,65 +588,62 @@
     <div class="modal" id="createTaskModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Assign New Task</h3>
+                <h3>Create New Task</h3>
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="taskTitle">Task Title</label>
+                    <label>Task Title *</label>
                     <input type="text" id="taskTitle" class="form-control" placeholder="Enter task title">
                 </div>
                 <div class="form-group">
-                    <label for="taskDescription">Description</label>
+                    <label>Description</label>
                     <textarea id="taskDescription" class="form-control" rows="3" placeholder="Enter task description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="taskVendor">Assign to Vendor</label>
-                    <select id="taskVendor" class="form-control">
-                        <option value="Vendor 1">Vendor 1</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="taskDueDate">Due Date</label>
+                    <label>Due Date *</label>
                     <input type="datetime-local" id="taskDueDate" class="form-control">
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" id="cancelTaskBtn">Cancel</button>
-                <button class="btn" id="saveTaskBtn">Assign Task</button>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select id="taskPriority" class="form-control">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <button class="btn" id="saveTaskBtn" style="width: 100%;">
+                    <i class="fas fa-save"></i> Create Task for Vendor 1
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Action completed successfully!</span>
+        <span id="toastMessage">Action completed!</span>
     </div>
-    
-    <script>
-    // REAL API SERVICE - Updated for your backend
-    const API_BASE_URL = 'https://gatherx-1vsr.onrender.com/api'; // Adjust port if different
 
+    <script>
+    const API_BASE_URL = 'https://gatherx-1vsr.onrender.com/api';
+
+    // API service
     const apiService = {
         async getEvents() {
             try {
-                console.log('🔄 Fetching events from backend...');
                 const response = await fetch(`${API_BASE_URL}/events`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const data = await response.json();
-                console.log('✅ Events loaded:', data);
-                return Array.isArray(data) ? data : (data.events || data.data || []);
+                return data;
             } catch (error) {
-                console.error('❌ Error fetching events:', error);
-                showToast('Error loading events from server', true);
-                return [];
+                console.error('Events error:', error);
+                throw error;
             }
         },
 
-        async saveEvent(eventData) {
+        async createEvent(eventData) {
             try {
-                console.log('💾 Saving event:', eventData);
                 const response = await fetch(`${API_BASE_URL}/events`, {
                     method: 'POST',
                     headers: {
@@ -1070,88 +651,43 @@
                     },
                     body: JSON.stringify(eventData)
                 });
-                
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
                 }
-                
-                const savedEvent = await response.json();
-                console.log('✅ Event saved successfully:', savedEvent);
-                return savedEvent;
+                return await response.json();
             } catch (error) {
-                console.error('❌ Error saving event:', error);
-                showToast('Error saving event: ' + error.message, true);
-                throw error;
-            }
-        },
-
-        async updateEvent(eventId, eventData) {
-            try {
-                console.log('📝 Updating event:', eventId);
-                const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(eventData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const updatedEvent = await response.json();
-                console.log('✅ Event updated successfully:', updatedEvent);
-                return updatedEvent;
-            } catch (error) {
-                console.error('❌ Error updating event:', error);
-                showToast('Error updating event: ' + error.message, true);
+                console.error('Create event error:', error);
                 throw error;
             }
         },
 
         async deleteEvent(eventId) {
             try {
-                console.log('🗑️ Deleting event:', eventId);
                 const response = await fetch(`${API_BASE_URL}/events/${eventId}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
                 });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log('✅ Event deleted successfully:', result);
-                return result;
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('❌ Error deleting event:', error);
-                showToast('Error deleting event: ' + error.message, true);
+                console.error('Delete event error:', error);
                 throw error;
             }
         },
 
         async getTasks() {
             try {
-                console.log('🔄 Fetching tasks from backend...');
                 const response = await fetch(`${API_BASE_URL}/tasks`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                console.log('✅ Tasks loaded:', data);
-                return Array.isArray(data) ? data : (data.tasks || data.data || []);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('❌ Error fetching tasks:', error);
-                showToast('Error loading tasks from server', true);
-                return [];
+                console.error('Tasks error:', error);
+                throw error;
             }
         },
 
-        async saveTask(taskData) {
+        async createTask(taskData) {
             try {
-                console.log('💾 SAVING TASK TO BACKEND:', taskData);
-                console.log('📤 Sending to URL:', `${API_BASE_URL}/tasks`);
-                
                 const response = await fetch(`${API_BASE_URL}/tasks`, {
                     method: 'POST',
                     headers: {
@@ -1159,714 +695,794 @@
                     },
                     body: JSON.stringify(taskData)
                 });
-                
-                console.log('📥 Response status:', response.status);
-                console.log('📥 Response ok:', response.ok);
-                
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('❌ Server error response:', errorText);
-                    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
-                }
-                
-                const savedTask = await response.json();
-                console.log('✅ TASK SAVED SUCCESSFULLY:', savedTask);
-                return savedTask;
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('❌ ERROR SAVING TASK:', error);
-                showToast('Error saving task: ' + error.message, true);
+                console.error('Create task error:', error);
                 throw error;
             }
         },
 
-        async updateTask(taskId, taskData) {
+        async getQuestions() {
             try {
-                console.log('📝 Updating task:', taskId);
-                const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(taskData)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const updatedTask = await response.json();
-                console.log('✅ Task updated successfully:', updatedTask);
-                return updatedTask;
+                const response = await fetch(`${API_BASE_URL}/questions`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('❌ Error updating task:', error);
-                showToast('Error updating task: ' + error.message, true);
+                console.error('Questions error:', error);
                 throw error;
             }
         },
 
-        async deleteTask(taskId) {
+        async answerQuestion(questionId, answerData) {
             try {
-                console.log('🗑️ Deleting task:', taskId);
-                const response = await fetch(`${API_BASE_URL}/tasks/${taskId}`, {
-                    method: 'DELETE'
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log('✅ Task deleted successfully:', result);
-                return result;
-            } catch (error) {
-                console.error('❌ Error deleting task:', error);
-                showToast('Error deleting task: ' + error.message, true);
-                throw error;
-            }
-        },
-
-        async getActivities() {
-            try {
-                console.log('🔄 Fetching activities from backend...');
-                const response = await fetch(`${API_BASE_URL}/activities`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                console.log('✅ Activities loaded:', data);
-                return Array.isArray(data) ? data : (data.activities || data.data || []);
-            } catch (error) {
-                console.error('❌ Error fetching activities:', error);
-                showToast('Error loading activities from server', true);
-                return [];
-            }
-        },
-
-        async createActivity(activityData) {
-            try {
-                console.log('💾 Creating activity:', activityData);
-                const response = await fetch(`${API_BASE_URL}/activities`, {
+                const response = await fetch(`${API_BASE_URL}/questions/${questionId}/answer`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(activityData)
+                    body: JSON.stringify(answerData)
                 });
-                
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-                }
-                
-                const savedActivity = await response.json();
-                console.log('✅ Activity created successfully:', savedActivity);
-                return savedActivity;
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
             } catch (error) {
-                console.error('❌ Error creating activity:', error);
-                showToast('Error creating activity: ' + error.message, true);
-                throw error;
-            }
-        },
-
-        async resolveActivity(activityId) {
-            try {
-                console.log('✅ Resolving activity:', activityId);
-                const response = await fetch(`${API_BASE_URL}/activities/${activityId}/resolve`, {
-                    method: 'PATCH'
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const result = await response.json();
-                console.log('✅ Activity resolved successfully:', result);
-                return result;
-            } catch (error) {
-                console.error('❌ Error resolving activity:', error);
-                showToast('Error resolving activity: ' + error.message, true);
+                console.error('Answer question error:', error);
                 throw error;
             }
         }
     };
 
-    // Global data storage
+    // Global state
     let events = [];
     let tasks = [];
-    let activities = [];
+    let questions = [];
 
-    // DOM Elements
-    const createEventBtn = document.getElementById('createEventBtn');
-    const createEventModal = document.getElementById('createEventModal');
-    const closeModals = document.querySelectorAll('.close-modal');
-    const cancelEventBtn = document.getElementById('cancelEventBtn');
-    const saveEventBtn = document.getElementById('saveEventBtn');
-    const eventsTableBody = document.getElementById('eventsTableBody');
-    const tasksList = document.getElementById('tasksList');
-    const activityList = document.getElementById('activityList');
-    const createTaskBtn = document.getElementById('createTaskBtn');
-    const createTaskModal = document.getElementById('createTaskModal');
-    const cancelTaskBtn = document.getElementById('cancelTaskBtn');
-    const saveTaskBtn = document.getElementById('saveTaskBtn');
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toastMessage');
-    const searchInput = document.getElementById('searchInput');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    const dashboardContent = document.getElementById('dashboardContent');
-    const otherSections = document.getElementById('otherSections');
-    const pageTitle = document.getElementById('pageTitle');
+    // DOM elements
+    const elements = {
+        dashboardContent: document.getElementById('dashboardContent'),
+        otherSections: document.getElementById('otherSections'),
+        pageTitle: document.getElementById('pageTitle'),
+        createEventBtn: document.getElementById('createEventBtn'),
+        createTaskBtn: document.getElementById('createTaskBtn'),
+        createEventModal: document.getElementById('createEventModal'),
+        createTaskModal: document.getElementById('createTaskModal'),
+        saveEventBtn: document.getElementById('saveEventBtn'),
+        saveTaskBtn: document.getElementById('saveTaskBtn'),
+        toast: document.getElementById('toast'),
+        toastMessage: document.getElementById('toastMessage'),
+        navLinks: document.querySelectorAll('.nav-links a')
+    };
 
-    // Initialize the dashboard with REAL data
-    async function initDashboard() {
+    // Initialize app
+    async function initApp() {
+        console.log('🚀 Initializing application...');
+        
         try {
-            // Show loading state
-            showLoadingStates();
+            showToast('Loading data from database...');
             
-            // Load REAL data from your backend in parallel
-            const [eventsData, tasksData, activitiesData] = await Promise.allSettled([
-                apiService.getEvents(),
-                apiService.getTasks(),
-                apiService.getActivities()
+            // Load all data
+            const [eventsData, tasksData, questionsData] = await Promise.all([
+                apiService.getEvents().catch(error => {
+                    console.error('Failed to load events:', error);
+                    return [];
+                }),
+                apiService.getTasks().catch(error => {
+                    console.error('Failed to load tasks:', error);
+                    return [];
+                }),
+                apiService.getQuestions().catch(error => {
+                    console.error('Failed to load questions:', error);
+                    return [];
+                })
             ]);
+
+            // Store data
+            events = Array.isArray(eventsData) ? eventsData : (eventsData.events || eventsData.data || []);
+            tasks = Array.isArray(tasksData) ? tasksData : (tasksData.tasks || tasksData.data || []);
+            questions = Array.isArray(questionsData) ? questionsData : (questionsData.questions || questionsData.data || []);
+
+            updateDashboard();
+            setupEventListeners();
             
-            // Process results
-            events = eventsData.status === 'fulfilled' ? eventsData.value : [];
-            tasks = tasksData.status === 'fulfilled' ? tasksData.value : [];
-            activities = activitiesData.status === 'fulfilled' ? activitiesData.value : [];
-            
-            // Update UI with real data
-            updateUI();
-            
-            showToast('✅ Dashboard connected to database successfully!');
+            showToast('Dashboard loaded successfully!');
+
         } catch (error) {
-            console.error('Error initializing dashboard:', error);
-            showToast('Error loading dashboard data from server', true);
+            console.error('Initialization error:', error);
+            showToast('Error loading dashboard', true);
         }
     }
 
-    function showLoadingStates() {
-        eventsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;"><div class="spinner"></div> Loading events from database...</td></tr>';
-        tasksList.innerHTML = '<li style="text-align: center; padding: 20px;"><div class="spinner"></div> Loading tasks...</li>';
-        activityList.innerHTML = '<li style="text-align: center; padding: 20px;"><div class="spinner"></div> Loading activities...</li>';
-    }
-
-    function updateUI() {
-        renderEvents();
-        renderTasks();
-        renderActivities();
-        updateStats();
-        setupEventListeners();
-    }
-
-    // Render events table with REAL data
-    function renderEvents(eventsToRender = events) {
-        eventsTableBody.innerHTML = '';
-        
-        if (eventsToRender.length === 0) {
-            eventsTableBody.innerHTML = `
-                <tr>
-                    <td colspan="5" style="text-align: center; padding: 40px;">
-                        <i class="fas fa-calendar-plus" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
-                        <h3>No Events Yet</h3>
-                        <p>Create your first event to get started!</p>
-                        <button class="btn" style="margin-top: 15px;" onclick="document.getElementById('createEventBtn').click()">
-                            <i class="fas fa-plus"></i> Create First Event
-                        </button>
-                    </td>
-                </tr>
-            `;
-            return;
-        }
-        
-        eventsToRender.forEach(event => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${event.name}</td>
-                <td>${new Date(event.date).toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                })}</td>
-                <td>${event.attendees || 0}</td>
-                <td><span class="status ${event.status}">${event.status?.charAt(0).toUpperCase() + event.status?.slice(1) || 'Upcoming'}</span></td>
-                <td>
-                    <div class="action-buttons">
-                        <button class="action-btn edit" data-id="${event._id}"><i class="fas fa-edit"></i></button>
-                        <button class="action-btn delete" data-id="${event._id}"><i class="fas fa-trash"></i></button>
-                        <button class="btn btn-secondary manage-event" data-id="${event._id}">Manage</button>
-                    </div>
-                </td>
-            `;
-            eventsTableBody.appendChild(row);
-        });
-    }
-
-    // Render tasks list
-    function renderTasks(tasksToRender = tasks) {
-        tasksList.innerHTML = '';
-        
-        if (tasksToRender.length === 0) {
-            tasksList.innerHTML = `
-                <li style="text-align: center; padding: 40px;">
-                    <i class="fas fa-tasks" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
-                    <h3>No Tasks Yet</h3>
-                    <p>Assign your first task to get started!</p>
-                    <button class="btn" style="margin-top: 15px;" onclick="document.getElementById('createTaskBtn').click()">
-                        <i class="fas fa-plus"></i> Assign First Task
-                    </button>
-                </li>
-            `;
-            return;
-        }
-        
-        tasksToRender.forEach(task => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <div class="task-info">
-                    <i class="fas fa-${getTaskIcon(task.title)}"></i>
-                    <div class="task-details">
-                        <div><strong>${task.title}</strong></div>
-                        <div style="margin-top: 5px; color: var(--deep-brown);">${task.description || ''}</div>
-                        <div class="task-meta">Due: ${new Date(task.dueDate).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })} | Vendor: ${task.vendor} | Priority: <span class="status ${task.priority || 'medium'}">${task.priority || 'Medium'}</span></div>
-                    </div>
-                </div>
-                <span class="status ${task.status || 'pending'}">${(task.status === 'in-progress' ? 'In Progress' : task.status?.charAt(0).toUpperCase() + task.status?.slice(1)) || 'Pending'}</span>
-            `;
-            tasksList.appendChild(li);
-        });
-    }
-
-    // Render activities list
-    function renderActivities(activitiesToRender = activities) {
-        activityList.innerHTML = '';
-        
-        if (activitiesToRender.length === 0) {
-            activityList.innerHTML = `
-                <li style="text-align: center; padding: 40px;">
-                    <i class="fas fa-bell" style="font-size: 48px; color: var(--dusty-purple); margin-bottom: 15px; display: block;"></i>
-                    <h3>No Recent Activity</h3>
-                    <p>Activity will appear here as things happen!</p>
-                </li>
-            `;
-            return;
-        }
-        
-        activitiesToRender.forEach(activity => {
-            const li = document.createElement('li');
-            const isResolved = activity.isResolved || activity.resolved;
-            
-            li.innerHTML = `
-                <div class="task-info">
-                    <i class="fas fa-${getActivityIcon(activity.type)}" style="color: ${isResolved ? 'var(--light-blue)' : 'var(--dusty-purple)'};"></i>
-                    <div class="task-details">
-                        <div style="${isResolved ? 'opacity: 0.7; text-decoration: line-through;' : ''}">
-                            <strong>${activity.title}</strong>
-                            ${isResolved ? ' <span class="status completed">Resolved</span>' : ''}
-                        </div>
-                        <div class="task-meta">
-                            ${activity.details || ''}
-                            ${activity.metadata?.questionFrom ? ` | From: ${activity.metadata.questionFrom}` : ''}
-                            ${activity.metadata?.sponsorName ? ` | Sponsor: ${activity.metadata.sponsorName}` : ''}
-                            | ${new Date(activity.createdAt || activity.date || Date.now()).toLocaleDateString('en-US', { 
-                                month: 'short', 
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}
-                        </div>
-                    </div>
-                </div>
-                <div class="action-buttons">
-                    ${activity.type === 'question' && !isResolved ? 
-                        `<button class="btn btn-secondary respond-btn" data-id="${activity._id}">Respond</button>` : ''}
-                    ${!isResolved ? 
-                        `<button class="btn btn-outline resolve-btn" data-id="${activity._id}">Mark Resolved</button>` : ''}
-                </div>
-            `;
-            activityList.appendChild(li);
-        });
-    }
-
-    // Update dashboard statistics with REAL data
-    function updateStats() {
+    function updateDashboard() {
+        // Update cards
         document.getElementById('totalEvents').textContent = events.length;
         
+        const vendor1Tasks = tasks.filter(task => task.vendor === 'Vendor 1');
+        document.getElementById('totalTasks').textContent = vendor1Tasks.length;
+        
         const totalAttendees = events.reduce((sum, event) => sum + (event.attendees || 0), 0);
-        document.getElementById('totalAttendees').textContent = totalAttendees.toLocaleString();
+        document.getElementById('totalAttendees').textContent = totalAttendees;
         
-        // Calculate progress percentages
-        const liveEvents = events.filter(event => event.status === 'live').length;
-        const eventsProgress = events.length > 0 ? (liveEvents / events.length) * 100 : 0;
-        document.getElementById('eventsProgress').style.width = `${eventsProgress}%`;
-        
-        const attendeesProgress = Math.min((totalAttendees / 2000) * 100, 100);
-        document.getElementById('attendeesProgress').style.width = `${attendeesProgress}%`;
-        
-        const completedTasks = tasks.filter(task => task.status === 'completed').length;
-        const totalTasks = tasks.length;
-        const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
-        
-        document.getElementById('tasksCompleted').textContent = `${completionRate}%`;
-        document.getElementById('tasksText').textContent = `${completedTasks} of ${totalTasks} tasks done`;
-        document.getElementById('tasksProgress').style.width = `${completionRate}%`;
-        
-        // Simple engagement calculation
-        const engagementRate = events.length > 0 ? Math.min(Math.round((totalAttendees / (events.length * 100)) * 100), 100) : 0;
-        document.getElementById('engagementRate').textContent = `${engagementRate}%`;
-        document.getElementById('engagementProgress').style.width = `${engagementRate}%`;
-    }
+        const unansweredQuestions = questions.filter(q => !q.answered);
+        document.getElementById('totalQuestions').textContent = unansweredQuestions.length;
 
-    // Get appropriate icon for task
-    function getTaskIcon(title) {
-        if (!title) return 'tasks';
-        if (title.includes('streaming') || title.includes('video')) return 'video';
-        if (title.includes('catering') || title.includes('food')) return 'utensils';
-        if (title.includes('audio') || title.includes('speaker')) return 'microphone';
-        return 'tasks';
-    }
-
-    // Get appropriate icon for activity
-    function getActivityIcon(type) {
-        if (type === 'question') return 'question-circle';
-        if (type === 'announcement') return 'bullhorn';
-        if (type === 'sponsor') return 'star';
-        return 'info-circle';
-    }
-
-    // Show toast notification
-    function showToast(message, isError = false) {
-        toastMessage.textContent = message;
-        if (isError) {
-            toast.style.borderLeftColor = 'var(--soft-pink)';
-            toast.querySelector('i').className = 'fas fa-exclamation-circle';
+        // Update events list
+        const eventsList = document.getElementById('eventsList');
+        if (events.length === 0) {
+            eventsList.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                    <i class="fas fa-calendar-plus" style="font-size: 48px; margin-bottom: 15px;"></i>
+                    <h3>No Events Yet</h3>
+                    <p>Create your first event to get started!</p>
+                </div>
+            `;
         } else {
-            toast.style.borderLeftColor = 'var(--dusty-purple)';
-            toast.querySelector('i').className = 'fas fa-check-circle';
+            eventsList.innerHTML = events.slice(0, 5).map(event => `
+                <div class="event-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h4 style="flex: 1;">${event.name}</h4>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <span class="status ${event.status || 'upcoming'}">${event.status || 'Upcoming'}</span>
+                            <button class="btn delete" onclick="deleteEvent('${event._id}', '${event.name}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    <p style="color: var(--deep-brown); margin-bottom: 10px;">${event.description || 'No description'}</p>
+                    <div style="display: flex; gap: 15px; font-size: 14px; color: var(--dusty-purple);">
+                        <span><i class="fas fa-calendar"></i> ${new Date(event.date).toLocaleDateString()}</span>
+                        <span><i class="fas fa-users"></i> ${event.attendees || 0} attendees</span>
+                        ${event.zoomLink ? `<span><i class="fas fa-video"></i> Zoom meeting</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
         }
-        toast.classList.add('show');
+
+        // Update tasks list
+        const tasksList = document.getElementById('tasksList');
+        if (vendor1Tasks.length === 0) {
+            tasksList.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                    <i class="fas fa-tasks" style="font-size: 48px; margin-bottom: 15px;"></i>
+                    <h3>No Tasks for Vendor 1</h3>
+                    <p>Assign tasks to Vendor 1 to see them here.</p>
+                </div>
+            `;
+        } else {
+            tasksList.innerHTML = vendor1Tasks.slice(0, 5).map(task => `
+                <div class="event-card">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+                        <h4 style="flex: 1;">${task.title}</h4>
+                        <span class="status ${task.status || 'pending'}">${task.status || 'Pending'}</span>
+                    </div>
+                    <p style="color: var(--deep-brown); margin-bottom: 10px;">${task.description || 'No description'}</p>
+                    <div style="display: flex; gap: 15px; font-size: 14px; color: var(--dusty-purple);">
+                        <span><i class="fas fa-clock"></i> Due: ${new Date(task.dueDate).toLocaleDateString()}</span>
+                        <span><i class="fas fa-user-tag"></i> ${task.vendor}</span>
+                        <span class="status ${task.priority || 'medium'}">${task.priority || 'Medium'} priority</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update activity list
+        const activityList = document.getElementById('activityList');
+        const recentActivity = [
+            ...events.slice(0, 3).map(event => ({
+                type: 'event',
+                message: `Event "${event.name}" created`,
+                date: event.date
+            })),
+            ...vendor1Tasks.slice(0, 2).map(task => ({
+                type: 'task',
+                message: `Task "${task.title}" assigned to Vendor 1`,
+                date: task.dueDate
+            }))
+        ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+
+        if (recentActivity.length === 0) {
+            activityList.innerHTML = '<p>No recent activity</p>';
+        } else {
+            activityList.innerHTML = recentActivity.map(activity => `
+                <div style="padding: 10px 0; border-bottom: 1px solid rgba(73, 49, 41, 0.1);">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-${activity.type === 'event' ? 'calendar' : 'tasks'}" 
+                           style="color: ${activity.type === 'event' ? 'var(--dusty-purple)' : 'var(--soft-pink)'};"></i>
+                        <span>${activity.message}</span>
+                    </div>
+                    <small style="color: var(--dusty-purple); margin-left: 25px;">
+                        ${new Date(activity.date).toLocaleDateString()}
+                    </small>
+                </div>
+            `).join('');
+        }
+    }
+
+    function showToast(message, isError = false) {
+        elements.toastMessage.textContent = message;
+        elements.toast.style.background = isError ? '#ffebee' : '#f3e5f5';
+        elements.toast.style.borderLeft = isError ? '4px solid #ef5350' : '4px solid #7e57c2';
+        elements.toast.classList.add('show');
+        
         setTimeout(() => {
-            toast.classList.remove('show');
+            elements.toast.classList.remove('show');
         }, 3000);
     }
 
-    // Helper function to get vendor ID
-    function getVendorId(vendorName) {
-        // Only one vendor now - Vendor 1
-        return 'vendor-1';
-    }
-
-    // Setup event listeners
     function setupEventListeners() {
-        // Modal controls
-        createEventBtn.addEventListener('click', () => {
-            createEventModal.style.display = 'flex';
-        });
-
-        createTaskBtn.addEventListener('click', () => {
-            createTaskModal.style.display = 'flex';
-        });
-
-        closeModals.forEach(btn => {
-            btn.addEventListener('click', () => {
-                createEventModal.style.display = 'none';
-                createTaskModal.style.display = 'none';
+        // Navigation
+        elements.navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.getAttribute('data-section');
+                
+                elements.navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                if (section === 'dashboard') {
+                    elements.dashboardContent.style.display = 'block';
+                    elements.otherSections.style.display = 'none';
+                    elements.pageTitle.textContent = 'Event Organizer Dashboard';
+                } else {
+                    elements.dashboardContent.style.display = 'none';
+                    elements.otherSections.style.display = 'block';
+                    elements.pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
+                    loadSection(section);
+                }
             });
         });
 
-        cancelEventBtn.addEventListener('click', () => {
-            createEventModal.style.display = 'none';
+        // Modal controls
+        elements.createEventBtn.addEventListener('click', () => {
+            elements.createEventModal.style.display = 'flex';
         });
 
-        cancelTaskBtn.addEventListener('click', () => {
-            createTaskModal.style.display = 'none';
+        elements.createTaskBtn.addEventListener('click', () => {
+            elements.createTaskModal.style.display = 'flex';
         });
 
-        // Save event to REAL backend
-        saveEventBtn.addEventListener('click', async () => {
-            const name = document.getElementById('eventName').value;
-            const date = document.getElementById('eventDate').value;
-            const description = document.getElementById('eventDescription').value;
-            const type = document.getElementById('eventType').value;
-            const zoomLink = document.getElementById('zoomLink').value;
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                elements.createEventModal.style.display = 'none';
+                elements.createTaskModal.style.display = 'none';
+            });
+        });
 
-            if (!name || !date || !description || !type) {
+        // Save event
+        elements.saveEventBtn.addEventListener('click', async () => {
+            const eventData = {
+                name: document.getElementById('eventName').value,
+                date: document.getElementById('eventDate').value,
+                description: document.getElementById('eventDescription').value,
+                type: document.getElementById('eventType').value,
+                location: document.getElementById('eventLocation').value,
+                zoomLink: document.getElementById('zoomLink').value || '',
+                attendees: 0,
+                status: 'upcoming'
+            };
+
+            if (!eventData.name || !eventData.date || !eventData.description || !eventData.type || !eventData.location) {
                 alert('Please fill in all required fields');
                 return;
             }
 
             try {
-                const eventData = {
-                    name: name,
-                    date: date,
-                    description: description,
-                    type: type,
-                    location: "Virtual Event",
-                    attendees: 0,
-                    status: 'upcoming',
-                    zoomLink: zoomLink || '' // Add zoom link to event data
-                };
+                elements.saveEventBtn.innerHTML = '<div class="spinner"></div> Creating...';
+                elements.saveEventBtn.disabled = true;
 
-                const newEvent = await apiService.saveEvent(eventData);
-                
-                // Add to local events array and update UI
+                const newEvent = await apiService.createEvent(eventData);
                 events.push(newEvent);
-                renderEvents();
-                updateStats();
-                createEventModal.style.display = 'none';
                 
-                // Reset form
+                updateDashboard();
+                elements.createEventModal.style.display = 'none';
+                
+                // Clear form
                 document.getElementById('eventName').value = '';
                 document.getElementById('eventDate').value = '';
                 document.getElementById('eventDescription').value = '';
                 document.getElementById('eventType').value = '';
+                document.getElementById('eventLocation').value = 'Virtual Event';
                 document.getElementById('zoomLink').value = '';
                 
-                showToast('Event created and saved to database! 🎉');
+                showToast('Event created successfully!');
+                
             } catch (error) {
-                console.error('Error saving event:', error);
+                showToast('Error creating event: ' + error.message, true);
+            } finally {
+                elements.saveEventBtn.innerHTML = '<i class="fas fa-save"></i> Create Event';
+                elements.saveEventBtn.disabled = false;
             }
         });
 
-        // Save task to REAL backend - UPDATED FOR VENDOR 1
-        saveTaskBtn.addEventListener('click', async () => {
-            const title = document.getElementById('taskTitle').value;
-            const description = document.getElementById('taskDescription').value;
-            const vendor = document.getElementById('taskVendor').value;
-            const dueDate = document.getElementById('taskDueDate').value;
+        // Save task
+        elements.saveTaskBtn.addEventListener('click', async () => {
+            const taskData = {
+                title: document.getElementById('taskTitle').value,
+                description: document.getElementById('taskDescription').value,
+                dueDate: document.getElementById('taskDueDate').value,
+                priority: document.getElementById('taskPriority').value,
+                vendor: 'Vendor 1',
+                status: 'pending'
+            };
 
-            if (!title || !description || !vendor || !dueDate) {
-                alert('Please fill in all fields');
+            if (!taskData.title || !taskData.dueDate) {
+                alert('Please fill in required fields');
                 return;
             }
 
             try {
-                const taskData = {
-                    title: title,
-                    description: description,
-                    vendor: vendor,
-                    vendorId: getVendorId(vendor),
-                    dueDate: dueDate,
-                    status: 'pending',
-                    priority: 'medium',
-                    assignedBy: 'Organizer',
-                    assignedDate: new Date().toISOString()
-                };
+                elements.saveTaskBtn.innerHTML = '<div class="spinner"></div> Creating...';
+                elements.saveTaskBtn.disabled = true;
 
-                console.log('🚀 CREATING TASK WITH DATA:', taskData);
-
-                const newTask = await apiService.saveTask(taskData);
-                
-                console.log('🎯 TASK CREATED SUCCESSFULLY:', newTask);
-                
-                // Add to local tasks array and update UI
+                const newTask = await apiService.createTask(taskData);
                 tasks.push(newTask);
-                renderTasks();
-                updateStats();
-                createTaskModal.style.display = 'none';
                 
-                // Reset form
+                updateDashboard();
+                elements.createTaskModal.style.display = 'none';
+                
+                // Clear form
                 document.getElementById('taskTitle').value = '';
                 document.getElementById('taskDescription').value = '';
-                document.getElementById('taskVendor').value = '';
                 document.getElementById('taskDueDate').value = '';
+                document.getElementById('taskPriority').value = 'medium';
                 
-                showToast('Task assigned and saved to database! 🎉');
+                showToast('Task created successfully for Vendor 1!');
+                
             } catch (error) {
-                console.error('💥 ERROR CREATING TASK:', error);
-                showToast('Failed to create task: ' + error.message, true);
+                showToast('Error creating task: ' + error.message, true);
+            } finally {
+                elements.saveTaskBtn.innerHTML = '<i class="fas fa-save"></i> Create Task for Vendor 1';
+                elements.saveTaskBtn.disabled = false;
             }
-        });
-
-        // Search functionality
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            
-            if (searchTerm) {
-                const filteredEvents = events.filter(event => 
-                    event.name.toLowerCase().includes(searchTerm) ||
-                    (event.description && event.description.toLowerCase().includes(searchTerm)) ||
-                    (event.type && event.type.toLowerCase().includes(searchTerm))
-                );
-                const filteredTasks = tasks.filter(task => 
-                    task.title.toLowerCase().includes(searchTerm) || 
-                    (task.vendor && task.vendor.toLowerCase().includes(searchTerm))
-                );
-                
-                renderEvents(filteredEvents);
-                renderTasks(filteredTasks);
-            } else {
-                renderEvents();
-                renderTasks();
-            }
-        });
-
-        // Navigation
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const section = link.getAttribute('data-section');
-                
-                // Update active state
-                navLinks.forEach(l => l.classList.remove('active'));
-                link.classList.add('active');
-                
-                // Update page title
-                pageTitle.textContent = `${link.textContent.trim()} - Sunset Events`;
-                
-                // Show appropriate content
-                if (section === 'dashboard') {
-                    dashboardContent.style.display = 'block';
-                    otherSections.style.display = 'none';
-                } else {
-                    dashboardContent.style.display = 'none';
-                    otherSections.style.display = 'block';
-                    otherSections.innerHTML = `<div class="feature-section"><h3>${link.textContent.trim()} Section</h3><p>This section would contain the ${link.textContent.trim()} functionality in a complete application.</p></div>`;
-                }
-            });
-        });
-
-        // Card click actions
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', () => {
-                const action = card.getAttribute('data-action');
-                switch(action) {
-                    case 'view-events':
-                        navLinks[2].click();
-                        break;
-                    case 'view-attendees':
-                        showToast('Attendee management would open here');
-                        break;
-                    case 'view-tasks':
-                        document.querySelector('.feature-section:nth-child(3)').scrollIntoView({ behavior: 'smooth' });
-                        break;
-                    case 'view-analytics':
-                        navLinks[9].click();
-                        break;
-                }
-            });
-        });
-
-        // Event delegation for dynamic elements
-        document.addEventListener('click', async (e) => {
-            // Edit event
-            if (e.target.closest('.action-btn.edit')) {
-                const eventId = e.target.closest('.action-btn.edit').getAttribute('data-id');
-                const event = events.find(ev => ev._id === eventId);
-                if (event) {
-                    // Populate modal with event data
-                    document.getElementById('eventName').value = event.name;
-                    document.getElementById('eventDate').value = new Date(event.date).toISOString().slice(0, 16);
-                    document.getElementById('eventDescription').value = event.description;
-                    document.getElementById('eventType').value = event.type;
-                    document.getElementById('zoomLink').value = event.zoomLink || '';
-                    
-                    // Change save button to update
-                    const saveBtn = document.getElementById('saveEventBtn');
-                    saveBtn.textContent = 'Update Event';
-                    saveBtn.onclick = async () => {
-                        const updatedData = {
-                            name: document.getElementById('eventName').value,
-                            date: document.getElementById('eventDate').value,
-                            description: document.getElementById('eventDescription').value,
-                            type: document.getElementById('eventType').value,
-                            zoomLink: document.getElementById('zoomLink').value
-                        };
-                        
-                        try {
-                            await apiService.updateEvent(eventId, updatedData);
-                            Object.assign(event, updatedData);
-                            renderEvents();
-                            createEventModal.style.display = 'none';
-                            showToast('Event updated successfully!');
-                        } catch (error) {
-                            console.error('Error updating event:', error);
-                        }
-                    };
-                    
-                    createEventModal.style.display = 'flex';
-                }
-            }
-            
-            // Delete event from REAL backend
-            if (e.target.closest('.action-btn.delete')) {
-                const eventId = e.target.closest('.action-btn.delete').getAttribute('data-id');
-                if (confirm('Are you sure you want to delete this event? This action cannot be undone.')) {
-                    try {
-                        await apiService.deleteEvent(eventId);
-                        
-                        // Remove from local events array
-                        events = events.filter(event => event._id !== eventId);
-                        
-                        // Update UI
-                        renderEvents();
-                        updateStats();
-                        showToast('Event deleted successfully!');
-                    } catch (error) {
-                        console.error('Error deleting event:', error);
-                    }
-                }
-            }
-            
-            // Manage event
-            if (e.target.closest('.manage-event')) {
-                const eventId = e.target.closest('.manage-event').getAttribute('data-id');
-                showToast(`Manage event ${eventId} - This would open event management`);
-            }
-            
-            // Respond to question
-            if (e.target.closest('.respond-btn')) {
-                const activityId = e.target.closest('.respond-btn').getAttribute('data-id');
-                const activity = activities.find(a => a._id === activityId);
-                if (activity) {
-                    const response = prompt(`Enter your response to ${activity.metadata?.questionFrom || 'the question'}:`);
-                    if (response) {
-                        showToast('Response sent successfully!');
-                        // Mark as resolved after responding
-                        try {
-                            await apiService.resolveActivity(activityId);
-                            activity.isResolved = true;
-                            renderActivities();
-                        } catch (error) {
-                            console.error('Error resolving activity:', error);
-                        }
-                    }
-                }
-            }
-            
-            // Resolve activity
-            if (e.target.closest('.resolve-btn')) {
-                const activityId = e.target.closest('.resolve-btn').getAttribute('data-id');
-                try {
-                    await apiService.resolveActivity(activityId);
-                    
-                    // Update local activities array
-                    const activityIndex = activities.findIndex(a => a._id === activityId);
-                    if (activityIndex !== -1) {
-                        activities[activityIndex].isResolved = true;
-                    }
-                    
-                    renderActivities();
-                    showToast('Activity marked as resolved!');
-                } catch (error) {
-                    console.error('Error resolving activity:', error);
-                }
-            }
-        });
-
-        // Notifications
-        document.getElementById('notificationsBtn').addEventListener('click', () => {
-            showToast('Notifications panel would open here');
         });
     }
 
-    // Initialize the dashboard when DOM is loaded
-    document.addEventListener('DOMContentLoaded', initDashboard);
-</script>
+    async function loadSection(section) {
+        elements.otherSections.innerHTML = `<div style="text-align: center; padding: 40px;"><div class="spinner"></div> Loading ${section} from database...</div>`;
+        
+        try {
+            let content = '';
+            
+            switch(section) {
+                case 'create-event':
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-calendar-plus"></i> Create New Event</h3>
+                            </div>
+                            
+                            <div class="create-event-form">
+                                <h4 style="margin-bottom: 20px; color: var(--deep-brown);">Event Creation Form</h4>
+                                <div class="form-group">
+                                    <label>Event Name *</label>
+                                    <input type="text" id="sectionEventName" class="form-control" placeholder="Enter event name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Date & Time *</label>
+                                    <input type="datetime-local" id="sectionEventDate" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description *</label>
+                                    <textarea id="sectionEventDescription" class="form-control" rows="3" placeholder="Enter event description"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Event Type *</label>
+                                    <select id="sectionEventType" class="form-control">
+                                        <option value="">Select event type</option>
+                                        <option value="conference">Conference</option>
+                                        <option value="workshop">Workshop</option>
+                                        <option value="seminar">Seminar</option>
+                                        <option value="networking">Networking</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location *</label>
+                                    <input type="text" id="sectionEventLocation" class="form-control" placeholder="Enter event location" value="Virtual Event">
+                                </div>
+                                <div class="form-group">
+                                    <label>Zoom Meeting Link</label>
+                                    <input type="url" id="sectionZoomLink" class="form-control" placeholder="https://zoom.us/j/5551112222">
+                                </div>
+                                <button class="btn" id="sectionSaveEventBtn" style="width: 100%;">
+                                    <i class="fas fa-save"></i> Create Event
+                                </button>
+                            </div>
+
+                            <div style="margin-top: 30px;">
+                                <h4 style="margin-bottom: 15px; color: var(--deep-brown);">Recent Events (${events.length})</h4>
+                                ${events.length === 0 ? `
+                                    <p style="text-align: center; color: var(--dusty-purple); padding: 20px;">
+                                        No events created yet. Use the form above to create your first event!
+                                    </p>
+                                ` : events.slice(0, 3).map(event => `
+                                    <div class="event-card">
+                                        <h5>${event.name}</h5>
+                                        <p style="font-size: 14px; color: var(--deep-brown); margin: 5px 0;">${event.description}</p>
+                                        <div style="font-size: 12px; color: var(--dusty-purple);">
+                                            <span>${new Date(event.date).toLocaleDateString()} • ${event.type} • ${event.attendees || 0} attendees</span>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'view-events':
+                    events = await apiService.getEvents();
+                    events = Array.isArray(events) ? events : (events.events || events.data || []);
+                    
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-list"></i> All Events (${events.length})</h3>
+                            </div>
+                            ${events.length === 0 ? `
+                                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                    <i class="fas fa-calendar-plus" style="font-size: 64px; margin-bottom: 20px;"></i>
+                                    <h3>No Events in Database</h3>
+                                    <p>Create your first event to get started!</p>
+                                </div>
+                            ` : events.map(event => `
+                                <div class="event-card">
+                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                                        <h4 style="flex: 1;">${event.name}</h4>
+                                        <div style="display: flex; gap: 10px; align-items: center;">
+                                            <span class="status ${event.status || 'upcoming'}">${event.status || 'Upcoming'}</span>
+                                            <button class="btn delete" onclick="deleteEvent('${event._id}', '${event.name}')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <p style="color: var(--deep-brown); margin-bottom: 15px;">${event.description || 'No description'}</p>
+                                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; font-size: 14px; color: var(--dusty-purple);">
+                                        <div><i class="fas fa-calendar"></i> ${new Date(event.date).toLocaleString()}</div>
+                                        <div><i class="fas fa-users"></i> ${event.attendees || 0} attendees</div>
+                                        <div><i class="fas fa-tag"></i> ${event.type || 'No type'}</div>
+                                        <div><i class="fas fa-map-marker"></i> ${event.location || 'Virtual'}</div>
+                                        ${event.zoomLink ? `<div><i class="fas fa-video"></i> <a href="${event.zoomLink}" target="_blank">Join Meeting</a></div>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'tasks':
+                    tasks = await apiService.getTasks();
+                    tasks = Array.isArray(tasks) ? tasks : (tasks.tasks || tasks.data || []);
+                    const vendor1Tasks = tasks.filter(task => task.vendor === 'Vendor 1');
+                    
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-tasks"></i> Vendor 1 Tasks (${vendor1Tasks.length})</h3>
+                            </div>
+                            ${vendor1Tasks.length === 0 ? `
+                                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                    <i class="fas fa-tasks" style="font-size: 64px; margin-bottom: 20px;"></i>
+                                    <h3>No Tasks for Vendor 1</h3>
+                                    <p>Assign tasks to Vendor 1 to see them here.</p>
+                                </div>
+                            ` : `
+                                <div class="table-container">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Task</th>
+                                                <th>Description</th>
+                                                <th>Due Date</th>
+                                                <th>Priority</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${vendor1Tasks.map(task => `
+                                                <tr>
+                                                    <td><strong>${task.title}</strong></td>
+                                                    <td>${task.description || 'No description'}</td>
+                                                    <td>${new Date(task.dueDate).toLocaleString()}</td>
+                                                    <td><span class="status ${task.priority || 'medium'}">${task.priority || 'Medium'}</span></td>
+                                                    <td><span class="status ${task.status || 'pending'}">${task.status || 'Pending'}</span></td>
+                                                </tr>
+                                            `).join('')}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            `}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'questions':
+                    questions = await apiService.getQuestions();
+                    questions = Array.isArray(questions) ? questions : (questions.questions || questions.data || []);
+                    const unansweredQuestions = questions.filter(q => !q.answered);
+                    
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-question-circle"></i> Attendee Questions</h3>
+                                <span class="status ${unansweredQuestions.length > 0 ? 'pending' : 'completed'}">
+                                    ${unansweredQuestions.length} unanswered
+                                </span>
+                            </div>
+                            ${questions.length === 0 ? `
+                                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                    <i class="fas fa-question-circle" style="font-size: 64px; margin-bottom: 20px;"></i>
+                                    <h3>No Questions Yet</h3>
+                                    <p>Attendee questions will appear here when they ask them.</p>
+                                </div>
+                            ` : questions.map(question => `
+                                <div class="question-item" style="background: ${question.answered ? '#f0f8f0' : '#fff3e0'};">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                                        <strong>${question.attendeeName || 'Anonymous'} - ${question.eventName || 'General'}</strong>
+                                        <span class="status ${question.answered ? 'completed' : 'pending'}">
+                                            ${question.answered ? 'Answered' : 'Unanswered'}
+                                        </span>
+                                    </div>
+                                    <p><strong>Q:</strong> ${question.question}</p>
+                                    ${question.answered ? `
+                                        <p style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                                            <strong>A:</strong> ${question.answer}
+                                        </p>
+                                    ` : `
+                                        <div style="margin-top: 10px;">
+                                            <textarea id="answer-${question._id}" class="form-control" placeholder="Type your answer here..." rows="2"></textarea>
+                                            <button class="btn" onclick="answerQuestion('${question._id}')" style="margin-top: 10px;">
+                                                <i class="fas fa-paper-plane"></i> Send Answer
+                                            </button>
+                                        </div>
+                                    `}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    break;
+                    
+                case 'sponsors':
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-star"></i> Sponsors</h3>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: center;">
+                                <div class="sponsor-card" style="max-width: 400px;">
+                                    <div class="sponsor-logo">
+                                        <i class="fas fa-building"></i>
+                                    </div>
+                                    <h3 style="color: var(--deep-brown); margin-bottom: 15px;">Sponsor 1</h3>
+                                    <div style="margin-bottom: 20px;">
+                                        <span class="status" style="background: gold; color: #856404; padding: 8px 16px; font-size: 14px;">
+                                            <i class="fas fa-crown"></i> Gold Tier Sponsor
+                                        </span>
+                                    </div>
+                                    <div style="text-align: left; margin-bottom: 25px;">
+                                        <div style="margin-bottom: 10px;">
+                                            <i class="fas fa-envelope" style="color: var(--dusty-purple); width: 20px;"></i>
+                                            <span>contact@sponsor1.com</span>
+                                        </div>
+                                        <div style="margin-bottom: 10px;">
+                                            <i class="fas fa-phone" style="color: var(--dusty-purple); width: 20px;"></i>
+                                            <span>+1 (555) 123-4567</span>
+                                        </div>
+                                        <div style="margin-bottom: 10px;">
+                                            <i class="fas fa-globe" style="color: var(--dusty-purple); width: 20px;"></i>
+                                            <a href="https://sponsor1.com" target="_blank" style="color: var(--light-blue);">www.sponsor1.com</a>
+                                        </div>
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="btn" onclick="contactSponsor()">
+                                            <i class="fas fa-envelope"></i> Contact Sponsor
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'meetings':
+                    const eventsWithZoom = events.filter(event => event.zoomLink);
+                    
+                    content = `
+                        <div class="feature-section">
+                            <div class="section-header">
+                                <h3><i class="fas fa-clock"></i> Scheduled Meetings & Zoom Links</h3>
+                            </div>
+                            
+                            ${eventsWithZoom.length === 0 ? `
+                                <div style="text-align: center; padding: 40px; color: var(--dusty-purple);">
+                                    <i class="fas fa-video" style="font-size: 64px; margin-bottom: 20px;"></i>
+                                    <h3>No Meetings with Zoom Links</h3>
+                                    <p>Create events with Zoom links to see them here.</p>
+                                </div>
+                            ` : `
+                                <div style="margin-bottom: 20px;">
+                                    <p>These are the Zoom meeting links from your created events. Click any link to join the meeting.</p>
+                                </div>
+                                ${eventsWithZoom.map(event => `
+                                    <div class="meeting-item">
+                                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                                            <h4 style="flex: 1;">${event.name}</h4>
+                                            <span class="status ${event.status || 'upcoming'}">${event.status || 'Upcoming'}</span>
+                                        </div>
+                                        <p style="color: var(--deep-brown); margin-bottom: 10px;">${event.description || 'No description'}</p>
+                                        <div style="margin-bottom: 15px;">
+                                            <strong>Zoom Meeting Link:</strong>
+                                            <div style="margin-top: 5px;">
+                                                <a href="${event.zoomLink}" target="_blank" 
+                                                   style="color: var(--light-blue); word-break: break-all; display: block; padding: 10px; background: rgba(158, 200, 249, 0.1); border-radius: 6px;">
+                                                    <i class="fas fa-external-link-alt"></i> ${event.zoomLink}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="action-buttons">
+                                            <button class="btn" onclick="window.open('${event.zoomLink}', '_blank')">
+                                                <i class="fas fa-video"></i> Join Meeting
+                                            </button>
+                                            <button class="btn" onclick="copyToClipboard('${event.zoomLink}')">
+                                                <i class="fas fa-copy"></i> Copy Link
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            `}
+                        </div>
+                    `;
+                    break;
+                    
+                default:
+                    content = `<div class="feature-section"><h3>${section}</h3><p>Loading content from database...</p></div>`;
+            }
+            
+            elements.otherSections.innerHTML = content;
+            
+            // Setup event listeners for dynamically created elements
+            if (section === 'create-event') {
+                setupCreateEventSection();
+            }
+            
+        } catch (error) {
+            elements.otherSections.innerHTML = `
+                <div class="feature-section">
+                    <h3>Error Loading Section</h3>
+                    <p>Failed to load data from database: ${error.message}</p>
+                </div>
+            `;
+        }
+    }
+
+    // Setup create event section form
+    function setupCreateEventSection() {
+        const saveBtn = document.getElementById('sectionSaveEventBtn');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', async () => {
+                const eventData = {
+                    name: document.getElementById('sectionEventName').value,
+                    date: document.getElementById('sectionEventDate').value,
+                    description: document.getElementById('sectionEventDescription').value,
+                    type: document.getElementById('sectionEventType').value,
+                    location: document.getElementById('sectionEventLocation').value,
+                    zoomLink: document.getElementById('sectionZoomLink').value || '',
+                    attendees: 0,
+                    status: 'upcoming'
+                };
+
+                if (!eventData.name || !eventData.date || !eventData.description || !eventData.type || !eventData.location) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                try {
+                    saveBtn.innerHTML = '<div class="spinner"></div> Creating...';
+                    saveBtn.disabled = true;
+
+                    const newEvent = await apiService.createEvent(eventData);
+                    events.push(newEvent);
+                    
+                    // Update dashboard and reload the create-event section to show new event
+                    updateDashboard();
+                    loadSection('create-event');
+                    
+                    // Clear form
+                    document.getElementById('sectionEventName').value = '';
+                    document.getElementById('sectionEventDate').value = '';
+                    document.getElementById('sectionEventDescription').value = '';
+                    document.getElementById('sectionEventType').value = '';
+                    document.getElementById('sectionEventLocation').value = 'Virtual Event';
+                    document.getElementById('sectionZoomLink').value = '';
+                    
+                    showToast('Event created successfully in database!');
+                    
+                } catch (error) {
+                    showToast('Error creating event: ' + error.message, true);
+                } finally {
+                    saveBtn.innerHTML = '<i class="fas fa-save"></i> Create Event';
+                    saveBtn.disabled = false;
+                }
+            });
+        }
+    }
+
+    // Global functions
+    window.deleteEvent = async function(eventId, eventName = '') {
+        // Confirm deletion
+        const confirmDelete = confirm(`Are you sure you want to delete "${eventName || 'this event'}"? This action cannot be undone.`);
+        
+        if (!confirmDelete) return;
+        
+        try {
+            // Show loading state
+            showToast('Deleting event...');
+            
+            // Call the delete API
+            await apiService.deleteEvent(eventId);
+            
+            // Remove from local state
+            events = events.filter(event => event._id !== eventId);
+            
+            // Update the UI
+            updateDashboard();
+            
+            // If we're in the view-events section, reload it
+            const currentSection = document.querySelector('.nav-links a.active')?.getAttribute('data-section');
+            if (currentSection === 'view-events') {
+                loadSection('view-events');
+            }
+            
+            showToast('Event deleted successfully!');
+            
+        } catch (error) {
+            console.error('Delete error:', error);
+            showToast('Error deleting event: ' + error.message, true);
+        }
+    };
+
+    window.answerQuestion = async function(questionId) {
+        const answerInput = document.getElementById(`answer-${questionId}`);
+        const answer = answerInput.value.trim();
+        
+        if (!answer) {
+            alert('Please enter an answer before sending.');
+            return;
+        }
+
+        try {
+            const answerData = { answer: answer };
+            await apiService.answerQuestion(questionId, answerData);
+            
+            showToast('Answer sent successfully!');
+            
+            // Reload the questions section to show updated state
+            loadSection('questions');
+            
+        } catch (error) {
+            showToast('Error sending answer: ' + error.message, true);
+        }
+    };
+
+    window.contactSponsor = function() {
+        showToast('Contacting Sponsor 1...');
+    };
+
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Zoom link copied to clipboard!');
+        }).catch(() => {
+            // Fallback for older browsers
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Zoom link copied to clipboard!');
+        });
+    };
+
+    // Start the app
+    document.addEventListener('DOMContentLoaded', initApp);
+    </script>
 </body>
 </html>

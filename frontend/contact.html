@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - GatherX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --deep-brown: #493129;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fef9e7 0%, #fadbd8 100%);
+            color: var(--deep-brown);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 5px 15px rgba(73, 49, 41, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 22px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: var(--soft-pink);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--soft-pink);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--soft-pink);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(139, 89, 123, 0.3);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(139, 89, 123, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+        }
+
+        .btn-outline:hover {
+            background: var(--dusty-purple);
+            color: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f9ecab" opacity="0.1"/></svg>');
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--deep-brown), var(--dusty-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: var(--dusty-purple);
+        }
+
+        /* Contact Form Section */
+        .contact-section {
+            padding: 60px 0;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .contact-form-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--dusty-purple);
+        }
+
+        .form-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--deep-brown);
+        }
+
+        .form-subtitle {
+            color: var(--dusty-purple);
+            margin-bottom: 30px;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--deep-brown);
+        }
+
+        .form-control {
+            padding: 15px;
+            border: 1px solid rgba(73, 49, 41, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: rgba(249, 236, 171, 0.1);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--dusty-purple);
+            box-shadow: 0 0 0 3px rgba(139, 89, 123, 0.2);
+            background: white;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            margin-top: 10px;
+            padding: 15px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        /* Contact Info Section */
+        .contact-info {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(73, 49, 41, 0.08);
+            border-left: 5px solid var(--soft-pink);
+        }
+
+        .info-title {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--deep-brown);
+        }
+
+        .info-subtitle {
+            color: var(--dusty-purple);
+            margin-bottom: 30px;
+        }
+
+        .contact-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--deep-brown);
+        }
+
+        .contact-details p {
+            color: var(--dusty-purple);
+        }
+
+        .response-time {
+            background: rgba(249, 236, 171, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--light-blue);
+        }
+
+        .response-time h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--deep-brown);
+        }
+
+        .response-time p {
+            color: var(--dusty-purple);
+            font-size: 15px;
+        }
+
+        /* Social Media Section */
+        .social-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--deep-brown);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: var(--dusty-purple);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 180px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(73, 49, 41, 0.08);
+            transition: transform 0.3s ease;
+            border-top: 5px solid;
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .social-card.facebook {
+            border-top-color: #3b5998;
+        }
+
+        .social-card.twitter {
+            border-top-color: #1da1f2;
+        }
+
+        .social-card.linkedin {
+            border-top-color: #0077b5;
+        }
+
+        .social-card.instagram {
+            border-top-color: #e4405f;
+        }
+
+        .social-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 28px;
+            color: white;
+        }
+
+        .social-card.facebook .social-icon {
+            background: #3b5998;
+        }
+
+        .social-card.twitter .social-icon {
+            background: #1da1f2;
+        }
+
+        .social-card.linkedin .social-icon {
+            background: #0077b5;
+        }
+
+        .social-card.instagram .social-icon {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--deep-brown);
+        }
+
+        .social-card p {
+            color: var(--dusty-purple);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        .footer-logo h2 {
+            font-size: 24px;
+        }
+
+        .footer-logo span {
+            color: var(--soft-pink);
+        }
+
+        .footer-about p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .footer-social-link:hover {
+            background: var(--soft-pink);
+        }
+
+        .footer-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--soft-pink);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .social-card {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h1>Gather<span>X</span></h1>
+                </div>
+                <nav>
+                    <ul>
+                       
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#" class="active">Contact</a></li>
+                    </ul>
+                </nav>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Get In Touch</h2>
+                <p>We're here to help with any questions about our platform or services</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-container">
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <h2 class="form-title">Send Us a Message</h2>
+                    <p class="form-subtitle">Fill out the form below and we'll get back to you as soon as possible</p>
+                    
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" class="form-control" placeholder="Enter your email address" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" class="form-control" placeholder="What is this regarding?" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Your Message</label>
+                            <textarea id="message" class="form-control" placeholder="Tell us how we can help you..." required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn submit-btn">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <h2 class="info-title">Contact Information</h2>
+                    <p class="info-subtitle">Reach out to us through any of these channels</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Email Us</h3>
+                                <p>hello@gatherx.com</p>
+                                <p>support@gatherx.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Call Us</h3>
+                                <p>+1 (555) 123-4567</p>
+                                <p>Mon-Fri, 9am-6pm EST</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-details">
+                                <h3>Visit Us</h3>
+                                <p>123 Event Street</p>
+                                <p>San Francisco, CA 94105</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="response-time">
+                        <h3>Response Time</h3>
+                        <p>We typically respond to all inquiries within 24 hours during business days.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Section -->
+    
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2>Gather<span>X</span></h2>
+                    </div>
+                    <p>All-in-one virtual event management platform for organizers, attendees, vendors, and sponsors.</p>
+                    <div class="footer-social-links">
+                        
+                        <a href="https://www.linkedin.com/in/asritha-chikkala-300397336/" class="footer-social-link">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        
+                    </div>
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Platform</h3>
+                    <ul class="footer-links">
+                        <li><a href="organiser.html">Organizer Dashboard</a></li>
+                        <li><a href="attendee.html">Attendee Portal</a></li>
+                        <li><a href="vendor.html">Vendor Center</a></li>
+                        <li><a href="sponsor.html">Sponsor Hub</a></li>
+                        
+                    </ul>
+                </div>
+                
+                <div class="footer-links-container">
+                    
+                </div>
+                
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Company</h3>
+                    <ul class="footer-links">
+                        <li><a href="aboutus.html">About Us</a></li>
+                        
+                        <li><a href="contact.html">Contact</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 GatherX. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission handling
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.querySelector('.contact-form');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value;
+                
+                // In a real implementation, you would send this data to a server
+                // For now, we'll just show an alert
+                alert(Thank you, ${name}! Your message has been sent. We'll get back to you at ${email} soon.);
+                
+                // Reset the form
+                contactForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>
