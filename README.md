@@ -67,8 +67,8 @@ Built with **MongoDB Atlas**, **secure access control**, and **role-specific das
 - Receive announcements  
 - Give feedback & ratings  
 
-📸 *(Insert **Attendee Schedule Screenshot** here)*  
-📊 *(Insert **Attendee Flowchart** here)*  
+<img width="1891" height="989" alt="image" src="https://github.com/user-attachments/assets/809d74a5-cc4d-40cd-9f69-57dae1b3749e" />
+
 
 ---
 
