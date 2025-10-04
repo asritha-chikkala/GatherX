@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunset Events - Sponsor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --deep-brown: #493129;
+            --dusty-purple: #8b597b;
+            --soft-pink: #efa3a0;
+            --light-blue: #9ec8f9;
+            --light-cream: #f9ecab;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-cream);
+            color: var(--deep-brown);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, var(--deep-brown) 0%, #5a3a3a 100%);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .logo span {
+            color: var(--soft-pink);
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-item.active {
+            background-color: var(--dusty-purple);
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.2);
+        }
+        
+        .header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--deep-brown);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--soft-pink), var(--light-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(73, 49, 41, 0.1);
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--deep-brown);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+        }
+        
+        th {
+            color: var(--dusty-purple);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-live {
+            background-color: rgba(73, 49, 41, 0.1);
+            color: var(--deep-brown);
+        }
+        
+        .status-upcoming {
+            background-color: rgba(139, 89, 123, 0.1);
+            color: var(--dusty-purple);
+        }
+        
+        .status-completed {
+            background-color: rgba(239, 163, 160, 0.2);
+            color: var(--soft-pink);
+        }
+        
+        .action-btn {
+            background: linear-gradient(135deg, var(--dusty-purple), var(--soft-pink));
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(139, 89, 123, 0.3);
+        }
+        
+        /* Sponsor Info Box */
+        .sponsor-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            border-left: 4px solid var(--soft-pink);
+        }
+        
+        .sponsor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .sponsor-badge {
+            background-color: var(--soft-pink);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        
+        .sponsor-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .sponsor-purpose {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .features-list {
+            list-style-type: none;
+            margin-bottom: 15px;
+        }
+        
+        .features-list li {
+            padding: 5px 0;
+            position: relative;
+            padding-left: 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .features-list li:before {
+            content: "•";
+            color: var(--soft-pink);
+            position: absolute;
+            left: 0;
+        }
+        
+        .access-control {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+        }
+        
+        /* Read-only styling */
+        .read-only {
+            opacity: 0.7;
+        }
+        
+        .read-only .action-btn {
+            background: linear-gradient(135deg, #a0a0a0, #c0c0c0);
+        }
+        
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--dusty-purple);
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        /* ROI Calculator Styles */
+        .roi-calculator {
+            background-color: rgba(249, 236, 171, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .roi-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .input-group {
+            margin-bottom: 10px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--dusty-purple);
+            font-weight: 500;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid rgba(73, 49, 41, 0.2);
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .roi-result {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 15px;
+            border: 1px solid rgba(73, 49, 41, 0.1);
+        }
+        
+        .roi-value {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--dusty-purple);
+            margin: 10px 0;
+        }
+        
+        .roi-description {
+            font-size: 14px;
+            color: var(--dusty-purple);
+        }
+        
+        /* Chart Container */
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        /* Payment Section Styles */
+        .payment-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .payment-methods {
+            flex: 1;
+        }
+        
+        .payment-method {
+            background-color: rgba(249, 236, 171, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .payment-method:hover {
+            border-color: var(--dusty-purple);
+        }
+        
+        .payment-method.active {
+            border-color: var(--dusty-purple);
+            background-color: rgba(139, 89, 123, 0.1);
+        }
+        
+        .qr-container {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(249, 236, 171, 0.3);
+            border-radius: 8px;
+        }
+        
+        #qrcode {
+            margin: 0 auto;
+            width: 200px;
+            height: 200px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(73, 49, 41, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            color: var(--deep-brown);
+        }
+        
+        .tab:hover {
+            color: var(--dusty-purple);
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid var(--dusty-purple);
+            color: var(--dusty-purple);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>Sunset <span>Events</span></h1>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span> Dashboard
+                </li>
+                <li class="nav-item" data-section="roi-analytics">
+                    <span class="nav-icon">📈</span> ROI & Analytics
+                </li>
+                <li class="nav-item" data-section="payments">
+                    <span class="nav-icon">💳</span> Payments
+                </li>
+                <li class="nav-item" data-section="events">
+                    <span class="nav-icon">📅</span> Event Details
+                </li>
+                <li class="nav-item" data-section="tasks">
+                    <span class="nav-icon">✅</span> Assigned Tasks
+                </li>
+                <li class="nav-item" data-section="meetings">
+                    <span class="nav-icon">🤝</span> Meetings
+                </li>
+                <li class="nav-item" data-section="announcements">
+                    <span class="nav-icon">📢</span> Announcements
+                </li>
+            </ul>
+            
+            <!-- Sponsor Info in Sidebar -->
+            <div class="sponsor-info">
+                <div class="sponsor-header">
+                    <span class="sponsor-badge">Sponsor</span>
+                    <span class="sponsor-title">View Only</span>
+                </div>
+                <div class="sponsor-purpose">
+                    Provide funding/promotional support and gain visibility.
+                </div>
+                <div class="access-control">
+                    Read-only access; cannot create/update/delete tasks/events.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Sponsor Dashboard</h2>
+                <div class="user-info">
+                    <div class="user-avatar">TC</div>
+                    <span>TechCorp Sponsors</span>
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content-section">
+                <div class="section-header">
+                    <div class="section-title">Sponsor Overview</div>
+                </div>
+                
+                <div class="empty-state">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>Welcome to Your Sponsor Dashboard</h3>
+                    <p>Use the navigation menu to view event details, assigned tasks, meetings, and announcements.</p>
+                    <p style="margin-top: 15px; font-style: italic;">You have view-only access to all information.</p>
+                </div>
+            </div>
+            
+            <!-- ROI & Analytics Section -->
+            <div id="roi-analytics-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">ROI & Analytics</div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="roi-calculator">ROI Calculator</div>
+                    <div class="tab" data-tab="engagement-metrics">Engagement Metrics</div>
+                    <div class="tab" data-tab="lead-tracker">Lead Generation</div>
+                </div>
+                
+                <div id="roi-calculator" class="tab-content active">
+                    <p>Calculate the potential return on investment for your sponsorship.</p>
+                    
+                    <div class="roi-calculator">
+                        <div class="roi-inputs">
+                            <div class="input-group">
+                                <label for="sponsorship-cost">Sponsorship Cost ($)</label>
+                                <input type="number" id="sponsorship-cost" class="roi-input" value="10000" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="leads-generated">Expected Leads</label>
+                                <input type="number" id="leads-generated" class="roi-input" value="300" min="0">
+                            </div>
+                            <div class="input-group">
+                                <label for="conversion-rate">Conversion Rate (%)</label>
+                                <input type="number" id="conversion-rate" class="roi-input" value="15" min="0" max="100">
+                            </div>
+                            <div class="input-group">
+                                <label for="avg-deal-size">Average Deal Size ($)</label>
+                                <input type="number" id="avg-deal-size" class="roi-input" value="5000" min="0">
+                            </div>
+                        </div>
+                        
+                        <button class="action-btn" id="calculate-roi" style="width: 100%; padding: 12px; font-size: 16px;">Calculate ROI</button>
+                        
+                        <div class="roi-result">
+                            <div style="font-size: 14px; color: var(--dusty-purple); margin-bottom: 5px;">Estimated ROI</div>
+                            <div class="roi-value" id="roi-value">125%</div>
+                            <div class="roi-description" id="roi-description">For every $1 spent, you get $2.25 back</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="engagement-metrics" class="tab-content">
+                    <div class="chart-container">
+                        <canvas id="engagementChart"></canvas>
+                    </div>
+                </div>
+                
+                <div id="lead-tracker" class="tab-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>LEAD SOURCE</th>
+                                <th>COUNT</th>
+                                <th>CONVERSION RATE</th>
+                                <th>VALUE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Booth Visits</td>
+                                <td>142</td>
+                                <td>18%</td>
+                                <td>$12,780</td>
+                            </tr>
+                            <tr>
+                                <td>Sponsored Session</td>
+                                <td>89</td>
+                                <td>22%</td>
+                                <td>$9,790</td>
+                            </tr>
+                            <tr>
+                                <td>Networking Event</td>
+                                <td>67</td>
+                                <td>15%</td>
+                                <td>$5,025</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Payments Section -->
+            <div id="payments-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Payment Center</div>
+                </div>
+                
+                <div class="payment-container">
+                    <div class="payment-methods">
+                        <h3>Select Payment Method</h3>
+                        
+                        <div class="payment-method active">
+                            <h4>QR Code Payment</h4>
+                            <p>Scan the QR code to complete your payment</p>
+                        </div>
+                        
+                        <div class="payment-method">
+                            <h4>Credit Card</h4>
+                            <p>Pay securely with your credit card</p>
+                        </div>
+                        
+                        <div class="payment-method">
+                            <h4>Bank Transfer</h4>
+                            <p>Transfer funds directly to our account</p>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-container">
+                        <h3>Scan to Pay</h3>
+                        <div id="qrcode"></div>
+                        <p style="margin-top: 15px;">Amount: <strong>$7,500.00</strong></p>
+                        <p>For: Product Launch Sponsorship</p>
+                        <button class="action-btn" style="margin-top: 15px;">Generate New QR Code</button>
+                    </div>
+                </div>
+                
+                <div class="section-header" style="margin-top: 30px;">
+                    <div class="section-title">Payment History</div>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PAYMENT ID</th>
+                            <th>DATE</th>
+                            <th>AMOUNT</th>
+                            <th>EVENT</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#SP-2025-001</td>
+                            <td>Sep 15, 2025</td>
+                            <td>$10,000</td>
+                            <td>Sunset Music Festival</td>
+                            <td><span class="status status-completed">Paid</span></td>
+                            <td><button class="action-btn">View Receipt</button></td>
+                        </tr>
+                        <tr>
+                            <td>#SP-2025-002</td>
+                            <td>Sep 20, 2025</td>
+                            <td>$5,000</td>
+                            <td>Creative Workshop</td>
+                            <td><span class="status status-completed">Paid</span></td>
+                            <td><button class="action-btn">View Receipt</button></td>
+                        </tr>
+                        <tr>
+                            <td>#SP-2025-003</td>
+                            <td>Oct 1, 2025</td>
+                            <td>$7,500</td>
+                            <td>Product Launch</td>
+                            <td><span class="status status-upcoming">Pending</span></td>
+                            <td><button class="action-btn">Pay Now</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Other sections would be here -->
+            <div id="events-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Event Details</div>
+                </div>
+                <p>Event details content would go here...</p>
+            </div>
+            
+            <div id="tasks-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Assigned Tasks</div>
+                </div>
+                <p>Assigned tasks content would go here...</p>
+            </div>
+            
+            <div id="meetings-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Meetings</div>
+                </div>
+                <p>Meetings content would go here...</p>
+            </div>
+            
+            <div id="announcements-section" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <div class="section-title">Announcements</div>
+                </div>
+                <p>Announcements content would go here...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle navigation between sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.content-section');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    navItems.forEach(i => i.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show the selected section
+                    const sectionId = this.getAttribute('data-section') + '-section';
+                    document.getElementById(sectionId).style.display = 'block';
+                });
+            });
+            
+            // Handle action buttons (view-only)
+            const actionButtons = document.querySelectorAll('.action-btn');
+            actionButtons.forEach(button => {
+                if (button.id !== 'calculate-roi') {
+                    button.addEventListener('click', function() {
+                        alert('This is a view-only action in Sponsor mode');
+                    });
+                }
+            });
+            
+            // ROI Calculator - Fixed Functionality
+            document.getElementById('calculate-roi').addEventListener('click', function() {
+                calculateROI();
+            });
+            
+            // Auto-calculate when inputs change
+            const roiInputs = document.querySelectorAll('.roi-input');
+            roiInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    calculateROI();
+                });
+            });
+            
+            function calculateROI() {
+                const cost = parseFloat(document.getElementById('sponsorship-cost').value) || 0;
+                const leads = parseInt(document.getElementById('leads-generated').value) || 0;
+                const conversion = (parseFloat(document.getElementById('conversion-rate').value) || 0) / 100;
+                const dealSize = parseFloat(document.getElementById('avg-deal-size').value) || 0;
+                
+                // Calculate revenue and ROI
+                const revenue = leads * conversion * dealSize;
+                let roi = 0;
+                let roiText = "0%";
+                let description = "Enter values to calculate ROI";
+                
+                if (cost > 0 && revenue > 0) {
+                    roi = ((revenue - cost) / cost) * 100;
+                    roiText = roi.toFixed(0) + '%';
+                    description = For every $1 spent, you get $${(revenue/cost).toFixed(2)} back;
+                    
+                    // Update color based on ROI value
+                    const roiValueElement = document.getElementById('roi-value');
+                    if (roi > 0) {
+                        roiValueElement.style.color = 'var(--dusty-purple)';
+                    } else if (roi < 0) {
+                        roiValueElement.style.color = 'var(--soft-pink)';
+                    } else {
+                        roiValueElement.style.color = 'var(--deep-brown)';
+                    }
+                }
+                
+                document.getElementById('roi-value').textContent = roiText;
+                document.getElementById('roi-description').textContent = description;
+            }
+            
+            // Generate QR Code
+            QRCode.toCanvas(document.getElementById('qrcode'), 'https://payment.sunsetevents.com/sponsor/TC-2025-003', function(error) {
+                if (error) console.error(error);
+            });
+            
+            // Tabs functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Initialize Engagement Chart
+            const ctx = document.getElementById('engagementChart').getContext('2d');
+            const engagementChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Session Attendance', 'Booth Visits', 'Lead Capture', 'Social Engagement', 'Networking'],
+                    datasets: [{
+                        label: 'Engagement Metrics',
+                        data: [85, 72, 64, 78, 55],
+                        backgroundColor: [
+                            'rgba(139, 89, 123, 0.7)',
+                            'rgba(239, 163, 160, 0.7)',
+                            'rgba(158, 200, 249, 0.7)',
+                            'rgba(249, 236, 171, 0.7)',
+                            'rgba(73, 49, 41, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(139, 89, 123, 1)',
+                            'rgba(239, 163, 160, 1)',
+                            'rgba(158, 200, 249, 1)',
+                            'rgba(249, 236, 171, 1)',
+                            'rgba(73, 49, 41, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Initialize the ROI calculator with default values
+            calculateROI();
+        });
+    </script>
+</body>
+</html>
