@@ -1,135 +1,149 @@
-🎉 Event Management Platform
+# 🎉 Event Management Platform  
 
-📌 Tagline: “One Platform. Multiple Roles. Zero Chaos.”
-A role-based event management system designed for hackathons, conferences, and virtual events.
+📌 *Tagline:* **“One Platform. Multiple Roles. Zero Chaos.”**  
 
-Built with MongoDB Atlas, secure access control, and role-specific dashboards, it ensures smooth collaboration between Organizers, Vendors, Sponsors, and Attendees.
+A **role-based event management system** designed for **hackathons, conferences, and virtual events**.  
 
-✨ Core Features
+Built with **MongoDB Atlas**, **secure access control**, and **role-specific dashboards**, it ensures smooth collaboration between **Organizers, Vendors, Sponsors, and Attendees**.  
 
-Role-Based Dashboards → Personalized experience for each role
+---
 
-Event Creation & Management → Organizers have full control
+## **✨ Core Features**  
 
-Vendor Task Tracking → Streamlined task updates and progress
+- Role-Based Dashboards → Personalized experience for each role  
+- Event Creation & Management → Organizers have full control  
+- Vendor Task Tracking → Streamlined task updates and progress  
+- Sponsor Visibility → Track sponsorship engagements  
+- Attendee-Friendly UI → Easy event registration, joining sessions, and feedback  
+- Meetings & Communication → Centralized announcements, Q&A, and pre-event meetings  
 
-Sponsor Visibility → Track sponsorship engagements
+📸 *(Insert **System Architecture Diagram** here)*  
 
-Attendee-Friendly UI → Easy event registration, joining sessions, and feedback
+---
 
-Meetings & Communication → Centralized announcements, Q&A, and pre-event meetings
+## **👥 Roles & Permissions**  
 
-📸 (Insert System Architecture Diagram here: Roles → Backend → Database)
+### **🛠 Organizer (Full Access)**  
+- Create, manage, and delete events  
+- Add sessions, speakers, and resources  
+- Assign vendor tasks  
+- Send announcements & schedule meetings  
+- Respond to attendee questions  
+- Manage sponsors & review feedback  
 
-👥 Roles & Permissions
-🛠 Organizer (Full Access)
+📸 *(Insert **Organizer Dashboard Screenshot** here)*  
+📊 *(Insert **Organizer Flowchart** here)*  
 
-Create / Manage / Delete events
+---
 
-Add sessions, speakers, resources
+### **📦 Vendor (Update & Complete Tasks)**  
+- View assigned tasks  
+- Update task status *(Pending → Completed)*  
+- Access session links for resources  
+- Join pre-event planning meetings  
+- Optional: Leave notes for organizers  
 
-Assign vendor tasks
+📸 *(Insert **Vendor Task List Screenshot** here)*  
+📊 *(Insert **Vendor Flowchart** here)*  
 
-Send announcements & schedule meetings
+---
 
-Respond to attendee questions
+### **💼 Sponsor (View Only)**  
+- View event details & schedules  
+- Track sponsored sessions  
+- Access announcements & meetings (optional)  
+- No editing permissions  
 
-Manage sponsors & review feedback
+📸 *(Insert **Sponsor Dashboard Screenshot** here)*  
+📊 *(Insert **Sponsor Flowchart** here)*  
 
-📸 (Insert Organizer Dashboard Screenshot here)
-📊 (Insert Organizer Workflow Flowchart here: Organizer → Create Event → Assign Vendors → Meetings → Feedback)
+---
 
-📦 Vendor (Update & Complete Tasks)
+### **🎟 Attendee (View Only)**  
+- Register for events *(Name, Email, Event)*  
+- View schedules & speakers  
+- Join sessions *(Zoom/YouTube/iFrame)*  
+- Submit questions during sessions  
+- Receive announcements  
+- Give feedback & ratings  
 
-View assigned tasks
+📸 *(Insert **Attendee Schedule Screenshot** here)*  
+📊 *(Insert **Attendee Flowchart** here)*  
 
-Update task status (Pending → Completed)
+---
 
-Access session links for resources
+## **🗂 Backend & System Design**  
 
-Join pre-event planning meetings
+- **Database:** MongoDB Atlas  
+- **CRUD:** Controlled via role-based access middleware  
+- **Access Control:**  
+  - Organizer → Full CRUD  
+  - Vendor → Update-only  
+  - Sponsor & Attendee → Read-only  
+- **Shared Data:** Unified view per role (no silos)  
+- **Demo Data:** Pre-filled for hackathon/demo  
 
-Optional: Leave notes for organizers
+📸 *(Insert **Database ER Diagram** here)*  
 
-📸 (Insert Vendor Task List Screenshot here)
-📊 (Insert Vendor Flowchart here: Organizer → Assign Task → Vendor → Update Task → Completed)
+---
 
-💼 Sponsor (View Only)
+## **🔑 Hackathon Priority Features**  
 
-View event details & schedules
+✅ **Core MVP**  
+- Event creation (Organizer)  
+- Vendor task updates  
+- Read-only dashboards (Attendee/Sponsor)  
 
-Track sponsored sessions
+✅ **Communication**  
+- Announcements  
+- Q&A  
+- Meeting scheduling  
 
-Access announcements & meeting info (optional)
+✅ **Optional Add-ons**  
+- Feedback dashboards  
+- Analytics & engagement metrics  
+- In-app chat & meeting simulation  
 
-No editing permissions
+---
 
-📸 (Insert Sponsor Dashboard Screenshot here)
-📊 (Insert Sponsor Flowchart here: Sponsor → View Events → Track Engagement)
+## **📡 Meetings & Communication**  
 
-🎟 Attendee (View Only)
+- **Organizer** → Full CRUD on meetings/messages  
+- **Vendors** → Update task progress, view meetings  
+- **Sponsors/Attendees** → Read-only meeting info  
 
-Register for events (Name, Email, Event)
+Statuses → *Scheduled | Attended | Canceled*  
 
-View schedules & speakers
+📸 *(Insert **Meetings Dashboard Screenshot** here)*  
 
-Join sessions (Zoom/YouTube/iFrame)
+---
 
-Submit questions during sessions
+## **🚀 Tech Stack**  
 
-Receive announcements
+- **Frontend:** *(React / Angular / Vue – specify your stack)*  
+- **Backend:** Node.js + Express  
+- **Database:** MongoDB Atlas  
+- **Auth & Access:** Role-based middleware  
+- **Deployment:** *(Heroku / Vercel / Render, etc.)*  
 
-Give feedback & ratings
+📸 *(Insert **Tech Stack Graphic with Logos** here)*  
 
-📸 (Insert Attendee Schedule Screenshot here)
-📊 (Insert Attendee Flowchart here: Attendee → Register → Join Session → Q&A → Feedback)
+---
 
-🗂 Backend & System Design
+## **🏆 Why This Project?**  
 
-Database: MongoDB Atlas
+This platform eliminates the **chaos of managing multi-role events**.  
+With **real-time updates, role-specific dashboards, and smooth communication**, it’s built for **scalability, hackathons, and professional conferences**.  
 
-CRUD: Controlled by role-based access middleware
+---
 
-Access Control:
+## **📸 Where to Add Images**  
 
-Organizer → Full CRUD
+1. **System Architecture Diagram** → under *Core Features*  
+2. **Role Flowcharts (Icons + Workflow)** → under each Role section  
+3. **Dashboard Screenshots (per role)** → under each Role section  
+4. **Database ER Diagram** → under *Backend & System Design*  
+5. **Meetings Screenshot** → under *Meetings & Communication*  
+6. **Tech Stack Graphic (with logos)** → under *Tech Stack*  
 
-Vendor → Update-only
-
-Sponsor & Attendee → Read-only
-
-Shared Data: Unified view per role (no silos)
-
-Demo Data: Pre-filled for hackathon/demo
-
-📸 (Insert Database ER Diagram here showing Events, Sessions, Vendors, Sponsors, Attendees, Questions, Meetings)
-📡 Meetings & Communication
-
-Organizer: Full CRUD on meetings/messages
-
-Vendors: Update task progress, view meetings
-
-Sponsors/Attendees: Read-only meeting info
-
-Statuses → Scheduled | Attended | Canceled
-
-📸 (Insert Meetings Dashboard Screenshot here)
-
-🚀 Tech Stack
-
-Frontend: (React / Angular / Vue – specify your stack)
-
-Backend: Node.js + Express
-
-Database: MongoDB Atlas
-
-Auth & Access: Role-based middleware
-
-Deployment: (Heroku / Vercel / Render, etc.)
-
-📸 (Insert Tech Stack Graphic with Logos here: React, Node.js, MongoDB, Express, etc.)
-
-🏆 Why This Project?
-
-This platform eliminates the chaos of managing multi-role events.
-With real-time updates, role-specific dashboards, and smooth communication, it’s built for scalability, hackathons, and professional conferences.
+---
